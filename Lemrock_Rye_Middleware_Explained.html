@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemrock & Rye — 에이전틱 커머스 미들웨어 심층 분석</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --surface2: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e0e0e8;
+            --text-dim: #8888a0;
+            --lemrock: #6366f1;
+            --lemrock-light: #a5b4fc;
+            --rye: #f59e0b;
+            --rye-light: #fcd34d;
+            --green: #22c55e;
+            --red: #ef4444;
+            --purple: #a855f7;
+            --blue: #3b82f6;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo','Segoe UI',sans-serif; line-height:1.7; }
+        .container { max-width:1200px; margin:0 auto; padding:40px 24px; }
+
+        /* Hero */
+        .hero { text-align:center; padding:60px 20px; margin-bottom:48px; background:linear-gradient(135deg, #1a1a2e 0%, #1e1b4b 50%, #312e81 100%); border-radius:20px; border:1px solid var(--border); position:relative; overflow:hidden; }
+        .hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 50%, rgba(99,102,241,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(245,158,11,0.1) 0%, transparent 50%); }
+        .hero h1 { font-size:2.2em; font-weight:800; margin-bottom:16px; position:relative; background:linear-gradient(135deg, var(--lemrock-light), var(--rye-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .hero .subtitle { font-size:1.1em; color:var(--text-dim); position:relative; max-width:700px; margin:0 auto; }
+        .hero .badge { display:inline-block; margin-top:16px; padding:6px 16px; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:20px; font-size:0.85em; color:var(--text-dim); position:relative; }
+
+        /* Section headers */
+        .section-header { margin:56px 0 28px; }
+        .section-header h2 { font-size:1.6em; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:12px; }
+        .section-header h2 .num { display:inline-flex; width:36px; height:36px; align-items:center; justify-content:center; border-radius:10px; font-size:0.7em; font-weight:800; }
+        .num-lemrock { background:rgba(99,102,241,0.15); color:var(--lemrock-light); }
+        .num-rye { background:rgba(245,158,11,0.15); color:var(--rye-light); }
+        .num-both { background:rgba(168,85,247,0.15); color:#c084fc; }
+        .section-header p { color:var(--text-dim); font-size:0.95em; margin-left:48px; }
+
+        /* Boxes */
+        .insight-box { border-radius:14px; padding:24px 28px; margin:20px 0; }
+        .insight-lemrock { background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.25); }
+        .insight-rye { background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.25); }
+        .insight-neutral { background:rgba(100,100,120,0.08); border:1px solid var(--border); }
+        .insight-green { background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); }
+        .insight-red { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.25); }
+        .insight-box h4 { font-size:1em; margin-bottom:10px; }
+        .insight-box p { font-size:0.92em; line-height:1.8; }
+
+        /* Analogy section */
+        .analogy-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:32px; margin:24px 0; }
+        .analogy-card h3 { font-size:1.2em; margin-bottom:16px; text-align:center; }
+        .analogy-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:20px; align-items:center; margin-top:16px; }
+        .analogy-item { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:20px; text-align:center; }
+        .analogy-item .emoji { font-size:2.4em; margin-bottom:8px; }
+        .analogy-item h4 { font-size:1em; margin-bottom:6px; }
+        .analogy-item p { font-size:0.85em; color:var(--text-dim); }
+        .analogy-arrow { font-size:2em; color:var(--text-dim); text-align:center; }
+        @media(max-width:768px) {
+            .analogy-grid { grid-template-columns:1fr; }
+            .analogy-arrow { transform:rotate(90deg); }
+        }
+
+        /* Company cards */
+        .company-card { background:var(--surface); border-radius:18px; overflow:hidden; margin:24px 0; }
+        .company-header { padding:28px 32px; display:flex; align-items:center; gap:20px; }
+        .company-logo { width:64px; height:64px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.6em; font-weight:900; color:#fff; flex-shrink:0; }
+        .logo-lemrock { background:linear-gradient(135deg, #6366f1, #4f46e5); border:2px solid rgba(99,102,241,0.4); }
+        .logo-rye { background:linear-gradient(135deg, #f59e0b, #d97706); border:2px solid rgba(245,158,11,0.4); }
+        .company-header .info h3 { font-size:1.3em; font-weight:700; }
+        .company-header .info .tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+        .company-header .info .tag { padding:3px 10px; border-radius:8px; font-size:0.75em; font-weight:600; }
+        .tag-seed { background:rgba(34,197,94,0.15); color:#4ade80; }
+        .tag-paris { background:rgba(99,102,241,0.15); color:var(--lemrock-light); }
+        .tag-sf { background:rgba(245,158,11,0.15); color:var(--rye-light); }
+        .tag-middleware { background:rgba(168,85,247,0.15); color:#c084fc; }
+        .tag-checkout { background:rgba(59,130,246,0.15); color:#93c5fd; }
+        .company-body { padding:0 32px 32px; }
+        .company-card.lemrock-card { border:1px solid rgba(99,102,241,0.25); }
+        .company-card.rye-card { border:1px solid rgba(245,158,11,0.25); }
+
+        /* Stats strip */
+        .stat-strip { display:flex; gap:12px; flex-wrap:wrap; margin:16px 0; }
+        .stat-item { flex:1; min-width:120px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; text-align:center; }
+        .stat-item .num { font-size:1.5em; font-weight:800; }
+        .stat-item .label { font-size:0.75em; color:var(--text-dim); margin-top:2px; }
+
+        /* Flow diagrams */
+        .flow-diagram { display:flex; align-items:center; gap:0; margin:20px 0; flex-wrap:wrap; justify-content:center; }
+        .flow-step { border-radius:12px; padding:14px 16px; text-align:center; min-width:130px; max-width:170px; flex:1; }
+        .flow-step .step-num { font-size:0.7em; font-weight:700; margin-bottom:4px; }
+        .flow-step .step-title { font-weight:700; font-size:0.88em; margin-bottom:4px; }
+        .flow-step .step-desc { font-size:0.78em; color:var(--text-dim); }
+        .flow-step-lemrock { background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.3); }
+        .flow-step-rye { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); }
+        .flow-arrow { font-size:1.3em; color:var(--text-dim); padding:0 4px; flex-shrink:0; }
+
+        /* Tables */
+        .data-table { width:100%; border-collapse:collapse; margin:16px 0; font-size:0.88em; }
+        .data-table th { background:var(--surface2); padding:10px 14px; text-align:left; font-weight:600; border:1px solid var(--border); color:var(--text-dim); font-size:0.85em; text-transform:uppercase; letter-spacing:0.5px; }
+        .data-table td { padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+        .data-table tr:hover td { background:rgba(255,255,255,0.015); }
+
+        /* Code blocks */
+        .code-block { background:#0d1117; border:1px solid #30363d; border-radius:10px; padding:16px 20px; margin:14px 0; overflow-x:auto; font-family:'JetBrains Mono','Fira Code',monospace; font-size:0.8em; line-height:1.6; color:#c9d1d9; }
+        .code-block .comment { color:#8b949e; }
+        .code-block .key { color:#79c0ff; }
+        .code-block .string { color:#a5d6ff; }
+        .code-block .value { color:#7ee787; }
+        .code-block .url { color:#d2a8ff; }
+
+        /* Comparison section */
+        .compare-table { width:100%; border-collapse:collapse; font-size:0.88em; margin:20px 0; }
+        .compare-table th { padding:12px 14px; text-align:center; font-weight:700; border:1px solid var(--border); }
+        .compare-table th:nth-child(2) { background:rgba(99,102,241,0.08); color:var(--lemrock-light); }
+        .compare-table th:nth-child(3) { background:rgba(245,158,11,0.08); color:var(--rye-light); }
+        .compare-table td { padding:10px 14px; border:1px solid var(--border); }
+        .compare-table td:first-child { font-weight:600; background:rgba(255,255,255,0.02); min-width:140px; }
+        .compare-table td:nth-child(2) { background:rgba(99,102,241,0.02); }
+        .compare-table td:nth-child(3) { background:rgba(245,158,11,0.02); }
+
+        /* Vertical flow / Architecture */
+        .arch-container { display:flex; gap:24px; margin:24px 0; flex-wrap:wrap; }
+        .arch-column { flex:1; min-width:300px; }
+        .arch-layer { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:12px; position:relative; }
+        .arch-layer h5 { font-size:0.85em; font-weight:700; margin-bottom:6px; }
+        .arch-layer p { font-size:0.82em; color:var(--text-dim); }
+        .arch-layer.lemrock-l { border-left:3px solid var(--lemrock); }
+        .arch-layer.rye-l { border-left:3px solid var(--rye); }
+        .arch-connector { text-align:center; color:var(--text-dim); font-size:1.2em; margin:4px 0; }
+
+        /* Korea implications */
+        .korea-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin:20px 0; }
+        .korea-card { border-radius:14px; padding:20px 24px; }
+        .korea-card h4 { font-size:0.95em; margin-bottom:10px; }
+        .korea-card p { font-size:0.88em; line-height:1.7; }
+
+        /* Glossary */
+        .glossary { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin:20px 0; }
+        .glossary-item { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:14px 18px; }
+        .glossary-item .term { font-weight:700; font-size:0.9em; margin-bottom:4px; }
+        .glossary-item .def { font-size:0.82em; color:var(--text-dim); }
+
+        /* Responsive */
+        @media(max-width:768px) {
+            .hero h1 { font-size:1.5em; }
+            .company-header { flex-direction:column; text-align:center; }
+            .flow-diagram { flex-direction:column; }
+            .flow-arrow { transform:rotate(90deg); }
+            .arch-container { flex-direction:column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Lemrock & Rye<br>에이전틱 커머스 미들웨어 심층 분석</h1>
+        <p class="subtitle">AI 에이전트 시대에 브랜드와 소비자를 연결하는 두 가지 접근법 — "상품 노출 미들웨어" vs "만능 결제 미들웨어"를 쉽게 이해합니다</p>
+        <span class="badge">2026년 4월 기준 · Agentic Commerce Knowledge Base #10</span>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: 왜 미들웨어가 필요한가? -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-both">1</span> 왜 "미들웨어"가 필요한가?</h2>
+        <p>AI 에이전트 시대의 새로운 문제와, 그것을 푸는 두 가지 방법</p>
+    </div>
+
+    <div class="analogy-card">
+        <h3>🏬 비유로 이해하기: "해외 백화점에 입점하고 싶은 한국 브랜드"</h3>
+        <div class="analogy-grid">
+            <div class="analogy-item">
+                <div class="emoji">🏪</div>
+                <h4>한국 브랜드 (판매자)</h4>
+                <p>좋은 상품은 있지만, ChatGPT·Gemini·Perplexity 같은 "AI 백화점"에 어떻게 입점하는지 모릅니다. 각 AI 플랫폼마다 형식이 다르고, 언어도 다르고, 결제 시스템도 다릅니다.</p>
+            </div>
+            <div class="analogy-arrow">→</div>
+            <div class="analogy-item" style="border-color:rgba(168,85,247,0.4);">
+                <div class="emoji">🔌</div>
+                <h4>미들웨어 = "무역 대행사"</h4>
+                <p>브랜드 대신 각 AI 백화점의 입점 서류를 작성하고, 상품을 진열하고, 결제를 처리하고, 성과를 보고해주는 <strong>중간 대행 인프라</strong>입니다.</p>
+            </div>
+            <div class="analogy-arrow">→</div>
+            <div class="analogy-item">
+                <div class="emoji">🤖</div>
+                <h4>AI 에이전트 (새로운 백화점)</h4>
+                <p>ChatGPT, Claude, Gemini, Perplexity, Copilot... 각각 다른 규칙(ACP, UCP, MCP)으로 상품을 받습니다. 미들웨어가 이 차이를 흡수합니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="insight-neutral">
+        <h4>💡 핵심 문제: "프로토콜 파편화"</h4>
+        <p>2026년 현재, AI 커머스 프로토콜이 난립하고 있습니다: OpenAI+Stripe의 <strong>ACP</strong>, Google+Shopify의 <strong>UCP</strong>, Visa의 <strong>TAP</strong>, Mastercard의 <strong>Agent Pay</strong>. 각 프로토콜마다 피드 형식, 결제 방식, 온보딩 절차가 전부 다릅니다. 브랜드가 이걸 하나하나 직접 대응하는 건 비현실적입니다. 그래서 <strong>"한 번 연동하면 모든 AI에 연결되는 미들웨어"</strong>가 필요합니다.</p>
+    </div>
+
+    <div class="insight-neutral" style="margin-top:16px;">
+        <h4>🔍 Lemrock과 Rye는 이 문제를 다른 지점에서 풉니다</h4>
+        <p>
+            <strong style="color:var(--lemrock-light);">Lemrock</strong> = "AI가 우리 상품을 <strong>발견</strong>하게 하는 미들웨어" → 상품 카탈로그를 AI가 이해하는 형태로 변환·배포·추적<br>
+            <strong style="color:var(--rye-light);">Rye</strong> = "AI가 어디서든 <strong>결제</strong>를 완료하게 하는 미들웨어" → 어떤 쇼핑몰이든 URL만 있으면 결제를 자동 처리
+        </p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: Lemrock 심층 분석 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-lemrock">2</span> Lemrock — "AI 에이전트 안에 우리 매장을 여는 미들웨어"</h2>
+        <p>브랜드 카탈로그를 AI가 이해하는 형태로 변환하고, 모든 AI 플랫폼에 한 번에 배포합니다</p>
+    </div>
+
+    <div class="company-card lemrock-card">
+        <div class="company-header" style="border-bottom:1px solid var(--border);">
+            <div class="company-logo logo-lemrock">L</div>
+            <div class="info">
+                <h3>Lemrock</h3>
+                <div class="tags">
+                    <span class="tag tag-paris">🇫🇷 파리</span>
+                    <span class="tag tag-seed">€6M Seed (2026.03)</span>
+                    <span class="tag tag-middleware">카탈로그 미들웨어</span>
+                </div>
+            </div>
+        </div>
+        <div class="company-body">
+
+            <!-- Stats -->
+            <div class="stat-strip">
+                <div class="stat-item"><div class="num" style="color:var(--lemrock-light)">€6M</div><div class="label">시드 투자</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--lemrock-light)">60+</div><div class="label">계약 브랜드</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--lemrock-light)">10M+</div><div class="label">등록 상품 수</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--lemrock-light)">1B+</div><div class="label">연간 처리 쿼리</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--lemrock-light)">100M+</div><div class="label">월간 인터랙션</div></div>
+            </div>
+
+            <!-- What is Lemrock -->
+            <div class="insight-lemrock" style="margin-top:20px;">
+                <h4 style="color:var(--lemrock-light)">🧩 Lemrock이 하는 일, 한마디로</h4>
+                <p><strong>"브랜드의 상품 카탈로그를 ChatGPT, Claude, Perplexity 같은 AI 에이전트 안에서 검색·추천·구매 가능하게 만들어주는 플랫폼"</strong></p>
+                <p style="margin-top:8px;">비유하면, 네이버 스마트스토어나 쿠팡에 입점하듯이, <strong>AI 에이전트에 입점하는 것</strong>을 도와주는 서비스입니다. 다만 입점 대상이 웹사이트가 아니라 ChatGPT의 대화창입니다.</p>
+            </div>
+
+            <!-- How it works -->
+            <h4 style="margin:24px 0 12px; font-size:1.05em;">Lemrock 작동 방식 — 5단계</h4>
+
+            <div class="flow-diagram">
+                <div class="flow-step flow-step-lemrock">
+                    <div class="step-num" style="color:var(--lemrock-light)">STEP 1</div>
+                    <div class="step-title">카탈로그 연결</div>
+                    <div class="step-desc">브랜드의 상품 DB(PIM, ERP, 쇼핑몰)에서 카탈로그 수집</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step flow-step-lemrock">
+                    <div class="step-num" style="color:var(--lemrock-light)">STEP 2</div>
+                    <div class="step-title">AI-Ready 변환</div>
+                    <div class="step-desc">상품 데이터를 AI가 이해하는 구조화된 형태로 변환</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step flow-step-lemrock">
+                    <div class="step-num" style="color:var(--lemrock-light)">STEP 3</div>
+                    <div class="step-title">멀티 플랫폼 배포</div>
+                    <div class="step-desc">ChatGPT, Claude, Perplexity 등 모든 AI에 동시 배포</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step flow-step-lemrock">
+                    <div class="step-num" style="color:var(--lemrock-light)">STEP 4</div>
+                    <div class="step-title">AI 대화 내 노출</div>
+                    <div class="step-desc">사용자 질문 맥락에 맞춰 개인화된 상품 추천·미니 스토어</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step flow-step-lemrock">
+                    <div class="step-num" style="color:var(--lemrock-light)">STEP 5</div>
+                    <div class="step-title">성과 추적</div>
+                    <div class="step-desc">노출·클릭·전환 지표를 브랜드 대시보드에서 실시간 확인</div>
+                </div>
+            </div>
+
+            <!-- Detailed explanation -->
+            <h4 style="margin:28px 0 12px; font-size:1.05em;">각 단계를 자세히 이해하기</h4>
+
+            <table class="data-table">
+                <thead>
+                    <tr><th>단계</th><th>구체적으로 무엇을 하는가</th><th>왜 필요한가</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="white-space:nowrap;"><strong>1. 카탈로그 연결</strong></td>
+                        <td>브랜드의 기존 상품 DB — Shopify, Magento, 자체 PIM, ERP 등 — 에서 API 또는 피드로 상품 정보(제목, 가격, 재고, 이미지, 설명 등)를 수집합니다. 실시간 가격·재고 변동도 자동 동기화됩니다.</td>
+                        <td>브랜드가 이미 갖고 있는 데이터를 그대로 활용하므로, 별도 데이터 작업 없이 바로 시작할 수 있습니다.</td>
+                    </tr>
+                    <tr>
+                        <td style="white-space:nowrap;"><strong>2. AI-Ready 변환</strong></td>
+                        <td>Lemrock의 독자 AI 모델이 상품 데이터를 분석해 — ① 대화형 속성 생성 (best_for, FAQ 등) ② 마케팅 문구 정제 ③ 각 플랫폼별 규격(ACP/UCP 등)에 맞춘 구조화. 대화 맥락(선호도, 이전 질문, 제약조건)을 분석하여 <strong>초개인화 추천</strong>을 지원합니다.</td>
+                        <td>"LG 그램 17 특가!!!" → "LG 그램 17, 17인치, 1.35kg, 출장용 노트북"으로 변환. AI가 정확하게 이해할 수 있는 형태가 됩니다.</td>
+                    </tr>
+                    <tr>
+                        <td style="white-space:nowrap;"><strong>3. 멀티 배포</strong></td>
+                        <td>변환된 데이터를 ChatGPT(ACP), Claude, Perplexity, Gemini 등 <strong>모든 주요 AI 플랫폼에 동시 배포</strong>. Lemrock은 LLM-agnostic(특정 AI에 종속되지 않음)하여 한 번 연동으로 전체 커버됩니다.</td>
+                        <td>브랜드가 각 플랫폼에 개별 연동하면 수개월과 수억원이 듭니다. Lemrock은 이걸 <strong>"한 번 연동"</strong>으로 해결합니다.</td>
+                    </tr>
+                    <tr>
+                        <td style="white-space:nowrap;"><strong>4. 대화 내 노출</strong></td>
+                        <td>사용자가 AI에게 "여행용 가벼운 노트북 추천해줘"라고 물으면, Lemrock이 맥락을 분석하여 해당 브랜드의 적합 상품을 이미지·가격·재고 포함 <strong>"미니 스토어"</strong> 형태로 대화 안에 노출합니다.</td>
+                        <td>단순 텍스트 추천이 아니라, 이미지와 가격이 포함된 쇼핑 경험을 AI 대화 안에서 제공합니다.</td>
+                    </tr>
+                    <tr>
+                        <td style="white-space:nowrap;"><strong>5. 성과 추적</strong></td>
+                        <td>어떤 AI 플랫폼에서, 어떤 질문 맥락에서, 몇 번 노출되고, 몇 번 클릭되고, 몇 건 전환되었는지 <strong>브랜드 전용 대시보드</strong>에서 실시간 확인. 마치 Google Ads 대시보드처럼.</td>
+                        <td>브랜드가 AI 채널의 ROI를 측정하고, 데이터 기반으로 상품 정보를 최적화할 수 있습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Revenue model -->
+            <div class="insight-lemrock" style="margin-top:20px;">
+                <h4 style="color:var(--lemrock-light)">💰 수익 모델</h4>
+                <p>Lemrock은 <strong>성과 기반 과금</strong>을 채택합니다. 브랜드와 협상에 따라 — ① 판매 수수료(거래 성사 시) ② 노출 기반(임프레션/발견 횟수) ③ 전환 기반(구매 퍼널 깊이에 따른 성과 지표) 중 조합으로 과금합니다. 즉 "효과가 있어야 돈을 내는" 구조입니다.</p>
+            </div>
+
+            <!-- Key clients -->
+            <h4 style="margin:20px 0 10px; font-size:0.95em;">주요 고객사</h4>
+            <p style="font-size:0.9em; color:var(--text-dim);">Maisons du Monde (프랑스 인테리어), Cdiscount (프랑스 최대 마켓플레이스), Darty (가전), DIM (패션), Engie (에너지), Lebara (통신) 등 60+ 브랜드</p>
+
+            <!-- Team -->
+            <h4 style="margin:20px 0 10px; font-size:0.95em;">창업팀</h4>
+            <table class="data-table">
+                <tbody>
+                    <tr><td><strong>Roxane Laigle</strong> (CEO)</td><td>Fnac Darty (유럽 최대 가전·문화 유통) 출신, 리테일 운영 전문</td></tr>
+                    <tr><td><strong>Sasha Collin</strong> (CPO)</td><td>프로덕트 전략 총괄</td></tr>
+                    <tr><td><strong>Clément Nguyen</strong> (CTO)</td><td>기술 아키텍처 총괄</td></tr>
+                </tbody>
+            </table>
+
+            <p style="font-size:0.85em; color:var(--text-dim); margin-top:12px;"><strong>투자자:</strong> Galion.exe (리드) — 400+ 프랑스 테크 창업자 커뮤니티 기반 시드 펀드. 보드 멤버로 <strong>Jean-Baptiste Rudelle</strong> (Criteo 창업자) 합류.</p>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: Rye 심층 분석 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-rye">3</span> Rye — "URL 하나면 어디서든 결제를 완료하는 미들웨어"</h2>
+        <p>브라우저 자동화 AI가 사람처럼 체크아웃을 수행하여, 어떤 쇼핑몰이든 결제를 처리합니다</p>
+    </div>
+
+    <div class="company-card rye-card">
+        <div class="company-header" style="border-bottom:1px solid var(--border);">
+            <div class="company-logo logo-rye">R</div>
+            <div class="info">
+                <h3>Rye</h3>
+                <div class="tags">
+                    <span class="tag tag-sf">🇺🇸 샌프란시스코</span>
+                    <span class="tag tag-seed">$14M Series A (2022)</span>
+                    <span class="tag tag-checkout">유니버설 체크아웃</span>
+                </div>
+            </div>
+        </div>
+        <div class="company-body">
+
+            <!-- Stats -->
+            <div class="stat-strip">
+                <div class="stat-item"><div class="num" style="color:var(--rye-light)">$14M</div><div class="label">투자 (a16z 리드)</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--rye-light)">15K+</div><div class="label">지원 머천트</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--rye-light)">&lt;5s</div><div class="label">체크아웃 속도</div></div>
+                <div class="stat-item"><div class="num" style="color:var(--rye-light)">99.9%</div><div class="label">API 가동률</div></div>
+            </div>
+
+            <!-- What is Rye - analogy -->
+            <div class="insight-rye" style="margin-top:20px;">
+                <h4 style="color:var(--rye-light)">🛒 Rye가 하는 일, 한마디로</h4>
+                <p><strong>"어떤 쇼핑몰의 상품이든, 상품 URL만 주면 AI가 알아서 장바구니에 담고 결제까지 완료해주는 API"</strong></p>
+                <p style="margin-top:8px;">비유하면, <strong>"만능 대리 구매 로봇"</strong>입니다. 당신이 원하는 상품의 웹페이지 주소만 알려주면, 로봇이 그 사이트에 가서 사람처럼 상품을 장바구니에 담고, 배송지를 입력하고, 결제를 완료한 뒤, 주문 확인 번호를 가져다줍니다.</p>
+            </div>
+
+            <!-- The insight: Why Rye exists -->
+            <div class="insight-red" style="margin-top:16px;">
+                <h4 style="color:#f87171;">❓ 왜 Rye가 필요한가? — "프로토콜의 한계"</h4>
+                <p>ACP(OpenAI)는 판매자가 직접 피드를 만들어 보내야 합니다. UCP(Google)는 판매자가 .well-known/ucp를 구현해야 합니다. <strong>문제는 전 세계 2억 개 이상의 온라인 쇼핑몰 중 99%는 이런 프로토콜을 영원히 구현하지 않을 것</strong>이라는 점입니다. 동네 빵집 온라인 스토어, 소규모 수공예 쇼핑몰, 중소 제조업체 홈페이지... 이런 곳은 ACP 피드를 만들 엔지니어가 없습니다.</p>
+                <p style="margin-top:8px;">Rye의 발상: <strong>"이미 모든 머천트가 채택한 프로토콜이 있다 — 바로 웹(WWW) 그 자체"</strong>. 모든 쇼핑몰에는 장바구니와 체크아웃 페이지가 있습니다. Rye는 이 기존 웹 체크아웃을 AI가 자동으로 수행하게 합니다.</p>
+            </div>
+
+            <!-- How it works -->
+            <h4 style="margin:28px 0 12px; font-size:1.05em;">Rye 작동 방식 — 3-Layer 아키텍처</h4>
+
+            <div class="arch-container">
+                <div class="arch-column">
+                    <!-- Layer 1 -->
+                    <div class="arch-layer rye-l">
+                        <h5 style="color:var(--rye-light)">Layer 1: API 레이어</h5>
+                        <p><strong>개발자가 호출하는 인터페이스</strong></p>
+                        <p style="margin-top:6px;">2단계 계약: ① Intent 생성 (상품 URL + 결제 토큰 전달) → ② Offer 수신 (실시간 가격·배송비·세금 확인) → ③ Confirm (주문 확정)</p>
+                    </div>
+                    <div class="arch-connector">↕</div>
+                    <!-- Layer 2 -->
+                    <div class="arch-layer rye-l">
+                        <h5 style="color:var(--rye-light)">Layer 2: AI 브라우저 에이전트</h5>
+                        <p><strong>사람처럼 웹을 탐색하는 AI</strong></p>
+                        <p style="margin-top:6px;">상품 페이지 방문 → 장바구니 담기 → 배송지 입력 → 쿠폰/할인 확인 → 결제 정보 입력 → 주문 완료. 실제 브라우저를 조작하여 체크아웃 플로우를 자동 수행합니다.</p>
+                    </div>
+                    <div class="arch-connector">↕</div>
+                    <!-- Layer 3 -->
+                    <div class="arch-layer rye-l">
+                        <h5 style="color:var(--rye-light)">Layer 3: 최적화 & 사기방지</h5>
+                        <p><strong>속도와 안정성을 보장하는 인프라</strong></p>
+                        <p style="margin-top:6px;">① <strong>결정론적 워크플로우</strong>: 첫 성공 시 AI 행동을 기록 → 다음부터 동일 사이트는 고속 재생 (5초 이내)<br>② <strong>사기방지 프록시</strong>: 거주지 IP 선택, 지리적 근접성, 사람 유사 행동 패턴으로 주문 취소 방지<br>③ <strong>자가 치유</strong>: 사이트 레이아웃이 변경되면 AI가 자동 적응</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two API Products -->
+            <h4 style="margin:24px 0 12px; font-size:1.05em;">Rye의 두 가지 API 제품</h4>
+
+            <table class="data-table">
+                <thead>
+                    <tr><th>API</th><th>입력</th><th>출력</th><th>용도</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Product Data API</strong></td>
+                        <td>상품 URL (예: https://shop.com/product/123)</td>
+                        <td>구조화된 상품 데이터 (가격, 재고, 이미지, 설명, 변형 등)</td>
+                        <td>AI 에이전트가 상품 정보를 조회할 때 — 체크아웃 없이 데이터만 필요할 때</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Universal Checkout API</strong></td>
+                        <td>상품 URL + 결제 토큰 + 배송지</td>
+                        <td>확정된 주문 (주문번호, 배송 추적번호)</td>
+                        <td>AI 에이전트가 실제 구매를 완료할 때 — "이거 사줘"에 대한 응답</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Code example -->
+            <h4 style="margin:20px 0 10px; font-size:0.95em;">개발자 관점: Rye API 호출 예시</h4>
+            <div class="code-block">
+<span class="comment">// Step 1: 상품 URL로 체크아웃 Intent 생성</span>
+<span class="key">POST</span> <span class="url">https://api.rye.com/v2/checkout-intents</span>
+{
+  <span class="key">"product_url"</span>: <span class="string">"https://example-shop.com/products/wireless-earbuds"</span>,
+  <span class="key">"quantity"</span>: <span class="value">1</span>,
+  <span class="key">"buyer"</span>: {
+    <span class="key">"name"</span>: <span class="string">"홍길동"</span>,
+    <span class="key">"address"</span>: <span class="string">"서울시 강남구..."</span>,
+    <span class="key">"payment_token"</span>: <span class="string">"tok_xxxxx"</span>  <span class="comment">// 토큰화된 결제 수단 (PCI DSS 준수)</span>
+  }
+}
+
+<span class="comment">// Step 2: Rye가 반환하는 Offer (실시간 가격 확인)</span>
+{
+  <span class="key">"offer_id"</span>: <span class="string">"off_abc123"</span>,
+  <span class="key">"product_title"</span>: <span class="string">"Premium Wireless Earbuds Pro"</span>,
+  <span class="key">"subtotal"</span>: <span class="value">79.99</span>,
+  <span class="key">"shipping"</span>: <span class="value">5.99</span>,
+  <span class="key">"tax"</span>: <span class="value">7.20</span>,
+  <span class="key">"total"</span>: <span class="value">93.18</span>,  <span class="comment">// 실제 지불 금액 (landed cost)</span>
+  <span class="key">"estimated_delivery"</span>: <span class="string">"2026-04-08"</span>
+}
+
+<span class="comment">// Step 3: 주문 확정</span>
+<span class="key">POST</span> <span class="url">https://api.rye.com/v2/checkout-intents/off_abc123/confirm</span>
+→ { <span class="key">"order_id"</span>: <span class="string">"#ORD-98765"</span>, <span class="key">"status"</span>: <span class="string">"confirmed"</span>, <span class="key">"tracking_url"</span>: <span class="url">"https://..."</span> }
+            </div>
+
+            <!-- Performance -->
+            <h4 style="margin:24px 0 12px; font-size:1.05em;">성능 지표 (2025년 8월 실측 데이터)</h4>
+
+            <table class="data-table">
+                <thead>
+                    <tr><th>지표</th><th>Shopify/Amazon<br>(캐싱된 워크플로우)</th><th>기타 쇼핑몰<br>(AI 브라우저 에이전트)</th><th>목표</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Offer 응답 시간</strong></td><td style="color:var(--green);">&lt; 5초</td><td>~35초</td><td>전체 &lt; 10초</td></tr>
+                    <tr><td><strong>Checkout 완료 시간</strong></td><td style="color:var(--green);">&lt; 5초</td><td>~10초</td><td>전체 &lt; 5초</td></tr>
+                    <tr><td><strong>주문 성공률</strong></td><td style="color:var(--green);">99.9%</td><td>~90%</td><td>전체 &gt; 95%</td></tr>
+                    <tr><td><strong>API 가동률</strong></td><td colspan="2" style="text-align:center; color:var(--green);">99.9%</td><td>99.99%</td></tr>
+                </tbody>
+            </table>
+
+            <!-- "The Protocol" insight -->
+            <div class="insight-rye" style="margin-top:20px;">
+                <h4 style="color:var(--rye-light)">📣 Rye의 선언: "The Protocol" (2026.03.26)</h4>
+                <p>Rye는 ACP, UCP, TAP 등 프로토콜 난립 상황에 대해 <strong>"이미 모든 머천트가 채택한 프로토콜이 있다 — WWW 그 자체"</strong>라고 선언했습니다. 200만 개 이상의 엔드포인트, 30년 이상의 실전 검증, 모든 브라우저·디바이스·국가가 지원하는 웹 자체가 곧 프로토콜이라는 관점입니다.</p>
+                <p style="margin-top:8px;">실질적으로 이것은 <strong>"프로토콜을 기다릴 필요 없이, 지금 당장 어떤 쇼핑몰에서든 AI가 구매할 수 있다"</strong>는 의미입니다.</p>
+            </div>
+
+            <!-- Team -->
+            <h4 style="margin:20px 0 10px; font-size:0.95em;">창업팀 & 투자</h4>
+            <table class="data-table">
+                <tbody>
+                    <tr><td><strong>Justin Kan</strong> (공동창업자)</td><td>Twitch 공동창업자, Y Combinator 파트너 출신 — 실리콘밸리 레전드 창업자</td></tr>
+                    <tr><td><strong>Robin Chan</strong> (공동창업자)</td><td>커머스 인프라 전문</td></tr>
+                    <tr><td><strong>리드 투자자</strong></td><td><strong>Andreessen Horowitz (a16z)</strong> — 실리콘밸리 최대 VC 중 하나</td></tr>
+                    <tr><td><strong>기타 투자자</strong></td><td>L Catterton, Andre Iguodala 등 10개 기관/개인</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: 비교 분석 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-both">4</span> Lemrock vs Rye — 직접 비교</h2>
+        <p>같은 "미들웨어"지만 푸는 문제가 완전히 다릅니다</p>
+    </div>
+
+    <div class="analogy-card">
+        <h3>🍽️ 비유: 레스토랑 비즈니스로 이해하기</h3>
+        <div class="analogy-grid">
+            <div class="analogy-item" style="border-color:rgba(99,102,241,0.3);">
+                <div class="emoji">📋</div>
+                <h4 style="color:var(--lemrock-light)">Lemrock = "메뉴판 제작 & 배달앱 등록 대행"</h4>
+                <p>레스토랑의 음식 사진을 찍고, 맛있어 보이게 편집하고, 배달의민족·쿠팡이츠·요기요에 동시 등록해주고, 어느 앱에서 얼마나 주문이 들어오는지 알려줍니다.</p>
+            </div>
+            <div class="analogy-arrow">vs</div>
+            <div class="analogy-item" style="border-color:rgba(245,158,11,0.3);">
+                <div class="emoji">🏍️</div>
+                <h4 style="color:var(--rye-light)">Rye = "만능 배달 라이더"</h4>
+                <p>어떤 레스토랑이든(배달앱에 등록 안 되어 있어도!) 직접 가서 음식을 주문하고, 결제하고, 고객에게 배달해줍니다. 레스토랑이 배달 시스템을 따로 갖출 필요가 없습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <table class="compare-table">
+        <thead>
+            <tr>
+                <th>비교 항목</th>
+                <th>🟣 Lemrock</th>
+                <th>🟡 Rye</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>핵심 기능</strong></td>
+                <td>상품 <strong>발견(Discovery)</strong> 미들웨어<br>— AI가 상품을 찾고 추천하게 함</td>
+                <td>상품 <strong>결제(Checkout)</strong> 미들웨어<br>— AI가 실제 구매를 완료하게 함</td>
+            </tr>
+            <tr>
+                <td><strong>한마디 정의</strong></td>
+                <td>"브랜드 카탈로그를 AI 안에 진열하는 서비스"</td>
+                <td>"어떤 URL이든 결제를 완료하는 API"</td>
+            </tr>
+            <tr>
+                <td><strong>고객</strong></td>
+                <td>브랜드 / 리테일러 (판매자 쪽)</td>
+                <td>AI 에이전트 개발자 / 쇼핑 앱 (구매자 쪽)</td>
+            </tr>
+            <tr>
+                <td><strong>접근 방식</strong></td>
+                <td>프로토콜 호환 — ACP, UCP 등 각 플랫폼 규격에 맞춰 데이터 변환·배포</td>
+                <td>프로토콜 독립 — 프로토콜 없이도 웹 브라우저 자동화로 결제 처리</td>
+            </tr>
+            <tr>
+                <td><strong>기술 핵심</strong></td>
+                <td>카탈로그 변환 AI + 멀티 플랫폼 배포 파이프라인 + 성과 추적</td>
+                <td>브라우저 자동화 AI + 결정론적 워크플로우 캐싱 + 사기방지 프록시</td>
+            </tr>
+            <tr>
+                <td><strong>머천트 연동 필요?</strong></td>
+                <td>✅ 필요 — 브랜드가 카탈로그를 Lemrock에 연결해야 함</td>
+                <td>❌ 불필요 — 머천트 협조 없이 URL만으로 작동</td>
+            </tr>
+            <tr>
+                <td><strong>커버리지</strong></td>
+                <td>60+ 계약 브랜드 (opt-in 방식)</td>
+                <td>15,000+ 머천트 (opt-in 불필요)</td>
+            </tr>
+            <tr>
+                <td><strong>데이터 품질</strong></td>
+                <td>🟢 높음 — 브랜드 공식 데이터를 AI가 정제</td>
+                <td>🟡 보통 — 웹 스크래핑 기반으로 실시간 추출</td>
+            </tr>
+            <tr>
+                <td><strong>결제 처리</strong></td>
+                <td>각 플랫폼의 결제 시스템에 의존 (Stripe SPT, Google Pay 등)</td>
+                <td>자체 결제 처리 — 토큰화된 결제 수단으로 직접 체크아웃</td>
+            </tr>
+            <tr>
+                <td><strong>수익 모델</strong></td>
+                <td>성과 기반 (노출/클릭/전환 수수료)</td>
+                <td>API 호출 기반 (거래당 수수료)</td>
+            </tr>
+            <tr>
+                <td><strong>설립</strong></td>
+                <td>2025년, 파리 🇫🇷</td>
+                <td>~2022년, 샌프란시스코 🇺🇸</td>
+            </tr>
+            <tr>
+                <td><strong>투자</strong></td>
+                <td>€6M Seed (Galion.exe)</td>
+                <td>$14M (a16z 리드)</td>
+            </tr>
+            <tr>
+                <td><strong>창업자 배경</strong></td>
+                <td>Fnac Darty (유럽 리테일)</td>
+                <td>Justin Kan (Twitch 창업자)</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: 같이 쓰면 어떻게 되는가 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-both">5</span> 같이 쓰면? — 에이전틱 커머스 풀스택</h2>
+        <p>Lemrock + Rye + Syndigo/Akeneo가 조합되면 어떤 그림이 되는가</p>
+    </div>
+
+    <div class="insight-green">
+        <h4 style="color:var(--green)">💡 핵심 인사이트: "이 회사들은 경쟁이 아니라 보완 관계"</h4>
+        <p>에이전틱 커머스의 가치 사슬은 <strong>데이터 정비 → 노출·발견 → 결제·이행</strong>의 3단계로 구성됩니다. 각 회사는 서로 다른 단계를 담당합니다.</p>
+    </div>
+
+    <table class="data-table" style="margin-top:16px;">
+        <thead>
+            <tr><th>가치 사슬 단계</th><th>회사</th><th>역할</th><th>비유</th></tr>
+        </thead>
+        <tbody>
+            <tr style="background:rgba(239,68,68,0.03);">
+                <td><strong>① 데이터 정비</strong><br><span style="font-size:0.8em; color:var(--text-dim)">상품 데이터를 AI-Ready로</span></td>
+                <td><strong>Syndigo</strong> / <strong>Akeneo</strong></td>
+                <td>상품 DB의 원본 데이터를 AI가 이해하는 구조화된 형태로 정비 (PIM + 대화형 속성 생성 + 브랜드 가이드라인 거버넌스)</td>
+                <td>📝 "상품 이력서 작성 대행"</td>
+            </tr>
+            <tr style="background:rgba(99,102,241,0.03);">
+                <td><strong>② 노출 & 발견</strong><br><span style="font-size:0.8em; color:var(--text-dim)">AI 에이전트 안에 진열</span></td>
+                <td><strong>Lemrock</strong></td>
+                <td>정비된 데이터를 모든 AI 플랫폼에 배포, 대화 맥락에 맞춘 추천, 성과 측정</td>
+                <td>📢 "AI 백화점 입점 대행"</td>
+            </tr>
+            <tr style="background:rgba(245,158,11,0.03);">
+                <td><strong>③ 결제 & 이행</strong><br><span style="font-size:0.8em; color:var(--text-dim)">실제 구매 완료</span></td>
+                <td><strong>Rye</strong></td>
+                <td>AI 에이전트가 추천한 상품을 실제로 주문 처리 (특히 프로토콜 미구현 쇼핑몰)</td>
+                <td>🏍️ "만능 대리 구매"</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="code-block" style="margin-top:16px;">
+<span class="comment">// 에이전틱 커머스 풀스택 시나리오</span>
+
+<span class="comment">// 1️⃣ 사용자가 ChatGPT에게 물어봄</span>
+사용자: <span class="string">"여행용 가벼운 노트북 추천해줘. 예산 200만원 이내"</span>
+
+<span class="comment">// 2️⃣ [Syndigo/Akeneo] 이미 정비된 대화형 속성으로 AI가 맥락을 이해</span>
+{ <span class="key">"best_for"</span>: [<span class="string">"출장"</span>, <span class="string">"여행"</span>], <span class="key">"weight"</span>: <span class="string">"1.35kg"</span>, <span class="key">"faq"</span>: [{<span class="key">"q"</span>:<span class="string">"기내 반입 가능?"</span>, <span class="key">"a"</span>:<span class="string">"네, 가능합니다"</span>}] }
+
+<span class="comment">// 3️⃣ [Lemrock] 브랜드 카탈로그에서 맥락 맞는 상품을 AI 대화 안에 추천</span>
+ChatGPT: <span class="string">"LG 그램 17이 1.35kg으로 여행에 적합합니다. 189만원이며 현재 재고 있습니다."</span>
+         [이미지] [가격] [구매 버튼]  ← Lemrock이 배포한 미니 스토어
+
+<span class="comment">// 4️⃣ [ACP 프로토콜 지원 쇼핑몰이면] Stripe SPT로 대화 내 직접 결제</span>
+<span class="comment">// 4️⃣ [프로토콜 미지원 쇼핑몰이면] Rye Universal Checkout으로 대리 결제</span>
+Rye API → 해당 쇼핑몰 방문 → 장바구니 → 결제 → 주문 완료
+→ <span class="value">"주문이 완료되었습니다. 주문번호: #ORD-98765"</span>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: 한국 시사점 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-both">6</span> 한국 시사점 & 기회</h2>
+        <p>Lemrock과 Rye 모델에서 한국 시장이 배울 것</p>
+    </div>
+
+    <div class="korea-grid">
+        <div class="korea-card insight-lemrock">
+            <h4 style="color:var(--lemrock-light);">🇰🇷 Lemrock 모델 → 한국에서의 기회</h4>
+            <p><strong>"한국형 AI 커머스 입점 미들웨어"</strong></p>
+            <p style="margin-top:8px;">네이버 스마트스토어, 쿠팡, 카카오 쇼핑 등 국내 플랫폼의 상품 데이터를 — ChatGPT(ACP), Google AI Mode(UCP), 네이버 쇼핑 AI 에이전트, 카카오 PlayMCP 등에 동시 배포하는 미들웨어. 한국어 NLP 특화 + 국내 PG(이니시스, 토스페이먼츠) 연동이 차별화 요소.</p>
+            <p style="margin-top:8px; font-size:0.85em; color:var(--text-dim);">→ 이전 리포트의 "영역 2: 에이전틱 커머스 미들웨어" 사업 모델에 해당</p>
+        </div>
+        <div class="korea-card insight-rye">
+            <h4 style="color:var(--rye-light);">🇰🇷 Rye 모델 → 한국에서의 기회</h4>
+            <p><strong>"한국 쇼핑몰 만능 결제 API"</strong></p>
+            <p style="margin-top:8px;">한국의 수십만 개 스마트스토어, 카페24 쇼핑몰, 자체 쇼핑몰은 ACP/UCP를 절대 구현하지 않을 것입니다. 이런 쇼핑몰에서도 AI가 주문을 완료할 수 있는 브라우저 자동화 체크아웃 API. 한국 특유의 본인인증, PG 결제 창, 주소 검색 등을 자동화하는 것이 핵심 장벽이자 해자.</p>
+            <p style="margin-top:8px; font-size:0.85em; color:var(--text-dim);">→ 한국 PG 격리, 본인인증, iamport 연동 등이 글로벌 플레이어의 한국 진입 장벽</p>
+        </div>
+    </div>
+
+    <div class="insight-neutral" style="margin-top:16px;">
+        <h4>🔗 에이전틱 커머스 가치 사슬에서의 한국 빈자리</h4>
+        <p>
+            <strong>Syndigo/Akeneo 포지션 (데이터 정비)</strong> → 한국 부재 → <strong>한국형 AI-Ready 상품 피드 인프라</strong> 필요 (리포트 #8 참조)<br>
+            <strong>Lemrock 포지션 (노출/발견)</strong> → 한국 부재 → <strong>한국형 AI 커머스 입점 미들웨어</strong> 필요<br>
+            <strong>Rye 포지션 (결제/이행)</strong> → 한국 부재 → <strong>한국형 만능 결제 API</strong> 필요<br><br>
+            세 영역 모두 한국에서는 아직 본격적인 플레이어가 없습니다. <strong>토스페이먼츠 MCP Server</strong>가 결제 영역에서 가장 가까운 시도이고, <strong>와들(젠투)</strong>이 노출/발견 영역에서 가능성을 보이고 있지만, 전체 가치 사슬을 커버하는 통합 미들웨어는 아직 없습니다.
+        </p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: 용어 정리 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num num-both">7</span> 용어 정리</h2>
+    </div>
+
+    <div class="glossary">
+        <div class="glossary-item">
+            <div class="term">미들웨어 (Middleware)</div>
+            <div class="def">두 시스템(여기서는 브랜드 ↔ AI 에이전트) 사이를 연결하는 중간 소프트웨어. 양쪽의 차이를 흡수하여 호환성을 제공합니다.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">LLM-Agnostic</div>
+            <div class="def">특정 LLM(GPT, Claude, Gemini 등)에 종속되지 않는 구조. Lemrock은 어떤 AI 플랫폼에도 연결 가능합니다.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">브라우저 자동화 (Browser Automation)</div>
+            <div class="def">AI가 실제 웹 브라우저를 조작하여 사람처럼 웹사이트를 탐색하는 기술. Rye의 핵심 기술입니다.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">결정론적 워크플로우 (Deterministic Workflow)</div>
+            <div class="def">AI 브라우저가 한 번 성공한 체크아웃 패턴을 기록해두고, 다음부터 동일 사이트에서는 AI 없이 고속 재생하는 방식.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">Landed Cost (총 지불 비용)</div>
+            <div class="def">상품 가격 + 배송비 + 세금 + 관세를 모두 합한 실제 소비자 지불 금액. Rye가 Offer에서 제공하는 핵심 정보.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">토큰화 결제 (Tokenized Payment)</div>
+            <div class="def">실제 카드번호 대신 일회용 토큰을 사용하여 결제하는 방식. AI 에이전트에게 카드 정보를 직접 노출하지 않아 보안성 확보.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">카탈로그 신디케이션 (Catalog Syndication)</div>
+            <div class="def">하나의 상품 카탈로그를 여러 플랫폼에 동시 배포하는 것. Lemrock과 Shopify Catalog이 수행하는 핵심 기능.</div>
+        </div>
+        <div class="glossary-item">
+            <div class="term">프로토콜 파편화 (Protocol Fragmentation)</div>
+            <div class="def">ACP, UCP, TAP, Agent Pay 등 여러 표준이 난립하여 판매자 부담이 가중되는 현상. 미들웨어의 존재 이유.</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align:center; margin-top:56px; padding:28px 0; border-top:1px solid var(--border);">
+        <p style="color:var(--text-dim); font-size:0.85em;">Agentic Commerce Knowledge Base · Report #10</p>
+        <p style="color:var(--text-dim); font-size:0.8em; margin-top:8px;">Last Updated: 2026년 4월 | 공개 자료, 투자 발표, API 문서 기반</p>
+    </div>
+
+</div>
+
+</body>
+</html>

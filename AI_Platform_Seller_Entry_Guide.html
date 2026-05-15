@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 플랫폼 셀러 진입 가이드 — OpenAI · Perplexity · Meta · Shopify · Microsoft</title>
+    <style>
+        :root {
+            --bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;
+            --text:#e0e0e8;--text-dim:#8888a0;
+            --openai:#10a37f;--openai-l:#34d399;
+            --pplx:#20b2aa;--pplx-l:#5ce0d8;
+            --meta:#0668E1;--meta-l:#60a5fa;
+            --shopify:#96bf48;--shopify-l:#a3e635;
+            --ms:#00a4ef;--ms-l:#38bdf8;
+            --google:#4285f4;--amazon:#ff9900;
+            --green:#22c55e;--red:#ef4444;--yellow:#eab308;--purple:#a855f7;--blue:#3b82f6;--cyan:#06b6d4;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:var(--bg);color:var(--text);font-family:'Pretendard','Apple SD Gothic Neo','Segoe UI',sans-serif;line-height:1.7;}
+        .container{max-width:1200px;margin:0 auto;padding:40px 24px;}
+
+        /* Hero */
+        .hero{text-align:center;padding:60px 20px;margin-bottom:48px;background:linear-gradient(135deg,#0f172a 0%,#1a1a2e 30%,#1e293b 60%,#312e81 100%);border-radius:20px;border:1px solid var(--border);position:relative;overflow:hidden;}
+        .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 40%,rgba(16,163,127,0.12) 0%,transparent 40%),radial-gradient(circle at 50% 60%,rgba(32,178,170,0.08) 0%,transparent 40%),radial-gradient(circle at 80% 40%,rgba(0,164,239,0.1) 0%,transparent 40%);}
+        .hero h1{font-size:2.2em;font-weight:800;position:relative;background:linear-gradient(135deg,var(--openai-l),var(--pplx-l),var(--ms-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .hero .subtitle{font-size:1.05em;color:var(--text-dim);position:relative;max-width:750px;margin:12px auto 0;}
+        .hero .badges{display:flex;justify-content:center;gap:10px;margin-top:20px;position:relative;flex-wrap:wrap;}
+        .hero .badge{padding:6px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;font-size:0.82em;color:var(--text-dim);}
+
+        /* Section headers */
+        .section-header{margin:56px 0 28px;}
+        .section-header h2{font-size:1.6em;font-weight:700;display:flex;align-items:center;gap:12px;}
+        .section-header h2 .icon{display:inline-flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:12px;font-size:0.9em;flex-shrink:0;}
+        .section-header p{color:var(--text-dim);font-size:0.95em;margin-left:52px;}
+
+        /* Platform cards */
+        .platform-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:28px;}
+        .platform-block h3{font-size:1.3em;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
+        .platform-block .tagline{color:var(--text-dim);font-size:0.9em;margin-bottom:20px;}
+
+        /* Sub-sections within platform */
+        .sub-section{margin-top:24px;}
+        .sub-section h4{font-size:1.05em;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+
+        /* Tables */
+        table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.88em;}
+        th,td{padding:10px 14px;border:1px solid var(--border);text-align:left;vertical-align:top;}
+        th{background:var(--surface2);font-weight:700;font-size:0.85em;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.02em;}
+        td{background:var(--surface);}
+        tr:hover td{background:var(--surface2);}
+
+        /* Flow diagrams */
+        .flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin:16px 0;padding:16px;background:var(--surface2);border-radius:12px;border:1px solid var(--border);}
+        .flow .step{padding:8px 16px;border-radius:8px;font-size:0.82em;font-weight:600;text-align:center;min-width:100px;}
+        .flow .arrow{color:var(--text-dim);font-size:1.2em;padding:0 4px;}
+
+        /* Fee boxes */
+        .fee-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0;}
+        .fee-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+        .fee-card .rate{font-size:1.8em;font-weight:800;margin-bottom:4px;}
+        .fee-card .label{font-size:0.8em;color:var(--text-dim);}
+        .fee-card .detail{font-size:0.78em;color:var(--text-dim);margin-top:6px;}
+
+        /* Comparison table special */
+        .compare-table{font-size:0.82em;}
+        .compare-table th:first-child{width:140px;}
+        .compare-table .platform-col{text-align:center;font-weight:700;}
+
+        /* Highlight boxes */
+        .highlight-box{padding:16px 20px;border-radius:12px;margin:16px 0;font-size:0.9em;line-height:1.6;}
+        .highlight-green{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#86efac;}
+        .highlight-yellow{background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);color:#fde68a;}
+        .highlight-red{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;}
+        .highlight-blue{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:#93c5fd;}
+        .highlight-purple{background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);color:#d8b4fe;}
+
+        /* Tags */
+        .tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.72em;font-weight:600;margin-right:4px;}
+        .tag-free{background:rgba(34,197,94,0.15);color:#86efac;}
+        .tag-paid{background:rgba(239,68,68,0.15);color:#fca5a5;}
+        .tag-us{background:rgba(59,130,246,0.15);color:#93c5fd;}
+        .tag-global{background:rgba(168,85,247,0.15);color:#d8b4fe;}
+        .tag-auto{background:rgba(234,179,8,0.15);color:#fde68a;}
+
+        /* Verdict boxes */
+        .verdict{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:20px 0;}
+        .verdict h4{font-size:1em;font-weight:700;margin-bottom:10px;}
+        .verdict p{font-size:0.9em;color:var(--text-dim);line-height:1.6;}
+
+        /* Code blocks */
+        .code-block{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:12px 0;overflow-x:auto;font-family:'Fira Code','SF Mono',monospace;font-size:0.78em;line-height:1.6;color:#c9d1d9;}
+        .code-comment{color:#8b949e;}
+
+        /* Responsive */
+        @media(max-width:768px){
+            .hero h1{font-size:1.5em;}
+            .container{padding:20px 16px;}
+            .platform-block{padding:20px;}
+            .flow{flex-direction:column;gap:4px;}
+            .flow .arrow{transform:rotate(90deg);}
+            .fee-grid{grid-template-columns:1fr 1fr;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  HERO                                              -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="hero">
+        <h1>AI 플랫폼 셀러 진입 가이드<br>OpenAI · Perplexity · Meta · Shopify · Microsoft</h1>
+        <p class="subtitle">Google·Amazon 외 5대 AI 커머스 플랫폼의 진입 절차, 구매 과정, 수수료 정책을 분석하고 전체 7대 플랫폼을 비교합니다</p>
+        <div class="badges">
+            <span class="badge">📄 Report #13</span>
+            <span class="badge">🗓️ 2026년 5월 기준</span>
+            <span class="badge">🛒 7대 플랫폼 비교</span>
+            <span class="badge">💰 수수료 시뮬레이션</span>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  PART 1: OpenAI / ChatGPT                          -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="section-header">
+        <h2><span class="icon" style="background:rgba(16,163,127,0.15);color:var(--openai-l)">1</span> 플랫폼별 진입 가이드</h2>
+        <p>각 플랫폼의 가입 자격, 신청 절차, 데이터 요구사항, 구매 흐름, 수수료 구조를 상세히 설명합니다</p>
+    </div>
+
+    <!-- OpenAI -->
+    <div class="platform-block" style="border-left:3px solid var(--openai);">
+        <h3><span style="color:var(--openai-l)">⬢</span> OpenAI ChatGPT — Instant Checkout</h3>
+        <div class="tagline">ACP(Agentic Commerce Protocol) 기반 · 4% 거래 수수료 · 미국 전용 (글로벌 확장 예정)</div>
+
+        <!-- 진입 자격 -->
+        <div class="sub-section">
+            <h4>📋 진입 자격 & 요구사항</h4>
+            <table>
+                <tr><th style="width:180px">항목</th><th>요구사항</th></tr>
+                <tr><td><strong>사업 소재지</strong></td><td>미국 내 등록된 사업체 (글로벌 확장 예정이나 시기 미정)</td></tr>
+                <tr><td><strong>판매 대상</strong></td><td>미국 소비자 대상 배송 가능한 물리적 상품</td></tr>
+                <tr><td><strong>결제 인프라</strong></td><td>Stripe 계정 필수 (Stripe Connect 통한 결제 처리)</td></tr>
+                <tr><td><strong>금지 품목</strong></td><td>성인용품, 주류/니코틴, 도박, 무기, 처방약, 불법 상품</td></tr>
+                <tr><td><strong>상품 데이터</strong></td><td>ACP 피드 스펙 준수 — JSONL.gz / CSV.gz / XML.gz 형식</td></tr>
+                <tr><td><strong>Shopify/Etsy 셀러</strong></td><td>별도 신청 불필요 — 자동 통합 (Agentic Storefronts)</td></tr>
+            </table>
+        </div>
+
+        <!-- 신청 절차 -->
+        <div class="sub-section">
+            <h4>🔄 신청 절차 (5단계)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(16,163,127,0.12);color:var(--openai-l)">① 신청서 제출<br><small>chatgpt.com/merchants</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.12);color:var(--openai-l)">② OpenAI 심사<br><small>1~2주 소요</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.12);color:var(--openai-l)">③ SFTP/HTTPS<br>엔드포인트 발급</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.12);color:var(--openai-l)">④ 피드 업로드<br><small>gzip 압축 파일</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.12);color:var(--openai-l)">⑤ 상품 노출<br><small>ChatGPT 검색결과</small></div>
+            </div>
+
+            <div class="highlight-box highlight-blue">
+                <strong>💡 핵심 포인트:</strong> OpenAI는 <strong>Push 모델</strong> — 판매자가 직접 피드를 전송합니다. 업데이트는 <strong>15분 간격</strong>까지 가능하여 거의 실시간 재고/가격 반영이 가능합니다. Shopify/Etsy 판매자는 이 모든 과정이 자동화되어 있습니다.
+            </div>
+        </div>
+
+        <!-- 피드 스펙 -->
+        <div class="sub-section">
+            <h4>📦 ACP 피드 필수 필드</h4>
+            <div class="code-block">
+<span class="code-comment">// ACP Product Feed — JSONL 형식 예시</span>
+{
+  "feed_id": "feed_kr_electronics_20260515",
+  "account_id": "acct_merchant_12345",
+  "target_merchant": "brand_name",
+  "target_country": "US",
+  "products": [
+    {
+      "id": "SKU-001",
+      "title": "Premium Wireless Earbuds",       <span class="code-comment">// 최대 150자</span>
+      "description": "Active noise cancelling...", <span class="code-comment">// 최대 5,000자</span>
+      "price": {"amount": "79.99", "currency": "USD"},
+      "availability": "in_stock",
+      "image_url": "https://cdn.brand.com/sku001.jpg",
+      "brand": "BrandName",
+      "gtin": "0012345678905",
+      "condition": "new",
+      "checkout_eligible": true              <span class="code-comment">// Instant Checkout 활성화</span>
+    }
+  ]
+}
+            </div>
+        </div>
+
+        <!-- 구매 흐름 -->
+        <div class="sub-section">
+            <h4>🛒 구매 과정 (Instant Checkout)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">사용자 질문<br><small>"추천 이어폰?"</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">ChatGPT<br>상품 추천</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">Buy 버튼<br>클릭</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(168,85,247,0.1);color:#c084fc">Stripe<br>결제 처리<br><small>SPT 토큰</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">주문 확인<br><small>판매자에게 전달</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">판매자 배송<br><small>자체 이행</small></div>
+            </div>
+            <p style="font-size:0.85em;color:var(--text-dim);margin-top:8px;">
+                <strong>결제 처리:</strong> Stripe의 Shared Payment Token(SPT)을 통해 ChatGPT 채팅 내에서 결제가 완료됩니다. 사용자는 외부 사이트로 리디렉트되지 않습니다. 판매자가 Merchant of Record(판매 책임 주체)입니다.
+            </p>
+        </div>
+
+        <!-- 수수료 -->
+        <div class="sub-section">
+            <h4>💰 수수료 구조</h4>
+            <div class="fee-grid">
+                <div class="fee-card" style="border-top:3px solid var(--openai);">
+                    <div class="rate" style="color:var(--openai-l)">4%</div>
+                    <div class="label">OpenAI 거래 수수료</div>
+                    <div class="detail">2026년 1월 26일부터 적용<br>30일 무료 체험 후 과금</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--purple);">
+                    <div class="rate" style="color:#c084fc">2.9%<small>+$0.30</small></div>
+                    <div class="label">Stripe 결제 수수료</div>
+                    <div class="detail">표준 카드 결제 처리 비용</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--yellow);">
+                    <div class="rate" style="color:#fde68a">~7%</div>
+                    <div class="label">총 비용 합계</div>
+                    <div class="detail">$100 주문 기준<br>$4.00(OpenAI) + $3.20(Stripe) = $7.20</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--green);">
+                    <div class="rate" style="color:#86efac">$0</div>
+                    <div class="label">월정액 / 등록비</div>
+                    <div class="detail">가입비, 월 구독료 없음<br>거래 발생 시에만 과금</div>
+                </div>
+            </div>
+
+            <div class="highlight-box highlight-yellow">
+                <strong>⚠️ 비용 비교:</strong> OpenAI의 4%는 Amazon 리퍼럴 피(8~17%)보다 저렴하지만, Google AI Mode(0%)와 Microsoft Copilot(0%, 현재)보다 높습니다. 판매자 입장에서는 ChatGPT의 트래픽 규모(주간 활성 사용자 ~8억)가 이 비용을 정당화할 수 있는지가 핵심 판단 기준입니다.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  Perplexity                                        -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="platform-block" style="border-left:3px solid var(--pplx);">
+        <h3><span style="color:var(--pplx-l)">◈</span> Perplexity — Buy with Pro</h3>
+        <div class="tagline">Merchant Program · 수수료 0% · PayPal 기반 결제 · 미국 전용</div>
+
+        <div class="sub-section">
+            <h4>📋 진입 자격 & 요구사항</h4>
+            <table>
+                <tr><th style="width:180px">항목</th><th>요구사항</th></tr>
+                <tr><td><strong>사업 소재지</strong></td><td>미국 배송 가능한 사업체 (초기 대형 리테일러 중심 → PayPal/Firmly.ai로 중소상공인 확대)</td></tr>
+                <tr><td><strong>결제 인프라</strong></td><td>PayPal 또는 Venmo 판매자 계정</td></tr>
+                <tr><td><strong>상품 카테고리</strong></td><td>물리적 상품 (디지털 상품 지원 확대 중)</td></tr>
+                <tr><td><strong>가입비</strong></td><td>완전 무료 — 초기 비용, 지속 비용 모두 $0</td></tr>
+                <tr><td><strong>제휴 파트너</strong></td><td>Shopify 셀러는 별도 가입 가능, 자동 통합은 아님</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-section">
+            <h4>🔄 신청 절차 (5분 완료)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(32,178,170,0.12);color:var(--pplx-l)">① 온라인 폼 작성<br><small>사업명, URL, 연락처</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(32,178,170,0.12);color:var(--pplx-l)">② 상품 카테고리<br>선택</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(32,178,170,0.12);color:var(--pplx-l)">③ Perplexity<br>심사</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(32,178,170,0.12);color:var(--pplx-l)">④ 승인 & 연동<br><small>PayPal 연결</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(32,178,170,0.12);color:var(--pplx-l)">⑤ Buy with Pro<br>활성화</div>
+            </div>
+
+            <div class="highlight-box highlight-green">
+                <strong>✅ 진입 장벽이 가장 낮은 플랫폼:</strong> 5분 온라인 폼 → 심사 → 승인. 복잡한 피드 구축이나 API 통합이 필요 없습니다. PayPal과의 파트너십으로 중소 판매자도 접근 가능하게 되었습니다.
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <h4>🛒 구매 과정 (Buy with Pro)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(32,178,170,0.08);color:var(--pplx-l)">사용자 검색<br><small>"최고의 러닝화"</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(32,178,170,0.08);color:var(--pplx-l)">Perplexity<br>AI 추천</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(32,178,170,0.08);color:var(--pplx-l)">Buy with Pro<br>버튼</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(168,85,247,0.1);color:#c084fc">PayPal<br>원클릭 결제</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">주문 확인<br><small>무료 배송 포함</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">판매자 이행<br><small>PayPal 추적</small></div>
+            </div>
+            <p style="font-size:0.85em;color:var(--text-dim);margin-top:8px;">
+                <strong>핵심 차이점:</strong> Perplexity Pro 구독자($20/월)는 Buy with Pro로 <strong>무료 배송</strong> 혜택을 받습니다. Perplexity가 배송비를 보조하는 모델입니다. 검색 → 결제 → 브라우징을 <strong>같은 대화 스레드</strong>에서 계속할 수 있습니다.
+            </p>
+        </div>
+
+        <div class="sub-section">
+            <h4>💰 수수료 구조</h4>
+            <div class="fee-grid">
+                <div class="fee-card" style="border-top:3px solid var(--green);">
+                    <div class="rate" style="color:#86efac">0%</div>
+                    <div class="label">Perplexity 수수료</div>
+                    <div class="detail">거래 수수료, 리스팅 수수료<br>커미션 모두 $0</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--purple);">
+                    <div class="rate" style="color:#c084fc">~2.9%</div>
+                    <div class="label">PayPal 결제 수수료</div>
+                    <div class="detail">표준 PayPal 처리 비용<br>(판매자 기존 요율 적용)</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--pplx);">
+                    <div class="rate" style="color:var(--pplx-l)">~3%</div>
+                    <div class="label">총 비용 합계</div>
+                    <div class="detail">$100 주문 기준<br>$0(Perplexity) + ~$3.20(PayPal)</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--cyan);">
+                    <div class="rate" style="color:#67e8f9">무료</div>
+                    <div class="label">추가 혜택</div>
+                    <div class="detail">검색/쇼핑 트렌드 대시보드<br>무료 API 액세스</div>
+                </div>
+            </div>
+
+            <div class="highlight-box highlight-green">
+                <strong>🎯 수익 모델 차이:</strong> Perplexity는 Pro 구독료($20/월)로 수익을 내며, 커머스 자체에서는 수수료를 받지 않습니다. ChatGPT가 거래당 4%를 징수하는 것과 정반대의 전략입니다. 판매자 입장에서는 가장 비용 효율적인 AI 채널입니다.
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <h4>📊 참여 가맹점 현황</h4>
+            <p style="font-size:0.9em;color:var(--text-dim);">
+                현재 주요 파트너: Abercrombie & Fitch, Ashley Furniture, Fabletics, Adorama, NewEgg 등. Firmly.ai 파트너십으로 중소 판매자 접근성 확대 중. 상품 노출은 Perplexity의 AI가 웹 크롤링 + 판매자 직접 카탈로그를 결합하여 결정합니다.
+            </p>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  Meta                                              -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="platform-block" style="border-left:3px solid var(--meta);">
+        <h3><span style="color:var(--meta-l)">◆</span> Meta — AI Shopping (Facebook/Instagram)</h3>
+        <div class="tagline">Llama 기반 AI 쇼핑 · 디스커버리 중심 · 체크아웃 외부 리디렉트 전환 중</div>
+
+        <div class="sub-section">
+            <h4>📋 진입 자격 & 요구사항</h4>
+            <table>
+                <tr><th style="width:180px">항목</th><th>요구사항</th></tr>
+                <tr><td><strong>사업 유형</strong></td><td>Meta Business Suite 계정 보유 사업체</td></tr>
+                <tr><td><strong>Commerce Manager</strong></td><td>Facebook/Instagram Shop 설정 완료</td></tr>
+                <tr><td><strong>상품 카탈로그</strong></td><td>Meta Commerce Manager에 카탈로그 등록 (수동/피드/파트너 연동)</td></tr>
+                <tr><td><strong>결제 방식 변경</strong></td><td>⚠️ 2025년 9월 4일부 네이티브 체크아웃 종료 → 판매자 웹사이트로 리디렉트</td></tr>
+                <tr><td><strong>AI 쇼핑 도구</strong></td><td>2026년 3월 출시, 현재 미국 일부 사용자 대상 제한적 테스트</td></tr>
+                <tr><td><strong>파트너 연동</strong></td><td>Shopify, BigCommerce, WooCommerce 등 주요 플랫폼 카탈로그 자동 연동</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-section">
+            <h4>🔄 신청 절차</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(6,104,225,0.1);color:var(--meta-l)">① Meta Business<br>Suite 가입</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(6,104,225,0.1);color:var(--meta-l)">② Commerce<br>Manager 설정</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(6,104,225,0.1);color:var(--meta-l)">③ 카탈로그<br>등록/연동</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(6,104,225,0.1);color:var(--meta-l)">④ Shop 활성화<br><small>FB/IG 탭</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(6,104,225,0.1);color:var(--meta-l)">⑤ AI 추천 대상<br><small>자동 포함</small></div>
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <h4>🛒 구매 과정 (현재 모델)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(6,104,225,0.08);color:var(--meta-l)">Meta AI에<br>질문</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(6,104,225,0.08);color:var(--meta-l)">AI 상품<br>추천</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(234,179,8,0.1);color:#fde68a">상품 카드<br>클릭</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(239,68,68,0.08);color:#fca5a5">판매자 웹사이트<br>리디렉트</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">외부에서<br>결제 완료</div>
+            </div>
+
+            <div class="highlight-box highlight-yellow">
+                <strong>⚠️ 중요 변경사항 (2025.9월):</strong> Meta는 Facebook/Instagram Shops의 네이티브 체크아웃(앱 내 결제)을 종료했습니다. 이제 모든 구매는 <strong>판매자 웹사이트로 리디렉트</strong>됩니다. Meta AI 쇼핑 도구도 현재는 <strong>디스커버리(발견) 전용</strong>이며, 앱 내 결제는 지원하지 않습니다.
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <h4>💰 수수료 구조</h4>
+            <div class="fee-grid">
+                <div class="fee-card" style="border-top:3px solid var(--green);">
+                    <div class="rate" style="color:#86efac">0%</div>
+                    <div class="label">Meta 거래 수수료</div>
+                    <div class="detail">리디렉트 모델이므로<br>Meta 수수료 없음</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--meta);">
+                    <div class="rate" style="color:var(--meta-l)">CPC</div>
+                    <div class="label">광고비 (선택)</div>
+                    <div class="detail">Facebook/Instagram Ads<br>클릭당 과금 (입찰 방식)</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--text-dim);">
+                    <div class="rate" style="color:var(--text-dim)">5%</div>
+                    <div class="label">Marketplace (참고)</div>
+                    <div class="detail">Facebook Marketplace<br>배송 거래 시 적용<br>(AI 커머스와 별도)</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--yellow);">
+                    <div class="rate" style="color:#fde68a">?</div>
+                    <div class="label">향후 수수료</div>
+                    <div class="detail">에이전틱 체크아웃 도입 시<br>수수료 모델 미정</div>
+                </div>
+            </div>
+
+            <div class="highlight-box highlight-purple">
+                <strong>🔮 Meta의 전략:</strong> Meta는 32억 DAU(일 활성 사용자)를 보유한 최대 소셜 플랫폼이지만, AI 커머스에서는 <strong>후발주자</strong>입니다. 현재는 "디스커버리 → 리디렉트" 모델로, 거래 수수료가 없는 대신 <strong>광고 수익</strong>에 의존합니다. Zuckerberg는 2026년 에이전틱 커머스 도구 출시를 예고했으나, 구체적 일정은 미발표입니다.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  Shopify                                           -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="platform-block" style="border-left:3px solid var(--shopify);">
+        <h3><span style="color:var(--shopify-l)">◉</span> Shopify — Agentic Storefronts</h3>
+        <div class="tagline">ACP + UCP 동시 지원 · 멀티 AI 채널 허브 · 자동 연동</div>
+
+        <div class="sub-section">
+            <h4>📋 진입 자격 & 요구사항</h4>
+            <table>
+                <tr><th style="width:180px">항목</th><th>요구사항</th></tr>
+                <tr><td><strong>기본 조건</strong></td><td>Shopify 스토어 운영 중 (Basic 이상 플랜)</td></tr>
+                <tr><td><strong>판매 지역</strong></td><td>미국 소비자 대상 판매 & 배송 가능</td></tr>
+                <tr><td><strong>상품 데이터</strong></td><td>Shopify Admin에 등록된 상품 데이터가 자동으로 AI 채널에 배포</td></tr>
+                <tr><td><strong>결제 설정</strong></td><td>Shopify Payments 활성화 권장</td></tr>
+                <tr><td><strong>별도 신청</strong></td><td>불필요 — 2026년 3월 24일부터 자격 있는 모든 미국 Shopify 스토어에 자동 활성화</td></tr>
+                <tr><td><strong>Opt-out</strong></td><td>원치 않는 AI 채널 개별 비활성화 가능</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-section">
+            <h4>🔄 연동 구조 (자동)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(150,191,72,0.12);color:var(--shopify-l)">Shopify Admin<br><small>상품 데이터</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(150,191,72,0.12);color:var(--shopify-l)">Agentic<br>Storefronts<br><small>자동 변환</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">ChatGPT<br><small>ACP 피드</small></div>
+            </div>
+            <div class="flow" style="margin-top:8px;">
+                <div class="step" style="background:rgba(150,191,72,0.12);color:var(--shopify-l)">Shopify Admin<br><small>동일 데이터</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(150,191,72,0.12);color:var(--shopify-l)">Agentic<br>Storefronts<br><small>프로토콜 변환</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(66,133,244,0.08);color:#60a5fa">Google AI Mode<br><small>UCP 피드</small></div>
+            </div>
+            <div class="flow" style="margin-top:8px;">
+                <div class="step" style="background:rgba(150,191,72,0.12);color:var(--shopify-l)">Shopify Admin<br><small>동일 데이터</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(150,191,72,0.12);color:var(--shopify-l)">Agentic<br>Storefronts<br><small>프로토콜 변환</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.08);color:var(--ms-l)">MS Copilot<br><small>ACP 피드</small></div>
+            </div>
+
+            <div class="highlight-box highlight-green">
+                <strong>✅ Shopify의 핵심 가치:</strong> "한 번 등록하면 모든 AI에 노출" — 판매자는 Shopify Admin에서 상품 데이터를 관리하면 됩니다. Shopify가 ACP/UCP 프로토콜 변환을 알아서 처리합니다. <strong>유일하게 ACP와 UCP를 동시 지원</strong>하는 플랫폼입니다.
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <h4>💰 수수료 구조 (AI 채널별)</h4>
+            <table>
+                <tr><th>AI 채널</th><th>추가 수수료</th><th>결제 처리</th><th>총 비용 예상</th></tr>
+                <tr>
+                    <td><strong>ChatGPT (OpenAI)</strong></td>
+                    <td style="color:#fca5a5;"><strong>4%</strong> (OpenAI 징수)</td>
+                    <td>Stripe ~2.9%+$0.30</td>
+                    <td><strong>~7%</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Google AI Mode</strong></td>
+                    <td style="color:#86efac;"><strong>0%</strong></td>
+                    <td>판매자 자체 결제</td>
+                    <td><strong>~3%</strong> (결제 처리만)</td>
+                </tr>
+                <tr>
+                    <td><strong>Microsoft Copilot</strong></td>
+                    <td style="color:#86efac;"><strong>0%</strong> (현재)</td>
+                    <td>PayPal/Stripe</td>
+                    <td><strong>~3%</strong> (결제 처리만)</td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="font-size:0.82em;color:var(--text-dim);">
+                        ※ Shopify 자체 수수료(Basic $39/월, 카드 2.9%+$0.30)는 모든 채널에 공통 적용
+                    </td>
+                </tr>
+            </table>
+
+            <div class="highlight-box highlight-yellow">
+                <strong>💡 전략적 시사점:</strong> Shopify 판매자는 각 AI 채널의 수수료를 비교하여 <strong>채널별 ROI를 최적화</strong>할 수 있습니다. ChatGPT의 4%가 부담스럽다면 Google AI Mode나 Copilot만 활성화하는 것도 가능합니다. 단, ChatGPT의 사용자 기반(~8억 WAU)이 가장 크므로 볼륨 효과를 고려해야 합니다.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  Microsoft                                         -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="platform-block" style="border-left:3px solid var(--ms);">
+        <h3><span style="color:var(--ms-l)">⬡</span> Microsoft — Copilot Checkout & Brand Agents</h3>
+        <div class="tagline">ACP 채택 · 0% 거래 수수료 (현재) · Shopify/PayPal/Stripe 연동 · Bing+Edge+MSN 확장</div>
+
+        <div class="sub-section">
+            <h4>📋 진입 자격 & 요구사항</h4>
+            <table>
+                <tr><th style="width:180px">항목</th><th>요구사항</th></tr>
+                <tr><td><strong>경로 1: Shopify</strong></td><td><span class="tag tag-auto">자동 등록</span> Shopify 셀러 → 별도 신청 불필요, opt-out 방식</td></tr>
+                <tr><td><strong>경로 2: PayPal/Stripe</strong></td><td>신청서 제출 → Microsoft 심사 → 승인</td></tr>
+                <tr><td><strong>경로 3: Etsy</strong></td><td><span class="tag tag-auto">자동 등록</span> Etsy 셀러 → 자동 통합</td></tr>
+                <tr><td><strong>Merchant Center</strong></td><td>Microsoft Merchant Center(MMC) 가입 권장 (필수는 아님, 오가닉 노출에 도움)</td></tr>
+                <tr><td><strong>Brand Agents</strong></td><td>별도 프로그램 — AI 에이전트를 브랜드 웹사이트에 배치하여 고객 안내</td></tr>
+                <tr><td><strong>지역</strong></td><td>미국 Copilot.com (2026년 1월 출시, Bing/MSN/Edge로 확대 예정)</td></tr>
+            </table>
+        </div>
+
+        <div class="sub-section">
+            <h4>🔄 온보딩 경로별 절차</h4>
+
+            <p style="font-size:0.9em;font-weight:700;margin-bottom:8px;color:var(--ms-l);">경로 A — Shopify 셀러 (자동)</p>
+            <div class="flow">
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">Shopify 스토어<br>운영 중</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">Agentic Storefronts<br>자동 활성화</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">Copilot Checkout<br>자동 노출</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">추가 설정 불필요</div>
+            </div>
+
+            <p style="font-size:0.9em;font-weight:700;margin:16px 0 8px;color:var(--ms-l);">경로 B — PayPal/Stripe 셀러 (신청)</p>
+            <div class="flow">
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">① 신청서 제출<br><small>MS 포탈</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">② Microsoft<br>심사</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">③ 결제 연동<br><small>PayPal 또는 Stripe</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.1);color:var(--ms-l)">④ Copilot<br>Checkout 활성화</div>
+            </div>
+        </div>
+
+        <div class="sub-section">
+            <h4>🛒 구매 과정 (Copilot Checkout)</h4>
+            <div class="flow">
+                <div class="step" style="background:rgba(0,164,239,0.08);color:var(--ms-l)">Copilot 대화<br><small>"선물 추천해줘"</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.08);color:var(--ms-l)">AI 상품<br>추천·비교</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(0,164,239,0.08);color:var(--ms-l)">Checkout<br>버튼</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(168,85,247,0.1);color:#c084fc">PayPal/Stripe<br>결제</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">주문 완료<br><small>채팅 내 완결</small></div>
+            </div>
+            <p style="font-size:0.85em;color:var(--text-dim);margin-top:8px;">
+                <strong>핵심:</strong> "대화 → 전환, 즉시(Conversations that Convert—Instantly)" 슬로건처럼, 리디렉트 없이 Copilot 채팅 안에서 결제까지 완료됩니다. 판매자가 Merchant of Record입니다. Bing, MSN, Edge로 확장되면 추가 설정 없이 자동 노출됩니다.
+            </p>
+        </div>
+
+        <div class="sub-section">
+            <h4>💰 수수료 구조</h4>
+            <div class="fee-grid">
+                <div class="fee-card" style="border-top:3px solid var(--green);">
+                    <div class="rate" style="color:#86efac">0%</div>
+                    <div class="label">Microsoft 거래 수수료</div>
+                    <div class="detail">현재 무료<br>"for now" — 향후 변경 가능</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--purple);">
+                    <div class="rate" style="color:#c084fc">~2.9%</div>
+                    <div class="label">결제 처리 수수료</div>
+                    <div class="detail">PayPal 또는 Stripe<br>표준 처리 비용</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--ms);">
+                    <div class="rate" style="color:var(--ms-l)">~3%</div>
+                    <div class="label">총 비용 합계</div>
+                    <div class="detail">$100 기준<br>$0(MS) + ~$3.20(결제)</div>
+                </div>
+                <div class="fee-card" style="border-top:3px solid var(--yellow);">
+                    <div class="rate" style="color:#fde68a">CPC</div>
+                    <div class="label">Bing Ads (선택)</div>
+                    <div class="detail">유료 광고 노출<br>MMC 피드 기반</div>
+                </div>
+            </div>
+
+            <div class="highlight-box highlight-blue">
+                <strong>📝 Brand Agents 추가 기능:</strong> Copilot Checkout과 별개로, <strong>Brand Agents</strong>는 브랜드 자체 웹사이트에 AI 에이전트를 배치하는 서비스입니다. 고객이 브랜드 사이트에서 AI와 대화하며 상품을 탐색하고 구매할 수 있습니다. 브랜드 보이스를 유지하면서 AI 쇼핑 경험을 제공하는 B2B 솔루션입니다.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  PART 2: 전체 비교표                               -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="section-header">
+        <h2><span class="icon" style="background:rgba(168,85,247,0.15);color:#c084fc">2</span> 7대 플랫폼 종합 비교</h2>
+        <p>Google · Amazon · OpenAI · Perplexity · Meta · Shopify · Microsoft를 15개 차원에서 비교합니다</p>
+    </div>
+
+    <!-- 비교표 1: 진입 조건 -->
+    <div class="platform-block">
+        <h3>📋 진입 조건 비교</h3>
+        <div style="overflow-x:auto;">
+            <table class="compare-table">
+                <tr>
+                    <th>항목</th>
+                    <th class="platform-col" style="color:var(--google);min-width:110px;">Google<br>AI Mode</th>
+                    <th class="platform-col" style="color:var(--amazon);min-width:110px;">Amazon<br>Rufus/Alexa</th>
+                    <th class="platform-col" style="color:var(--openai-l);min-width:110px;">OpenAI<br>ChatGPT</th>
+                    <th class="platform-col" style="color:var(--pplx-l);min-width:110px;">Perplexity<br>Buy with Pro</th>
+                    <th class="platform-col" style="color:var(--meta-l);min-width:110px;">Meta<br>AI Shopping</th>
+                    <th class="platform-col" style="color:var(--shopify-l);min-width:110px;">Shopify<br>Storefronts</th>
+                    <th class="platform-col" style="color:var(--ms-l);min-width:110px;">Microsoft<br>Copilot</th>
+                </tr>
+                <tr>
+                    <td><strong>진입 난이도</strong></td>
+                    <td style="text-align:center;color:#86efac;">★★☆☆☆<br>쉬움</td>
+                    <td style="text-align:center;color:#fca5a5;">★★★★★<br>매우 어려움</td>
+                    <td style="text-align:center;color:#fde68a;">★★★☆☆<br>보통</td>
+                    <td style="text-align:center;color:#86efac;">★☆☆☆☆<br>매우 쉬움</td>
+                    <td style="text-align:center;color:#86efac;">★★☆☆☆<br>쉬움</td>
+                    <td style="text-align:center;color:#86efac;">★☆☆☆☆<br>자동</td>
+                    <td style="text-align:center;color:#86efac;">★☆☆☆☆<br>자동/쉬움</td>
+                </tr>
+                <tr>
+                    <td><strong>사업자 등록</strong></td>
+                    <td>Google 계정<br>+ 사업 인증</td>
+                    <td>법인/사업자<br>비디오 면접</td>
+                    <td>미국 사업체<br>심사 1~2주</td>
+                    <td>미국 배송 가능<br>5분 폼</td>
+                    <td>Meta Business<br>Suite</td>
+                    <td>Shopify 스토어<br>운영 중</td>
+                    <td>Shopify/PayPal<br>/Stripe 계정</td>
+                </tr>
+                <tr>
+                    <td><strong>데이터 제출</strong></td>
+                    <td>Merchant Center<br>피드 업로드</td>
+                    <td>SP-API<br>LISTINGS_FEED</td>
+                    <td>ACP 피드<br>SFTP/HTTPS</td>
+                    <td>별도 피드 불필요<br>(웹 크롤링+카탈로그)</td>
+                    <td>Commerce<br>Manager 카탈로그</td>
+                    <td>Shopify Admin<br>자동 변환</td>
+                    <td>MMC 피드 권장<br>(필수 아님)</td>
+                </tr>
+                <tr>
+                    <td><strong>결제 인프라</strong></td>
+                    <td>판매자 자체<br>또는 UCP</td>
+                    <td>Amazon Pay<br>(필수)</td>
+                    <td>Stripe<br>(필수)</td>
+                    <td>PayPal/Venmo</td>
+                    <td>판매자 자체<br>(리디렉트)</td>
+                    <td>Shopify<br>Payments</td>
+                    <td>PayPal/Stripe<br>/Shopify</td>
+                </tr>
+                <tr>
+                    <td><strong>지역 제한</strong></td>
+                    <td><span class="tag tag-global">글로벌</span></td>
+                    <td><span class="tag tag-global">글로벌</span><br>(마켓별)</td>
+                    <td><span class="tag tag-us">미국 전용</span></td>
+                    <td><span class="tag tag-us">미국 전용</span></td>
+                    <td><span class="tag tag-us">미국 테스트</span></td>
+                    <td><span class="tag tag-us">미국 전용</span></td>
+                    <td><span class="tag tag-us">미국 전용</span></td>
+                </tr>
+                <tr>
+                    <td><strong>프로토콜</strong></td>
+                    <td>UCP</td>
+                    <td>독자 (SP-API)</td>
+                    <td>ACP</td>
+                    <td>독자 + PayPal</td>
+                    <td>독자 (Commerce API)</td>
+                    <td>ACP + UCP</td>
+                    <td>ACP</td>
+                </tr>
+                <tr>
+                    <td><strong>한국 셀러<br>접근 가능?</strong></td>
+                    <td style="color:#86efac;">✅ 가능<br><small>글로벌 피드</small></td>
+                    <td style="color:#fde68a;">⚠️ 조건부<br><small>미국 법인 필요</small></td>
+                    <td style="color:#fca5a5;">❌ 불가<br><small>미국 전용</small></td>
+                    <td style="color:#fca5a5;">❌ 불가<br><small>미국 배송 필요</small></td>
+                    <td style="color:#fde68a;">⚠️ 조건부<br><small>테스트 단계</small></td>
+                    <td style="color:#fde68a;">⚠️ 조건부<br><small>미국 배송 필요</small></td>
+                    <td style="color:#fca5a5;">❌ 불가<br><small>미국 전용</small></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- 비교표 2: 구매 과정 & 수수료 -->
+    <div class="platform-block">
+        <h3>💰 구매 과정 & 수수료 비교</h3>
+        <div style="overflow-x:auto;">
+            <table class="compare-table">
+                <tr>
+                    <th>항목</th>
+                    <th class="platform-col" style="color:var(--google);min-width:110px;">Google</th>
+                    <th class="platform-col" style="color:var(--amazon);min-width:110px;">Amazon</th>
+                    <th class="platform-col" style="color:var(--openai-l);min-width:110px;">OpenAI</th>
+                    <th class="platform-col" style="color:var(--pplx-l);min-width:110px;">Perplexity</th>
+                    <th class="platform-col" style="color:var(--meta-l);min-width:110px;">Meta</th>
+                    <th class="platform-col" style="color:var(--shopify-l);min-width:110px;">Shopify</th>
+                    <th class="platform-col" style="color:var(--ms-l);min-width:110px;">Microsoft</th>
+                </tr>
+                <tr>
+                    <td><strong>체크아웃 방식</strong></td>
+                    <td>리디렉트<br>+ AI Mode<br>네이티브(예정)</td>
+                    <td>Amazon 내<br>결제 완결</td>
+                    <td>채팅 내<br>Instant Checkout</td>
+                    <td>채팅 내<br>Buy with Pro</td>
+                    <td>외부 리디렉트</td>
+                    <td>AI 채널별<br>상이</td>
+                    <td>채팅 내<br>Copilot Checkout</td>
+                </tr>
+                <tr>
+                    <td><strong>플랫폼 수수료</strong></td>
+                    <td style="color:#86efac;font-weight:700;">0%<br><small>(Free Listing)</small></td>
+                    <td style="color:#fca5a5;font-weight:700;">8~17%<br><small>리퍼럴 피</small></td>
+                    <td style="color:#fde68a;font-weight:700;">4%</td>
+                    <td style="color:#86efac;font-weight:700;">0%</td>
+                    <td style="color:#86efac;font-weight:700;">0%<br><small>(리디렉트)</small></td>
+                    <td style="color:var(--text-dim);">채널별 상이<br><small>(0~4%)</small></td>
+                    <td style="color:#86efac;font-weight:700;">0%<br><small>(현재)</small></td>
+                </tr>
+                <tr>
+                    <td><strong>결제 처리비</strong></td>
+                    <td>판매자 자체<br>~2.9%</td>
+                    <td>Amazon Pay<br>포함</td>
+                    <td>Stripe<br>2.9%+$0.30</td>
+                    <td>PayPal<br>~2.9%</td>
+                    <td>판매자 자체</td>
+                    <td>Shopify Pay<br>2.9%+$0.30</td>
+                    <td>PayPal/Stripe<br>~2.9%</td>
+                </tr>
+                <tr>
+                    <td><strong>$100 주문시<br>총 비용</strong></td>
+                    <td style="color:#86efac;font-weight:700;">~$3.20</td>
+                    <td style="color:#fca5a5;font-weight:700;">$11~$20+</td>
+                    <td style="color:#fde68a;font-weight:700;">~$7.20</td>
+                    <td style="color:#86efac;font-weight:700;">~$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">~$3.20</td>
+                    <td style="color:var(--text-dim);">$3.20~$7.20</td>
+                    <td style="color:#86efac;font-weight:700;">~$3.20</td>
+                </tr>
+                <tr>
+                    <td><strong>월정액</strong></td>
+                    <td style="color:#86efac;">$0</td>
+                    <td style="color:#fca5a5;">$39.99/월</td>
+                    <td style="color:#86efac;">$0</td>
+                    <td style="color:#86efac;">$0</td>
+                    <td style="color:#86efac;">$0</td>
+                    <td style="color:#fde68a;">$39~/월<br><small>(Shopify 플랜)</small></td>
+                    <td style="color:#86efac;">$0</td>
+                </tr>
+                <tr>
+                    <td><strong>광고 옵션</strong></td>
+                    <td>Shopping Ads<br>CPC</td>
+                    <td>Sponsored Products<br>CPC</td>
+                    <td>없음<br><small>(예정)</small></td>
+                    <td>없음</td>
+                    <td>FB/IG Ads<br>CPC</td>
+                    <td>채널별 광고<br>활용</td>
+                    <td>Bing Ads<br>CPC</td>
+                </tr>
+                <tr>
+                    <td><strong>Merchant of<br>Record</strong></td>
+                    <td>판매자</td>
+                    <td><strong>Amazon</strong></td>
+                    <td>판매자</td>
+                    <td>판매자</td>
+                    <td>판매자</td>
+                    <td>판매자</td>
+                    <td>판매자</td>
+                </tr>
+                <tr>
+                    <td><strong>고객 데이터<br>소유</strong></td>
+                    <td style="color:#86efac;">판매자</td>
+                    <td style="color:#fca5a5;">Amazon</td>
+                    <td style="color:#fde68a;">제한적 공유</td>
+                    <td style="color:#fde68a;">제한적 공유</td>
+                    <td style="color:#86efac;">판매자</td>
+                    <td style="color:#86efac;">판매자</td>
+                    <td style="color:#86efac;">판매자</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- 비교표 3: AI 커머스 성숙도 -->
+    <div class="platform-block">
+        <h3>🤖 AI 커머스 성숙도 비교</h3>
+        <div style="overflow-x:auto;">
+            <table class="compare-table">
+                <tr>
+                    <th>항목</th>
+                    <th class="platform-col" style="color:var(--google);">Google</th>
+                    <th class="platform-col" style="color:var(--amazon);">Amazon</th>
+                    <th class="platform-col" style="color:var(--openai-l);">OpenAI</th>
+                    <th class="platform-col" style="color:var(--pplx-l);">Perplexity</th>
+                    <th class="platform-col" style="color:var(--meta-l);">Meta</th>
+                    <th class="platform-col" style="color:var(--shopify-l);">Shopify</th>
+                    <th class="platform-col" style="color:var(--ms-l);">Microsoft</th>
+                </tr>
+                <tr>
+                    <td><strong>AI 모델</strong></td>
+                    <td>Gemini</td>
+                    <td>Rufus → Alexa+</td>
+                    <td>GPT-4o/o3</td>
+                    <td>자체 + Claude</td>
+                    <td>Llama 4</td>
+                    <td>Sidekick (자체)</td>
+                    <td>GPT-4o (제휴)</td>
+                </tr>
+                <tr>
+                    <td><strong>커머스 출시</strong></td>
+                    <td>2024 AI Mode</td>
+                    <td>2024 Rufus</td>
+                    <td>2026.1 Checkout</td>
+                    <td>2024.11 Shopping</td>
+                    <td>2026.3 테스트</td>
+                    <td>2026.1 Storefronts</td>
+                    <td>2026.1 Checkout</td>
+                </tr>
+                <tr>
+                    <td><strong>체크아웃<br>완결성</strong></td>
+                    <td style="color:#fde68a;">🔶 부분<br><small>UCP 확장 중</small></td>
+                    <td style="color:#86efac;">🟢 완전<br><small>자체 이행</small></td>
+                    <td style="color:#86efac;">🟢 완전<br><small>Instant Checkout</small></td>
+                    <td style="color:#86efac;">🟢 완전<br><small>Buy with Pro</small></td>
+                    <td style="color:#fca5a5;">🔴 없음<br><small>리디렉트만</small></td>
+                    <td style="color:#86efac;">🟢 완전<br><small>채널 통해</small></td>
+                    <td style="color:#86efac;">🟢 완전<br><small>Copilot Checkout</small></td>
+                </tr>
+                <tr>
+                    <td><strong>사용자 규모</strong></td>
+                    <td>~20억+<br><small>검색 사용자</small></td>
+                    <td>~3억+<br><small>Prime 회원</small></td>
+                    <td>~8억<br><small>WAU</small></td>
+                    <td>~1억+<br><small>MAU</small></td>
+                    <td>~32억<br><small>DAU</small></td>
+                    <td>수백만<br><small>판매자</small></td>
+                    <td>~5억+<br><small>Copilot+Bing</small></td>
+                </tr>
+                <tr>
+                    <td><strong>차별화 전략</strong></td>
+                    <td>검색 독점 +<br>UCP 표준화</td>
+                    <td>물류 인프라 +<br>전 과정 통제</td>
+                    <td>가장 큰 AI<br>사용자 기반</td>
+                    <td>제로 수수료 +<br>무료 배송</td>
+                    <td>소셜 그래프 +<br>광고 플랫폼</td>
+                    <td>멀티 AI 허브 +<br>프로토콜 추상화</td>
+                    <td>기업 생태계 +<br>Brand Agents</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  PART 3: 수수료 시뮬레이션                        -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="section-header">
+        <h2><span class="icon" style="background:rgba(245,158,11,0.15);color:#fbbf24">3</span> 수수료 시뮬레이션 — $100 상품 기준</h2>
+        <p>전자제품(마진 30%)과 패션(마진 50%)을 각 플랫폼에서 판매할 때의 실제 수익을 비교합니다</p>
+    </div>
+
+    <div class="platform-block">
+        <h3>💻 전자제품 — $100 상품 (원가 $70, 마진 $30)</h3>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>플랫폼</th>
+                    <th>플랫폼 수수료</th>
+                    <th>결제 처리비</th>
+                    <th>기타 비용</th>
+                    <th>총 비용</th>
+                    <th style="color:#86efac;">순이익</th>
+                    <th>마진율</th>
+                </tr>
+                <tr>
+                    <td style="color:var(--google)"><strong>Google AI Mode</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$26.80</td>
+                    <td>26.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--pplx-l)"><strong>Perplexity</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$26.80</td>
+                    <td>26.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--ms-l)"><strong>Microsoft Copilot</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$26.80</td>
+                    <td>26.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--meta-l)"><strong>Meta AI</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$26.80</td>
+                    <td>26.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--openai-l)"><strong>OpenAI ChatGPT</strong></td>
+                    <td>$4.00</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$7.20</td>
+                    <td style="color:#fde68a;font-weight:700;">$22.80</td>
+                    <td>22.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--amazon)"><strong>Amazon</strong></td>
+                    <td>$8.00<br><small>(8% 전자)</small></td>
+                    <td>포함</td>
+                    <td>$3.33<br><small>(월정액 배분)</small></td>
+                    <td>$11.33</td>
+                    <td style="color:#fca5a5;font-weight:700;">$18.67</td>
+                    <td>18.7%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--amazon)"><strong>Amazon (FBA)</strong></td>
+                    <td>$8.00</td>
+                    <td>포함</td>
+                    <td>$7.33<br><small>(FBA+월정액)</small></td>
+                    <td>$15.33</td>
+                    <td style="color:#fca5a5;font-weight:700;">$14.67</td>
+                    <td>14.7%</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3 style="margin-top:28px;">👗 패션 — $100 상품 (원가 $50, 마진 $50)</h3>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>플랫폼</th>
+                    <th>플랫폼 수수료</th>
+                    <th>결제 처리비</th>
+                    <th>기타 비용</th>
+                    <th>총 비용</th>
+                    <th style="color:#86efac;">순이익</th>
+                    <th>마진율</th>
+                </tr>
+                <tr>
+                    <td style="color:var(--google)"><strong>Google AI Mode</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$46.80</td>
+                    <td>46.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--pplx-l)"><strong>Perplexity</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$46.80</td>
+                    <td>46.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--ms-l)"><strong>Microsoft Copilot</strong></td>
+                    <td>$0</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$3.20</td>
+                    <td style="color:#86efac;font-weight:700;">$46.80</td>
+                    <td>46.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--openai-l)"><strong>OpenAI ChatGPT</strong></td>
+                    <td>$4.00</td>
+                    <td>$3.20</td>
+                    <td>—</td>
+                    <td>$7.20</td>
+                    <td style="color:#fde68a;font-weight:700;">$42.80</td>
+                    <td>42.8%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--amazon)"><strong>Amazon</strong></td>
+                    <td>$17.00<br><small>(17% 패션)</small></td>
+                    <td>포함</td>
+                    <td>$3.33</td>
+                    <td>$20.33</td>
+                    <td style="color:#fca5a5;font-weight:700;">$29.67</td>
+                    <td>29.7%</td>
+                </tr>
+                <tr>
+                    <td style="color:var(--amazon)"><strong>Amazon (FBA)</strong></td>
+                    <td>$17.00</td>
+                    <td>포함</td>
+                    <td>$9.33<br><small>(FBA+월정액)</small></td>
+                    <td>$26.33</td>
+                    <td style="color:#fca5a5;font-weight:700;">$23.67</td>
+                    <td>23.7%</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="highlight-box highlight-purple" style="margin-top:20px;">
+            <strong>📊 시뮬레이션 핵심 인사이트:</strong><br>
+            • <strong>제로 수수료 플랫폼</strong>(Google, Perplexity, Microsoft, Meta)은 결제 처리비만 부담 — 마진 보존율이 가장 높음<br>
+            • <strong>OpenAI의 4%</strong>는 마진을 약 4%p 감소시키지만, Amazon 대비 여전히 유리 (전자제품: 22.8% vs 14.7%)<br>
+            • <strong>Amazon의 높은 수수료</strong>(특히 패션 17%)는 FBA 추가 시 더욱 부담 — 그러나 3억+ Prime 회원 접근이라는 트레이드오프<br>
+            • <strong>멀티 채널 전략</strong>: Shopify 셀러라면 모든 AI 채널을 동시 활용하되, 고마진 상품은 0% 채널로, 고볼륨 상품은 ChatGPT로 배분하는 것이 최적
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  PART 4: 전략적 권고                               -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="section-header">
+        <h2><span class="icon" style="background:rgba(34,197,94,0.15);color:#86efac">4</span> 셀러 유형별 전략 권고</h2>
+        <p>판매자 상황에 따른 최적의 AI 커머스 채널 조합을 제안합니다</p>
+    </div>
+
+    <div class="platform-block">
+        <table>
+            <tr>
+                <th style="width:160px">셀러 유형</th>
+                <th>추천 채널 (우선순위)</th>
+                <th>이유</th>
+            </tr>
+            <tr>
+                <td><strong>🏪 Shopify 운영 중<br>미국 판매</strong></td>
+                <td>
+                    <span style="color:#86efac;">①</span> Google AI Mode (0%) →
+                    <span style="color:#86efac;">②</span> MS Copilot (0%) →
+                    <span style="color:#fde68a;">③</span> ChatGPT (4%) →
+                    <span style="color:#86efac;">④</span> Perplexity (0%)
+                </td>
+                <td>Agentic Storefronts 자동 연동. 0% 채널 우선 활성화 후 ChatGPT 추가로 볼륨 확대. 모든 채널 동시 운영 가능.</td>
+            </tr>
+            <tr>
+                <td><strong>🌍 한국 브랜드<br>글로벌 진출</strong></td>
+                <td>
+                    <span style="color:#86efac;">①</span> Google Merchant Center →
+                    <span style="color:#fde68a;">②</span> Amazon (미국 법인 설립 시) →
+                    <span style="color:#fde68a;">③</span> Shopify 스토어 구축 → AI 채널 확장
+                </td>
+                <td>Google이 유일하게 한국 셀러에게 직접 열린 채널. Amazon은 미국 법인/EIN 필요. Shopify 구축 시 ChatGPT/Copilot 자동 연동.</td>
+            </tr>
+            <tr>
+                <td><strong>🏭 대형 리테일러<br>미국 기반</strong></td>
+                <td>
+                    <strong>전 채널 동시 운영</strong><br>
+                    Google + Amazon + ChatGPT + Perplexity + Copilot + Meta
+                </td>
+                <td>피드 인프라 자체 구축 가능. Syndigo/Akeneo로 데이터 관리하고 Lemrock으로 AI 채널 배포. 채널별 ROI 측정 후 예산 최적화.</td>
+            </tr>
+            <tr>
+                <td><strong>💡 중소 판매자<br>최소 비용 진입</strong></td>
+                <td>
+                    <span style="color:#86efac;">①</span> Perplexity (0%, 5분 가입) →
+                    <span style="color:#fde68a;">②</span> Shopify Basic + Storefronts →
+                    <span style="color:#86efac;">③</span> Google Free Listing
+                </td>
+                <td>Perplexity가 진입 장벽 최저. PayPal만 있으면 시작 가능. Shopify Basic($39/월)으로 ChatGPT/Copilot 동시 접근.</td>
+            </tr>
+            <tr>
+                <td><strong>📱 D2C 브랜드<br>고마진 상품</strong></td>
+                <td>
+                    <span style="color:#86efac;">①</span> Google AI Mode (브랜드 채널) →
+                    <span style="color:#fde68a;">②</span> ChatGPT (볼륨) →
+                    <span style="color:#86efac;">③</span> MS Brand Agents (자사몰 AI)
+                </td>
+                <td>Amazon 회피하여 마진 보호. Google과 ChatGPT로 발견성 확보. Brand Agents로 자사몰에 AI 쇼핑 경험 추가.</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  PART 5: 수수료 정책 트렌드 분석                   -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="section-header">
+        <h2><span class="icon" style="background:rgba(239,68,68,0.15);color:#f87171">5</span> 수수료 정책의 미래 — 무료는 영원할까?</h2>
+        <p>현재의 0% 수수료 경쟁은 지속 가능한가? 플랫폼별 수익화 경로를 분석합니다</p>
+    </div>
+
+    <div class="platform-block">
+        <table>
+            <tr>
+                <th style="width:120px">플랫폼</th>
+                <th>현재 수익 모델</th>
+                <th>예상 수익화 경로</th>
+                <th>수수료 전망</th>
+            </tr>
+            <tr>
+                <td style="color:var(--google)"><strong>Google</strong></td>
+                <td>광고 (Shopping Ads CPC)</td>
+                <td>AI Mode 내 Sponsored 결과 + UCP 기반 프리미엄 노출</td>
+                <td style="color:#86efac;">0% 유지 가능성 높음<br><small>광고 수익이 핵심</small></td>
+            </tr>
+            <tr>
+                <td style="color:var(--openai-l)"><strong>OpenAI</strong></td>
+                <td>거래 수수료 4%</td>
+                <td>수수료 유지 + ChatGPT Pro 구독 + 향후 광고 도입 가능</td>
+                <td style="color:#fde68a;">4% 유지 또는 소폭 인하<br><small>핵심 수익원</small></td>
+            </tr>
+            <tr>
+                <td style="color:var(--pplx-l)"><strong>Perplexity</strong></td>
+                <td>Pro 구독 ($20/월)</td>
+                <td>구독 기반 유지 + 판매자 프리미엄 배치 광고 가능</td>
+                <td style="color:#86efac;">0% 유지 가능성 높음<br><small>차별화 전략</small></td>
+            </tr>
+            <tr>
+                <td style="color:var(--ms-l)"><strong>Microsoft</strong></td>
+                <td>Bing Ads + 클라우드</td>
+                <td>Copilot 내 Sponsored 결과 + Azure 커머스 솔루션</td>
+                <td style="color:#fde68a;">0→1~2% 전환 가능<br><small>"for now" 명시</small></td>
+            </tr>
+            <tr>
+                <td style="color:var(--meta-l)"><strong>Meta</strong></td>
+                <td>광고 ($200B+ 연매출)</td>
+                <td>AI 쇼핑 내 광고 + 체크아웃 도입 시 수수료 가능</td>
+                <td style="color:#fde68a;">디스커버리 무료 유지<br>체크아웃 시 수수료 가능</td>
+            </tr>
+            <tr>
+                <td style="color:var(--amazon)"><strong>Amazon</strong></td>
+                <td>리퍼럴 피 + FBA + 광고</td>
+                <td>Alexa+ 에이전틱 쇼핑으로 기존 수수료 구조 유지</td>
+                <td style="color:#fca5a5;">8~17% 유지<br><small>인하 가능성 낮음</small></td>
+            </tr>
+        </table>
+
+        <div class="highlight-box highlight-red" style="margin-top:16px;">
+            <strong>⚡ 핵심 판단:</strong> 현재 AI 커머스 수수료 경쟁은 "<strong>랜드그랩(Land Grab)</strong>" 단계입니다. Google, Perplexity, Microsoft가 0%를 내세우는 것은 판매자를 유치하기 위한 초기 전략이며, 시장이 성숙되면 수수료가 도입될 가능성이 있습니다. 단, Google은 광고 모델이 확립되어 있어 0%를 장기 유지할 여력이 가장 큽니다. <strong>지금이 0% 채널에 진입하여 AI 추천 알고리즘에서 우위를 확보할 최적의 타이밍</strong>입니다.
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  용어집                                            -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="section-header">
+        <h2><span class="icon" style="background:rgba(6,182,212,0.15);color:#67e8f9">📖</span> 용어집</h2>
+    </div>
+
+    <div class="platform-block">
+        <table>
+            <tr><th style="width:180px">용어</th><th>설명</th></tr>
+            <tr><td><strong>ACP</strong></td><td>Agentic Commerce Protocol — OpenAI+Stripe가 개발한 에이전틱 커머스 프로토콜. Push 방식으로 판매자가 AI에 피드를 전송.</td></tr>
+            <tr><td><strong>UCP</strong></td><td>Universal Commerce Protocol — Google+Shopify가 개발한 범용 커머스 프로토콜. .well-known/ucp 매니페스트 기반 Discovery 방식.</td></tr>
+            <tr><td><strong>SPT</strong></td><td>Shared Payment Token — Stripe가 ACP에서 사용하는 보안 결제 토큰. AI 에이전트가 카드 정보를 직접 다루지 않도록 보호.</td></tr>
+            <tr><td><strong>Merchant of Record</strong></td><td>거래의 법적 판매 책임 주체. Amazon은 Amazon이 MoR이지만, 대부분의 AI 플랫폼에서는 판매자가 MoR.</td></tr>
+            <tr><td><strong>Instant Checkout</strong></td><td>AI 채팅 인터페이스 내에서 외부 리디렉트 없이 결제가 완료되는 방식. ChatGPT, Copilot이 이 방식 채택.</td></tr>
+            <tr><td><strong>Buy with Pro</strong></td><td>Perplexity Pro 구독자 전용 인앱 구매 기능. PayPal 기반 원클릭 결제 + 무료 배송 포함.</td></tr>
+            <tr><td><strong>Brand Agents</strong></td><td>Microsoft의 B2B 솔루션. 브랜드 자체 웹사이트에 AI 에이전트를 배치하여 고객 쇼핑 안내.</td></tr>
+            <tr><td><strong>Agentic Storefronts</strong></td><td>Shopify의 멀티 AI 채널 허브. Shopify Admin의 상품 데이터를 ACP/UCP로 자동 변환하여 ChatGPT, Google, Copilot에 동시 배포.</td></tr>
+            <tr><td><strong>Land Grab</strong></td><td>초기 시장 점유율 확보 경쟁. 현재 AI 커머스 플랫폼들이 0% 수수료로 판매자를 유치하는 전략을 설명하는 표현.</td></tr>
+            <tr><td><strong>Referral Fee</strong></td><td>Amazon이 판매 건당 부과하는 카테고리별 수수료. 전자제품 8%, 패션 17% 등.</td></tr>
+        </table>
+    </div>
+
+
+    <!-- Footer -->
+    <div style="text-align:center;margin-top:56px;padding:28px 0;border-top:1px solid var(--border);">
+        <p style="color:var(--text-dim);font-size:0.85em;">에이전틱 커머스 Knowledge Base — Report #13</p>
+        <p style="color:var(--text-dim);font-size:0.8em;margin-top:6px;">Curated by Sung-Gong · 2026년 5월 기준</p>
+        <p style="color:var(--text-dim);font-size:0.75em;margin-top:4px;">OpenAI Developers, Perplexity Merchant Program, Microsoft Ads Blog, Shopify Engineering, Meta Business Help Center 등 공개 자료 기반</p>
+    </div>
+
+</div>
+
+</body>
+</html>

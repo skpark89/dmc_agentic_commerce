@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google AP2 프로토콜 - 쉽게 이해하기</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #0a0e1a;
+    color: #e0e6f0;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, #1a2744 0%, #0a0e1a 70%);
+    position: relative;
+    padding: 60px 20px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a3a5c' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 24px;
+    border-radius: 50px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    position: relative;
+    z-index: 1;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .hero h1 span.gradient-text {
+    background: linear-gradient(135deg, #4285f4, #34a853, #fbbc04, #ea4335);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: clamp(16px, 2.5vw, 22px);
+    color: #8899b5;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 50px;
+  }
+  .hero-icons {
+    display: flex;
+    gap: 30px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #8899b5;
+  }
+  .hero-icon-item .icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 2px solid rgba(66, 133, 244, 0.3);
+    background: rgba(66, 133, 244, 0.08);
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .section-title {
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .section-subtitle {
+    text-align: center;
+    color: #8899b5;
+    font-size: 17px;
+    max-width: 700px;
+    margin: 0 auto 50px;
+  }
+
+  /* ─── PROBLEM SECTION ─── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .problem-card {
+    background: linear-gradient(135deg, #1a1f2e, #141825);
+    border: 1px solid #2a3045;
+    border-radius: 16px;
+    padding: 32px;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .problem-card:hover {
+    transform: translateY(-4px);
+    border-color: #ea4335;
+  }
+  .problem-card .card-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+  .problem-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #ea4335;
+  }
+  .problem-card p {
+    color: #8899b5;
+    font-size: 15px;
+  }
+
+  /* ─── SOLUTION / HOW IT WORKS ─── */
+  .solution-banner {
+    background: linear-gradient(135deg, #0d2137, #142a1a);
+    border: 1px solid #1a4a2e;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .solution-banner h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #34a853;
+  }
+  .solution-banner p {
+    color: #8899b5;
+    font-size: 16px;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow-container {
+    position: relative;
+    padding: 20px 0;
+  }
+  .flow-step {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 10px;
+  }
+  .flow-number {
+    min-width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+  .flow-step:nth-child(1) .flow-number { background: linear-gradient(135deg, #4285f4, #5a9cf5); }
+  .flow-step:nth-child(2) .flow-number { background: linear-gradient(135deg, #fbbc04, #f5c842); }
+  .flow-step:nth-child(3) .flow-number { background: linear-gradient(135deg, #34a853, #43c466); }
+  .flow-step:nth-child(4) .flow-number { background: linear-gradient(135deg, #ea4335, #f06757); }
+  .flow-step:nth-child(5) .flow-number { background: linear-gradient(135deg, #9b59b6, #b07cc6); }
+
+  .flow-content {
+    background: #141825;
+    border: 1px solid #2a3045;
+    border-radius: 14px;
+    padding: 24px 28px;
+    flex: 1;
+    transition: border-color 0.3s;
+  }
+  .flow-content:hover {
+    border-color: #4285f4;
+  }
+  .flow-content h4 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .flow-content p {
+    color: #8899b5;
+    font-size: 14px;
+  }
+  .flow-connector {
+    width: 3px;
+    height: 32px;
+    background: linear-gradient(to bottom, #2a3045, #4285f4, #2a3045);
+    margin-left: 35px;
+    border-radius: 3px;
+  }
+
+  /* ─── MANDATE BOX ─── */
+  .mandate-section {
+    background: linear-gradient(135deg, #1a1530, #0d1a2e);
+    border: 1px solid #3a2a6a;
+    border-radius: 20px;
+    padding: 48px;
+    margin: 60px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .mandate-section::before {
+    content: '🔐';
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-size: 120px;
+    opacity: 0.06;
+  }
+  .mandate-section h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #b388ff;
+  }
+  .mandate-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .mandate-type {
+    background: rgba(179, 136, 255, 0.06);
+    border: 1px solid rgba(179, 136, 255, 0.2);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .mandate-type h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #ce93d8;
+    margin-bottom: 8px;
+  }
+  .mandate-type p {
+    color: #8899b5;
+    font-size: 14px;
+  }
+
+  /* ─── USE CASES ─── */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .usecase-card {
+    background: linear-gradient(180deg, #141825 0%, #0f1320 100%);
+    border: 1px solid #2a3045;
+    border-radius: 18px;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .usecase-card:hover {
+    transform: translateY(-6px);
+  }
+  .usecase-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .usecase-card:nth-child(1)::after { background: linear-gradient(90deg, #4285f4, #34a853); }
+  .usecase-card:nth-child(2)::after { background: linear-gradient(90deg, #fbbc04, #ea4335); }
+  .usecase-card:nth-child(3)::after { background: linear-gradient(90deg, #9b59b6, #4285f4); }
+  .usecase-emoji {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .usecase-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .usecase-card p {
+    color: #8899b5;
+    font-size: 15px;
+  }
+
+  /* ─── PARTNERS ─── */
+  .partner-section {
+    text-align: center;
+  }
+  .partner-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .partner-chip {
+    background: #141825;
+    border: 1px solid #2a3045;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #c0cbe0;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .partner-chip:hover {
+    border-color: #4285f4;
+    background: rgba(66, 133, 244, 0.08);
+  }
+  .partner-count {
+    display: inline-block;
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: white;
+    font-size: 48px;
+    font-weight: 900;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+
+  /* ─── PAYMENTS ─── */
+  .payment-methods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .payment-item {
+    background: #141825;
+    border: 1px solid #2a3045;
+    border-radius: 16px;
+    padding: 24px 32px;
+    text-align: center;
+    min-width: 160px;
+    transition: transform 0.3s;
+  }
+  .payment-item:hover { transform: scale(1.05); }
+  .payment-item .pay-icon { font-size: 36px; margin-bottom: 10px; }
+  .payment-item .pay-name { font-size: 14px; font-weight: 600; }
+
+  /* ─── IMPORTANCE ─── */
+  .importance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .importance-card {
+    background: linear-gradient(135deg, #141825, #0f1320);
+    border-radius: 18px;
+    padding: 36px;
+    border-left: 4px solid;
+    transition: transform 0.3s;
+  }
+  .importance-card:hover { transform: translateY(-4px); }
+  .importance-card:nth-child(1) { border-left-color: #4285f4; }
+  .importance-card:nth-child(2) { border-left-color: #34a853; }
+  .importance-card:nth-child(3) { border-left-color: #fbbc04; }
+  .importance-card:nth-child(4) { border-left-color: #ea4335; }
+  .importance-card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .importance-card p {
+    color: #8899b5;
+    font-size: 15px;
+  }
+
+  /* ─── FUTURE TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding: 20px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #4285f4, #34a853, #fbbc04, #9b59b6);
+    transform: translateX(-50%);
+  }
+  .timeline-item {
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+    padding-right: 40px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .timeline-item:nth-child(even) {
+    margin-left: 50%;
+    padding-right: 0;
+    padding-left: 40px;
+    justify-content: flex-start;
+  }
+  .timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    top: 20px;
+    z-index: 2;
+  }
+  .timeline-item:nth-child(odd)::after {
+    right: -8px;
+  }
+  .timeline-item:nth-child(even)::after {
+    left: -8px;
+  }
+  .timeline-item:nth-child(1)::after { background: #4285f4; box-shadow: 0 0 15px #4285f4; }
+  .timeline-item:nth-child(2)::after { background: #34a853; box-shadow: 0 0 15px #34a853; }
+  .timeline-item:nth-child(3)::after { background: #fbbc04; box-shadow: 0 0 15px #fbbc04; }
+  .timeline-item:nth-child(4)::after { background: #9b59b6; box-shadow: 0 0 15px #9b59b6; }
+
+  .timeline-box {
+    background: #141825;
+    border: 1px solid #2a3045;
+    border-radius: 14px;
+    padding: 24px;
+    max-width: 380px;
+    transition: transform 0.3s;
+  }
+  .timeline-box:hover { transform: scale(1.03); }
+  .timeline-box .tl-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .timeline-item:nth-child(1) .tl-label { color: #4285f4; }
+  .timeline-item:nth-child(2) .tl-label { color: #34a853; }
+  .timeline-item:nth-child(3) .tl-label { color: #fbbc04; }
+  .timeline-item:nth-child(4) .tl-label { color: #9b59b6; }
+
+  .timeline-box h4 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .timeline-box p {
+    color: #8899b5;
+    font-size: 14px;
+  }
+
+  /* ─── COMPARISON TABLE ─── */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .compare-table th {
+    background: #1a2040;
+    padding: 18px 24px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 2px solid #2a3045;
+  }
+  .compare-table td {
+    padding: 16px 24px;
+    font-size: 14px;
+    background: #0f1320;
+    border-bottom: 1px solid #1a2040;
+    color: #b0bdd0;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .highlight-cell {
+    color: #34a853;
+    font-weight: 600;
+  }
+
+  /* ─── DIAGRAM ─── */
+  .arch-diagram {
+    background: #0f1320;
+    border: 1px solid #2a3045;
+    border-radius: 20px;
+    padding: 48px 32px;
+    margin: 40px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .arch-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .arch-box {
+    background: linear-gradient(135deg, #1a2040, #141825);
+    border: 2px solid #2a3a5a;
+    border-radius: 14px;
+    padding: 20px 28px;
+    min-width: 160px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+  }
+  .arch-box.user { border-color: #4285f4; color: #4285f4; }
+  .arch-box.agent { border-color: #34a853; color: #34a853; }
+  .arch-box.merchant { border-color: #fbbc04; color: #fbbc04; }
+  .arch-box.payment { border-color: #ea4335; color: #ea4335; }
+  .arch-box .arch-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+  .arch-arrow {
+    font-size: 24px;
+    color: #4a5a7a;
+    font-weight: 300;
+  }
+  .arch-label {
+    font-size: 12px;
+    color: #6a7a9a;
+    margin-top: 4px;
+  }
+  .arch-mandate-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #b388ff;
+    font-weight: 500;
+  }
+  .dashed-line {
+    width: 100px;
+    height: 2px;
+    border-top: 2px dashed #b388ff;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center;
+    padding: 60px 24px;
+    color: #4a5a7a;
+    font-size: 13px;
+    border-top: 1px solid #1a2040;
+  }
+  .footer a {
+    color: #4285f4;
+    text-decoration: none;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .timeline::before { left: 20px; }
+    .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; justify-content: flex-start; }
+    .timeline-item:nth-child(even) { margin-left: 0; padding-left: 50px; }
+    .timeline-item::after,
+    .timeline-item:nth-child(odd)::after,
+    .timeline-item:nth-child(even)::after { left: 12px !important; right: auto; }
+    .flow-step { flex-direction: column; gap: 12px; }
+    .arch-row { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <div class="hero-badge">GOOGLE CLOUD &middot; 2025</div>
+  <h1><span class="gradient-text">AP2 프로토콜</span><br>AI 에이전트 결제의 미래</h1>
+  <p class="hero-sub">AI 에이전트가 안전하고 신뢰할 수 있게 결제를 수행할 수 있도록 설계된 <strong>오픈 프로토콜</strong></p>
+  <div class="hero-icons">
+    <div class="hero-icon-item"><div class="icon-circle">🤖</div>AI 에이전트</div>
+    <div class="hero-icon-item"><div class="icon-circle">🔐</div>암호화 보안</div>
+    <div class="hero-icon-item"><div class="icon-circle">💳</div>결제 처리</div>
+    <div class="hero-icon-item"><div class="icon-circle">🌐</div>오픈 표준</div>
+    <div class="hero-icon-item"><div class="icon-circle">🤝</div>60+ 파트너</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 배경: 문제점 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">왜 AP2가 필요한가?</div>
+  <div class="section-subtitle">
+    현재 결제 시스템은 <strong>"사람이 직접 구매 버튼을 클릭한다"</strong>는 전제로 만들어져 있습니다.<br>
+    AI 에이전트가 대신 결제할 때, 근본적인 문제가 발생합니다.
+  </div>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="card-icon">🔑</div>
+      <h3>권한 부여 (Authorization)</h3>
+      <p>AI 에이전트가 특정 구매에 대해 사용자로부터 진짜 권한을 받았는지 어떻게 확인할 수 있을까요?</p>
+    </div>
+    <div class="problem-card">
+      <div class="card-icon">🎭</div>
+      <h3>진위 확인 (Authenticity)</h3>
+      <p>에이전트의 요청이 사용자의 진짜 의도를 반영하는지, 혹시 AI 환각(hallucination)이 아닌지 판매자가 어떻게 확인할까요?</p>
+    </div>
+    <div class="problem-card">
+      <div class="card-icon">⚖️</div>
+      <h3>책임 소재 (Accountability)</h3>
+      <p>에이전트가 잘못된 주문을 하면 누가 책임지나요? 사용자? 에이전트 개발자? 판매자?</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 솔루션 배너 ═══════════════════ -->
+<div class="section">
+  <div class="solution-banner">
+    <h2>💡 AP2의 해답: Mandate(위임장) 시스템</h2>
+    <p>AP2는 <strong>"Mandate(위임장)"</strong>라는 디지털 계약을 도입합니다. 이는 <strong>암호화 서명</strong>이 적용되어 위·변조가 불가능하며, 사용자의 지시를 <strong>검증 가능한 증거</strong>로 남깁니다.</p>
+  </div>
+
+  <!-- Mandate 설명 -->
+  <div class="mandate-section">
+    <h3>🔏 Mandate란?</h3>
+    <p style="color: #b0bdd0; font-size: 15px; margin-bottom: 20px;">
+      Mandate는 마치 <strong>"디지털 위임장"</strong>과 같습니다. 종이 위임장에 서명하듯, 디지털 서명을 통해 AI 에이전트에게 특정 범위 내에서만 결제를 허용하는 구조입니다.
+    </p>
+    <div class="mandate-types">
+      <div class="mandate-type">
+        <h4>📋 Cart Mandate (장바구니 위임장)</h4>
+        <p>판매자가 먼저 장바구니에 암호화 서명 → 해당 가격·상품을 보장하겠다는 약속. 이후 사용자가 승인하면 사용자 서명도 추가됩니다.</p>
+      </div>
+      <div class="mandate-type">
+        <h4>💰 Payment Mandate (결제 위임장)</h4>
+        <p>사용자가 결제 네트워크(은행/카드사 등)에 보내는 암호화 서명. "이 금액을 이 판매자에게 지불해도 됩니다"라는 디지털 승인서입니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 아키텍처 다이어그램 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">AP2 아키텍처</div>
+  <div class="section-subtitle">사용자, AI 에이전트, 판매자, 결제 네트워크가 어떻게 연결되는지 한눈에 보기</div>
+
+  <div class="arch-diagram">
+    <div class="arch-row">
+      <div class="arch-box user"><span class="arch-emoji">👤</span>사용자<br><small style="font-size:11px;color:#6a7a9a">승인 & 서명</small></div>
+      <div class="arch-arrow">⟷</div>
+      <div class="arch-box agent"><span class="arch-emoji">🤖</span>AI 에이전트<br><small style="font-size:11px;color:#6a7a9a">쇼핑 & 협상</small></div>
+      <div class="arch-arrow">⟷</div>
+      <div class="arch-box merchant"><span class="arch-emoji">🏪</span>판매자<br><small style="font-size:11px;color:#6a7a9a">장바구니 서명</small></div>
+    </div>
+
+    <div class="arch-mandate-line">
+      <div class="dashed-line"></div>
+      🔏 Mandate (위임장) 교환
+      <div class="dashed-line"></div>
+    </div>
+
+    <div class="arch-row">
+      <div class="arch-box payment" style="min-width: 400px;">
+        <span class="arch-emoji">🏦</span>
+        결제 네트워크
+        <br><small style="font-size:11px;color:#6a7a9a">Mastercard · American Express · PayPal · Coinbase 등</small>
+      </div>
+    </div>
+    <div class="arch-label" style="margin-top: 16px; font-size: 13px; color: #8899b5;">
+      A2A (Agent-to-Agent) 프로토콜 기반 확장 &middot; 오픈소스
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 거래 흐름 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">거래가 이루어지는 과정</div>
+  <div class="section-subtitle">5단계로 완료되는 AP2 결제 플로우</div>
+
+  <div class="flow-container">
+    <div class="flow-step">
+      <div class="flow-number">1</div>
+      <div class="flow-content">
+        <h4>🤖 에이전트가 쇼핑 수행</h4>
+        <p>사용자의 요청에 따라 AI 에이전트가 판매자 시스템과 상호작용하여 원하는 상품·가격으로 장바구니를 구성합니다.</p>
+      </div>
+    </div>
+    <div class="flow-connector"></div>
+    <div class="flow-step">
+      <div class="flow-number">2</div>
+      <div class="flow-content">
+        <h4>🏪 판매자가 장바구니에 서명</h4>
+        <p>판매자가 장바구니를 <strong>암호화 서명</strong>합니다. 이는 "이 가격으로 이 상품을 제공하겠다"는 구속력 있는 약속입니다.</p>
+      </div>
+    </div>
+    <div class="flow-connector"></div>
+    <div class="flow-step">
+      <div class="flow-number">3</div>
+      <div class="flow-content">
+        <h4>👤 사용자에게 승인 요청</h4>
+        <p>에이전트가 판매자 서명이 포함된 장바구니를 사용자에게 보여줍니다. 사용자는 내용을 확인하고 최종 승인을 합니다.</p>
+      </div>
+    </div>
+    <div class="flow-connector"></div>
+    <div class="flow-step">
+      <div class="flow-number">4</div>
+      <div class="flow-content">
+        <h4>🔏 이중 Mandate 생성</h4>
+        <p>사용자 기기에서 <strong>Cart Mandate</strong>(판매자용)와 <strong>Payment Mandate</strong>(결제 네트워크용) 두 가지를 동시에 암호화 서명합니다.</p>
+      </div>
+    </div>
+    <div class="flow-connector"></div>
+    <div class="flow-step">
+      <div class="flow-number">5</div>
+      <div class="flow-content">
+        <h4>✅ 결제 완료</h4>
+        <p>결제 네트워크가 Mandate를 검증하고 결제를 처리합니다. 모든 과정이 암호화 증거로 기록됩니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 활용 사례 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">실제 활용 사례</div>
+  <div class="section-subtitle">AP2가 열어줄 새로운 쇼핑 경험</div>
+
+  <div class="usecase-grid">
+    <div class="usecase-card">
+      <div class="usecase-emoji">🧥</div>
+      <h3>자동 한정판 구매</h3>
+      <p>원하는 한정판 재킷이 품절 상태? AI 에이전트가 24시간 웹을 모니터링하다가 재입고 즉시 자동으로 구매합니다. 놓치는 일이 없습니다.</p>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">✈️</div>
+      <h3>여행 패키지 자동 예약</h3>
+      <p>"주말 제주도 여행 예산 50만원 이내"라고 말하면, 에이전트가 항공사·호텔·렌터카 에이전트들과 동시에 협상하여 최적 조합을 찾고 한번에 예약합니다.</p>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">🛒</div>
+      <h3>정기 생필품 자동 주문</h3>
+      <p>생수, 세제, 휴지 등 정기적으로 필요한 물품을 에이전트가 최저가를 비교하고 적절한 시기에 자동 주문합니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 지원 결제 수단 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">지원하는 결제 수단</div>
+  <div class="section-subtitle">전통 금융부터 암호화폐까지 폭넓게 지원</div>
+
+  <div class="payment-methods">
+    <div class="payment-item"><div class="pay-icon">💳</div><div class="pay-name">신용카드</div></div>
+    <div class="payment-item"><div class="pay-icon">🏧</div><div class="pay-name">체크카드</div></div>
+    <div class="payment-item"><div class="pay-icon">🏦</div><div class="pay-name">실시간 계좌이체</div></div>
+    <div class="payment-item"><div class="pay-icon">₿</div><div class="pay-name">암호화폐</div></div>
+    <div class="payment-item"><div class="pay-icon">📱</div><div class="pay-name">모바일 결제</div></div>
+  </div>
+  <p style="text-align:center; margin-top:24px; color:#8899b5; font-size:14px;">
+    Web3 결제를 위해 Google은 Coinbase와 협력하여 <strong>A2A x402</strong> 확장을 개발했습니다.
+  </p>
+</div>
+
+<!-- ═══════════════════ 파트너 ═══════════════════ -->
+<div class="section partner-section">
+  <div class="partner-count">60+</div>
+  <div class="section-title">글로벌 파트너 참여</div>
+  <div class="section-subtitle">전 세계 60개 이상의 기업이 AP2 표준 개발에 참여</div>
+
+  <div class="partner-logos">
+    <div class="partner-chip">Mastercard</div>
+    <div class="partner-chip">American Express</div>
+    <div class="partner-chip">PayPal</div>
+    <div class="partner-chip">Visa</div>
+    <div class="partner-chip">Alibaba</div>
+    <div class="partner-chip">Coinbase</div>
+    <div class="partner-chip">Etsy</div>
+    <div class="partner-chip">Salesforce</div>
+    <div class="partner-chip">Adyen</div>
+    <div class="partner-chip">Worldline</div>
+    <div class="partner-chip">Stripe</div>
+    <div class="partner-chip">Shopify</div>
+    <div class="partner-chip" style="background: linear-gradient(135deg, rgba(66,133,244,0.15), rgba(52,168,83,0.15)); border-color: #34a853;">그 외 50+ 기업</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 비교: 기존 vs AP2 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">기존 결제 vs AP2 결제</div>
+
+  <table class="compare-table">
+    <tr>
+      <th style="width: 30%;">구분</th>
+      <th style="width: 35%;">기존 온라인 결제</th>
+      <th style="width: 35%;">AP2 에이전트 결제</th>
+    </tr>
+    <tr>
+      <td><strong>결제 주체</strong></td>
+      <td>사람이 직접 클릭</td>
+      <td class="highlight-cell">AI 에이전트가 대행</td>
+    </tr>
+    <tr>
+      <td><strong>보안 방식</strong></td>
+      <td>비밀번호, OTP</td>
+      <td class="highlight-cell">암호화 서명 (Mandate)</td>
+    </tr>
+    <tr>
+      <td><strong>검증 가능성</strong></td>
+      <td>제한적 로그 기록</td>
+      <td class="highlight-cell">모든 과정 암호화 증거</td>
+    </tr>
+    <tr>
+      <td><strong>자동화 수준</strong></td>
+      <td>수동 또는 단순 반복</td>
+      <td class="highlight-cell">자율적 비교·협상·구매</td>
+    </tr>
+    <tr>
+      <td><strong>표준화</strong></td>
+      <td>플랫폼별 각자 방식</td>
+      <td class="highlight-cell">오픈 프로토콜 통합 표준</td>
+    </tr>
+    <tr>
+      <td><strong>에코시스템</strong></td>
+      <td>폐쇄적 결제 게이트웨이</td>
+      <td class="highlight-cell">60+ 글로벌 기업 참여</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══════════════════ 중요성 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">이 기술이 중요한 이유</div>
+  <div class="section-subtitle">AP2는 단순한 결제 프로토콜이 아니라, AI 경제의 인프라입니다</div>
+
+  <div class="importance-grid">
+    <div class="importance-card">
+      <h3>🌐 에이전트 경제의 기반</h3>
+      <p>AI 에이전트가 사람을 대신해 거래하는 시대가 다가오고 있습니다. AP2는 이 새로운 경제가 안전하게 작동할 수 있는 <strong>공통 언어</strong>를 제공합니다.</p>
+    </div>
+    <div class="importance-card">
+      <h3>🔒 신뢰 문제 해결</h3>
+      <p>AI가 대신 결제할 때 가장 큰 장벽은 "신뢰"입니다. 암호화 서명 기반의 Mandate 시스템으로 <strong>수학적으로 증명 가능한 신뢰</strong>를 구축합니다.</p>
+    </div>
+    <div class="importance-card">
+      <h3>📐 파편화 방지</h3>
+      <p>60개 이상의 글로벌 기업이 공동 설계한 <strong>오픈 표준</strong>이므로, 각 회사가 제각각 방식을 만들어 생태계가 분열되는 것을 막습니다.</p>
+    </div>
+    <div class="importance-card">
+      <h3>🚀 혁신 가속화</h3>
+      <p>개발자 누구나 이 오픈 프로토콜 위에 서비스를 구축할 수 있어, <strong>에이전트 커머스 혁신</strong>이 폭발적으로 가속될 수 있습니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 미래 전망 타임라인 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">미래 전망</div>
+  <div class="section-subtitle">AP2가 그리는 에이전트 커머스의 로드맵</div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-box">
+        <div class="tl-label">현재 ~ 단기</div>
+        <h4>프로토콜 표준화 & 도입</h4>
+        <p>주요 결제사·커머스 플랫폼이 AP2를 채택하고, 개발자 도구와 SDK가 확산됩니다. A2A 프로토콜과의 통합이 강화됩니다.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-box">
+        <div class="tl-label">중기 (1~2년)</div>
+        <h4>에이전트 커머스 대중화</h4>
+        <p>일반 소비자도 AI 에이전트를 통해 쇼핑하는 것이 보편화됩니다. 에이전트 간 자동 협상, 가격 비교, 번들 구매가 일상이 됩니다.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-box">
+        <div class="tl-label">중장기 (2~3년)</div>
+        <h4>자율 경제 생태계</h4>
+        <p>에이전트가 다른 에이전트와 직접 거래하는 B2B-Agent 경제가 형성됩니다. 공급망 전체에서 에이전트 기반 자동 조달이 이루어집니다.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-box">
+        <div class="tl-label">장기 비전</div>
+        <h4>완전 자율 AI 경제</h4>
+        <p>개인별 AI 에이전트가 재정 관리, 투자, 보험 등 금융 전반을 관리합니다. AP2는 이 생태계의 결제 인프라로 자리 잡습니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ 핵심 요약 ═══════════════════ -->
+<div class="section">
+  <div class="solution-banner" style="background: linear-gradient(135deg, #1a1530, #0d2137); border-color: #3a4a6a;">
+    <h2 style="color: #4285f4;">📌 핵심 요약</h2>
+    <p style="font-size: 17px; max-width: 750px; line-height: 2;">
+      AP2는 <strong>Google이 60개 이상의 글로벌 파트너</strong>와 함께 만든 <strong>AI 에이전트 결제 오픈 프로토콜</strong>입니다.
+      암호화 서명 기반의 <strong>Mandate(위임장) 시스템</strong>으로 권한 부여·진위 확인·책임 소재 문제를 해결하며,
+      신용카드부터 암호화폐까지 다양한 결제 수단을 지원합니다.
+      이는 곧 도래할 <strong>에이전트 경제 시대의 핵심 인프라</strong>가 될 것입니다.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<div class="footer">
+  <p>
+    원문: <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank">Google Cloud Blog - Announcing AP2 Protocol</a>
+    &nbsp;&middot;&nbsp;
+    공식 문서: <a href="https://ap2-protocol.org/" target="_blank">ap2-protocol.org</a>
+    &nbsp;&middot;&nbsp;
+    GitHub: <a href="https://github.com/google-agentic-commerce/AP2" target="_blank">google-agentic-commerce/AP2</a>
+  </p>
+</div>
+
+</body>
+</html>

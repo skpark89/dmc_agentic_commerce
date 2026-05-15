@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google 에이전트 커머스 전략 & 대행사 대응 가이드</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans KR',sans-serif;background:#06090f;color:#e0e6f0;line-height:1.8}
+
+  .hero{min-height:60vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px;background:radial-gradient(ellipse at 50% 20%,#0d1e3a 0%,#06090f 70%)}
+  .hero-badge{display:inline-block;background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;font-size:12px;font-weight:700;padding:7px 22px;border-radius:50px;margin-bottom:24px;letter-spacing:1px}
+  .hero h1{font-size:clamp(26px,5vw,52px);font-weight:900;line-height:1.25;margin-bottom:14px}
+  .hero h1 .g{background:linear-gradient(135deg,#4285f4,#34a853,#fbbc04,#ea4335);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:clamp(14px,2vw,17px);color:#7a8baa;max-width:750px}
+
+  .section{max-width:1100px;margin:0 auto;padding:80px 24px}
+  .st{font-size:clamp(22px,3.5vw,34px);font-weight:700;text-align:center;margin-bottom:10px}
+  .ss{text-align:center;color:#7a8baa;font-size:15px;max-width:700px;margin:0 auto 48px}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+
+  /* ── EVOLUTION DIAGRAM ── */
+  .evo-flow{display:flex;align-items:stretch;gap:0;margin:48px 0;flex-wrap:wrap;justify-content:center}
+  .evo-box{flex:1;min-width:200px;max-width:280px;padding:28px 20px;text-align:center;position:relative}
+  .evo-box h4{font-size:15px;font-weight:700;margin:10px 0 6px}
+  .evo-box p{font-size:12px;color:#7a8baa}
+  .evo-box .evo-icon{font-size:36px;margin-bottom:4px}
+  .evo-arr{display:flex;align-items:center;font-size:24px;color:#2a4a6a;padding:0 4px}
+  .evo-box:nth-child(1){background:rgba(66,133,244,.06);border:1px solid rgba(66,133,244,.2);border-radius:14px}
+  .evo-box:nth-child(3){background:rgba(52,168,83,.06);border:1px solid rgba(52,168,83,.2);border-radius:14px}
+  .evo-box:nth-child(5){background:rgba(251,188,4,.06);border:1px solid rgba(251,188,4,.2);border-radius:14px}
+  .evo-box:nth-child(7){background:rgba(234,67,53,.06);border:1px solid rgba(234,67,53,.2);border-radius:14px;box-shadow:0 0 30px rgba(234,67,53,.08)}
+
+  /* ── PILLAR CARDS ── */
+  .pillar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+  .pillar{background:#0a0f1a;border:1px solid #1a2040;border-radius:18px;overflow:hidden;transition:transform .3s}
+  .pillar:hover{transform:translateY(-4px)}
+  .pillar-head{padding:28px 28px 20px;border-bottom:1px solid #1a2040}
+  .pillar-head .ph-icon{font-size:32px;margin-bottom:8px}
+  .pillar-head h3{font-size:20px;font-weight:700}
+  .pillar-head h3 small{display:block;font-size:12px;color:#7a8baa;font-weight:500;margin-top:2px}
+  .pillar-body{padding:20px 28px 28px}
+  .pillar-body p{color:#8899b5;font-size:14px;margin-bottom:12px}
+  .pillar-body .detail-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+  .pillar-body .detail-row .dr-icon{flex-shrink:0;margin-top:3px;font-size:16px}
+  .pillar-body .detail-row .dr-text{font-size:13px;color:#a0b0c8}
+  .pillar-body .partner-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .pillar-body .partner-chips span{background:rgba(255,255,255,.06);border:1px solid #1e2a45;border-radius:6px;padding:3px 10px;font-size:11px;color:#8899b5}
+
+  /* ── ARCHITECTURE DIAGRAM ── */
+  .arch{background:#0a0f1a;border:1px solid #1a2040;border-radius:20px;padding:48px 28px;margin:48px 0;text-align:center;overflow-x:auto}
+  .arch-title{font-size:18px;font-weight:700;margin-bottom:24px;color:#8899b5}
+  .arch-layers{display:flex;flex-direction:column;gap:8px;max-width:800px;margin:0 auto}
+  .arch-l{border-radius:12px;padding:18px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .arch-l .al-label{min-width:140px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
+  .arch-l .al-items{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+  .arch-l .al-items .ai{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600}
+  .al1{background:rgba(234,67,53,.05);border:1px solid rgba(234,67,53,.15)}
+  .al1 .al-label{color:#ea4335}
+  .al2{background:rgba(251,188,4,.05);border:1px solid rgba(251,188,4,.15)}
+  .al2 .al-label{color:#fbbc04}
+  .al3{background:rgba(52,168,83,.05);border:1px solid rgba(52,168,83,.15)}
+  .al3 .al-label{color:#34a853}
+  .al4{background:rgba(66,133,244,.05);border:1px solid rgba(66,133,244,.15)}
+  .al4 .al-label{color:#4285f4}
+  .al5{background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.15)}
+  .al5 .al-label{color:#a78bfa}
+  .arch-arrow-down{text-align:center;font-size:18px;color:#2a3a5a;line-height:1}
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-section{margin:60px 0}
+  .flow-steps{display:flex;flex-direction:column;gap:8px;max-width:800px;margin:0 auto}
+  .flow-s{display:flex;gap:20px;align-items:flex-start}
+  .flow-num{min-width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+  .flow-s:nth-child(odd) .flow-num{background:#4285f4}
+  .flow-s:nth-child(even) .flow-num{background:#34a853}
+  .flow-box{background:#0a0f1a;border:1px solid #1a2040;border-radius:12px;padding:18px 22px;flex:1}
+  .flow-box h4{font-size:15px;font-weight:700;margin-bottom:3px}
+  .flow-box p{font-size:13px;color:#7a8baa}
+  .flow-conn{height:20px;width:3px;background:#1a2a45;margin-left:22px;border-radius:3px}
+
+  /* ── IMPACT TABLE ── */
+  .impact-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:14px;overflow:hidden;margin:40px 0;font-size:13px}
+  .impact-table th{background:#0f1525;padding:14px 16px;font-weight:700;text-align:left;border-bottom:2px solid #1a2545}
+  .impact-table td{padding:12px 16px;background:#0a0f1a;border-bottom:1px solid #111a2a}
+  .impact-table tr:last-child td{border-bottom:none}
+  .impact-table .before{color:#6a7a9a}.impact-table .after{color:#4285f4;font-weight:600}
+
+  /* ── AGENCY RESPONSE ── */
+  .resp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+  .resp-card{background:#0a0f1a;border-radius:18px;padding:32px;border-left:4px solid;transition:transform .3s}
+  .resp-card:hover{transform:translateY(-4px)}
+  .resp-card h3{font-size:18px;font-weight:700;margin-bottom:12px}
+  .resp-card p{color:#8899b5;font-size:14px;margin-bottom:10px}
+  .resp-card .action-list{list-style:none;padding:0}
+  .resp-card .action-list li{font-size:13px;color:#a0b0c8;padding:6px 0;border-bottom:1px solid #111a2a;display:flex;gap:8px;align-items:flex-start}
+  .resp-card .action-list li:last-child{border-bottom:none}
+  .resp-card .action-list li .ali{flex-shrink:0}
+  .r1{border-left-color:#4285f4}.r1 h3{color:#4285f4}
+  .r2{border-left-color:#34a853}.r2 h3{color:#34a853}
+  .r3{border-left-color:#fbbc04}.r3 h3{color:#fbbc04}
+  .r4{border-left-color:#ea4335}.r4 h3{color:#ea4335}
+  .r5{border-left-color:#a78bfa}.r5 h3{color:#a78bfa}
+  .r6{border-left-color:#06b6d4}.r6 h3{color:#06b6d4}
+
+  /* ── CHECKLIST ── */
+  .checklist{background:linear-gradient(135deg,rgba(66,133,244,.06),rgba(52,168,83,.06));border:1px solid rgba(66,133,244,.2);border-radius:20px;padding:48px;margin:60px 0}
+  .checklist h2{font-size:24px;font-weight:700;margin-bottom:24px;text-align:center}
+  .cl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .cl-item{display:flex;gap:12px;align-items:flex-start;background:rgba(0,0,0,.2);border-radius:12px;padding:16px;font-size:14px}
+  .cl-item .cl-check{flex-shrink:0;width:24px;height:24px;border:2px solid #34a853;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#34a853;margin-top:2px}
+  .cl-item .cl-text{color:#b0bdd0}
+  .cl-item .cl-text strong{color:#e0e6f0}
+
+  /* ── BOTTOM ── */
+  .bottom{background:linear-gradient(135deg,#0d1530,#0d0a20);border:1px solid #2a2a5a;border-radius:20px;padding:48px;text-align:center;margin:60px 0}
+  .bottom h2{font-size:26px;font-weight:700;margin-bottom:16px;color:#a78bfa}
+  .bottom p{color:#b0bdd0;font-size:15px;max-width:750px;margin:0 auto;line-height:1.9}
+
+  .footer{text-align:center;padding:60px 24px 40px;color:#3a4a6a;font-size:12px;border-top:1px solid #111a2a}
+  .footer a{color:#5a9cf5;text-decoration:none}
+  .footer .src{max-width:900px;margin:0 auto 20px;text-align:left;list-style:none}
+  .footer .src li{margin-bottom:4px}
+
+  @media(max-width:768px){
+    .evo-flow{flex-direction:column;align-items:center}
+    .evo-arr{transform:rotate(90deg);padding:4px 0}
+    .arch-l{flex-direction:column;gap:8px}
+    .arch-l .al-label{min-width:auto;text-align:center}
+    .flow-s{flex-direction:column;gap:8px}
+    .resp-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-badge">GOOGLE STRATEGY &middot; 2026</div>
+  <h1><span class="g">Google</span>의<br>에이전트 커머스 전략</h1>
+  <p class="hero-sub">UCP, Business Agent, Direct Offers, Merchant Center — Google이 기존 검색·쇼핑·광고 위에 구축하는 에이전트 커머스 생태계, 그리고 디지털 광고 대행사의 대응 전략</p>
+</div>
+
+<!-- ═══ 1. Google의 진화 경로 ═══ -->
+<div class="section">
+  <div class="st">Google 커머스의 진화 경로</div>
+  <div class="ss">에이전트 커머스는 갑자기 등장한 것이 아닙니다. Google의 기존 자산 위에 <strong>자연스럽게 쌓아 올린 확장</strong>입니다.</div>
+
+  <div class="evo-flow">
+    <div class="evo-box">
+      <div class="evo-icon">🔍</div>
+      <h4 style="color:#4285f4">Google Search</h4>
+      <p>키워드 검색 → 10개 파란 링크<br>사용자가 직접 클릭·이동</p>
+    </div>
+    <div class="evo-arr">→</div>
+    <div class="evo-box">
+      <div class="evo-icon">🛍️</div>
+      <h4 style="color:#34a853">Shopping + Ads</h4>
+      <p>Google Shopping, PLA, PMax<br>상품 피드 기반 광고 노출</p>
+    </div>
+    <div class="evo-arr">→</div>
+    <div class="evo-box">
+      <div class="evo-icon">✨</div>
+      <h4 style="color:#fbbc04">AI Overviews (AIO)</h4>
+      <p>AI가 답변 생성·요약<br>검색 결과 위에 AI 패널</p>
+    </div>
+    <div class="evo-arr">→</div>
+    <div class="evo-box">
+      <div class="evo-icon">🤖</div>
+      <h4 style="color:#ea4335">AI Mode + UCP</h4>
+      <p>AI가 추천·비교·결제까지<br><strong>검색 안에서 쇼핑 완결</strong></p>
+    </div>
+  </div>
+
+  <div style="background:#0a0f1a;border:1px solid #1a2040;border-radius:16px;padding:32px;max-width:800px;margin:0 auto">
+    <h4 style="font-size:16px;font-weight:700;margin-bottom:16px;text-align:center;color:#fbbc04">핵심: Google의 기존 자산이 왜 압도적 우위인가</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+      <div style="text-align:center;padding:16px;background:rgba(66,133,244,.06);border-radius:12px">
+        <div style="font-size:28px;font-weight:900;color:#4285f4">45억+</div>
+        <div style="font-size:12px;color:#7a8baa">Shopping Graph 상품</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:rgba(52,168,83,.06);border-radius:12px">
+        <div style="font-size:28px;font-weight:900;color:#34a853">84억</div>
+        <div style="font-size:12px;color:#7a8baa">일일 검색 쿼리</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:rgba(251,188,4,.06);border-radius:12px">
+        <div style="font-size:28px;font-weight:900;color:#fbbc04">PMax</div>
+        <div style="font-size:12px;color:#7a8baa">광고주 71% 사용</div>
+      </div>
+      <div style="text-align:center;padding:16px;background:rgba(234,67,53,.06);border-radius:12px">
+        <div style="font-size:28px;font-weight:900;color:#ea4335">GMC</div>
+        <div style="font-size:12px;color:#7a8baa">Merchant Center 인프라</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:14px;color:#8899b5;margin-top:20px">
+      Google은 이미 세계 최대의 <strong>상품 데이터베이스(Shopping Graph)</strong>, <strong>검색 트래픽</strong>, <strong>광고 네트워크</strong>, <strong>판매자 인프라(Merchant Center)</strong>를 보유.<br>
+      에이전트 커머스는 이 자산들을 AI로 연결하여 <strong>"검색에서 구매까지"를 한 곳에서 완결</strong>시키는 전략입니다.
+    </p>
+  </div>
+</div>
+
+<!-- ═══ 2. 5대 핵심 구성요소 ═══ -->
+<div class="section">
+  <div class="st">Google 에이전트 커머스 5대 핵심 구성요소</div>
+  <div class="ss">2026년 1월 NRF에서 발표된 Google의 에이전트 커머스 툴킷</div>
+
+  <div class="pillar-grid">
+
+    <!-- UCP -->
+    <div class="pillar" style="border-color:rgba(66,133,244,.3)">
+      <div class="pillar-head">
+        <div class="tag" style="background:rgba(66,133,244,.12);color:#4285f4">프로토콜</div>
+        <div class="ph-icon">🛒</div>
+        <h3 style="color:#4285f4">UCP<small>Universal Commerce Protocol</small></h3>
+      </div>
+      <div class="pillar-body">
+        <p><strong>쇼핑 여정 전체</strong>(발견 → 비교 → 구매 → 사후관리)를 단일 표준으로 정의하는 오픈 프로토콜. AI 에이전트와 판매자 시스템 간의 "공통 언어".</p>
+        <div class="detail-row"><div class="dr-icon">🔗</div><div class="dr-text"><strong>MCP + A2A + AP2 내장 호환</strong> — 도구 연결, 에이전트 통신, 결제 보안을 모두 지원</div></div>
+        <div class="detail-row"><div class="dr-icon">🏪</div><div class="dr-text">API, A2A, MCP 등 <strong>다양한 통합 방식</strong>을 유연하게 제공</div></div>
+        <div class="detail-row"><div class="dr-icon">📦</div><div class="dr-text"><strong>2026.3 업데이트:</strong> Cart(멀티 아이템), Catalog(실시간 상품), Identity Linking(OAuth 2.0 로열티)</div></div>
+        <div class="detail-row"><div class="dr-icon">✅</div><div class="dr-text"><strong>현재:</strong> Etsy, Wayfair 실거래 라이브 / Shopify, Target, Walmart 곧 합류</div></div>
+        <div class="partner-chips">
+          <span>Shopify</span><span>Etsy</span><span>Wayfair</span><span>Target</span><span>Walmart</span><span>Visa</span><span>Mastercard</span><span>Stripe</span><span>Adyen</span><span>AmEx</span><span>+10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Mode Checkout -->
+    <div class="pillar" style="border-color:rgba(234,67,53,.3)">
+      <div class="pillar-head">
+        <div class="tag" style="background:rgba(234,67,53,.12);color:#ea4335">쇼핑 경험</div>
+        <div class="ph-icon">🤖</div>
+        <h3 style="color:#ea4335">AI Mode 체크아웃<small>검색 안에서 바로 구매</small></h3>
+      </div>
+      <div class="pillar-body">
+        <p>Google Search의 <strong>AI Mode</strong>와 <strong>Gemini 앱</strong>에서 상품을 발견하고, 비교하고, <strong>사이트 이탈 없이 바로 결제</strong>까지 완료하는 경험.</p>
+        <div class="detail-row"><div class="dr-icon">💬</div><div class="dr-text">대화형 쇼핑: "등산 배낭 추천해줘" → AI가 비교·추천 → 바로 구매</div></div>
+        <div class="detail-row"><div class="dr-icon">🛡️</div><div class="dr-text">UCP 기반 체크아웃으로 가격·재고·배송 실시간 보장</div></div>
+        <div class="detail-row"><div class="dr-icon">📊</div><div class="dr-text">Shopping Graph의 45억+ 상품 데이터가 AI 추천의 근거</div></div>
+        <div class="detail-row"><div class="dr-icon">🔄</div><div class="dr-text">사용자의 검색 의도·이력·선호를 반영한 개인화 추천</div></div>
+      </div>
+    </div>
+
+    <!-- Business Agent -->
+    <div class="pillar" style="border-color:rgba(52,168,83,.3)">
+      <div class="pillar-head">
+        <div class="tag" style="background:rgba(52,168,83,.12);color:#34a853">브랜드 에이전트</div>
+        <div class="ph-icon">💬</div>
+        <h3 style="color:#34a853">Business Agent<small>브랜드 전용 AI 판매원</small></h3>
+      </div>
+      <div class="pillar-body">
+        <p>Google 검색에서 소비자가 <strong>브랜드와 직접 채팅</strong>할 수 있는 가상 판매 에이전트. 매장의 AI 판매 사원이 검색 결과에 상주하는 것.</p>
+        <div class="detail-row"><div class="dr-icon">🎯</div><div class="dr-text"><strong>Merchant Center에서 활성화·커스터마이징</strong> — 브랜드 톤, 상품 전문성 설정</div></div>
+        <div class="detail-row"><div class="dr-icon">📚</div><div class="dr-text">브랜드 데이터로 <strong>에이전트 학습</strong> 가능 (곧 출시)</div></div>
+        <div class="detail-row"><div class="dr-icon">🛒</div><div class="dr-text">에이전트 체크아웃(직접 구매) 지원 예정</div></div>
+        <div class="detail-row"><div class="dr-icon">📈</div><div class="dr-text">고객 인사이트 대시보드 제공 예정</div></div>
+        <div class="partner-chips">
+          <span>Lowe's</span><span>Michael's</span><span>Poshmark</span><span>Reebok</span><span>+ 미국 리테일러</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direct Offers -->
+    <div class="pillar" style="border-color:rgba(251,188,4,.3)">
+      <div class="pillar-head">
+        <div class="tag" style="background:rgba(251,188,4,.12);color:#fbbc04">광고 상품</div>
+        <div class="ph-icon">🏷️</div>
+        <h3 style="color:#fbbc04">Direct Offers<small>AI Mode 내 맞춤형 프로모션</small></h3>
+      </div>
+      <div class="pillar-body">
+        <p>AI Mode에서 <strong>구매 의향이 높은 사용자에게 독점 할인·번들·무료배송</strong>을 제시하는 새로운 광고 포맷. 기존 광고를 모든 사용자에게 동일하게 보여주는 것과 달리, <strong>AI가 적절한 타이밍에 맞춤 제안</strong>.</p>
+        <div class="detail-row"><div class="dr-icon">⚙️</div><div class="dr-text">Google Ads 캠페인 설정에서 오퍼 등록 → AI가 노출 타이밍 자동 결정</div></div>
+        <div class="detail-row"><div class="dr-icon">💰</div><div class="dr-text">파일럿: 할인(Discount) 중심 → 향후 번들, 무료배송으로 확장</div></div>
+        <div class="detail-row"><div class="dr-icon">🎯</div><div class="dr-text">"구매 직전" 사용자에게만 표시 → 높은 전환율 기대</div></div>
+        <div class="detail-row"><div class="dr-icon">🔄</div><div class="dr-text">기존 쇼핑 캠페인과 병행 가능, 추가 예산 할당 방식</div></div>
+      </div>
+    </div>
+
+    <!-- Merchant Center -->
+    <div class="pillar" style="border-color:rgba(139,92,246,.3)">
+      <div class="pillar-head">
+        <div class="tag" style="background:rgba(139,92,246,.12);color:#a78bfa">데이터 인프라</div>
+        <div class="ph-icon">📊</div>
+        <h3 style="color:#a78bfa">Merchant Center 진화<small>에이전트 시대의 상품 데이터 허브</small></h3>
+      </div>
+      <div class="pillar-body">
+        <p>기존의 단순 상품 피드 관리 도구에서, <strong>AI 에이전트가 상품을 이해하고 추천할 수 있는 풍부한 데이터 허브</strong>로 진화.</p>
+        <div class="detail-row"><div class="dr-icon">📝</div><div class="dr-text"><strong>수십 개 신규 데이터 속성:</strong> 자주 묻는 질문(FAQ), 호환 액세서리, 대체 상품 등</div></div>
+        <div class="detail-row"><div class="dr-icon">🔍</div><div class="dr-text">키워드 중심 → <strong>자연어 대화 맥락</strong>에서 발견될 수 있는 구조화된 데이터</div></div>
+        <div class="detail-row"><div class="dr-icon">🤖</div><div class="dr-text">AI Mode, Gemini, Business Agent 등 모든 AI 표면에서 활용</div></div>
+        <div class="detail-row"><div class="dr-icon">🛒</div><div class="dr-text"><strong>UCP 온보딩도 Merchant Center에서</strong> 진행 (간소화 프로세스 롤아웃 중)</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ 3. 전체 아키텍처 ═══ -->
+<div class="section">
+  <div class="st">Google 에이전트 커머스 전체 아키텍처</div>
+
+  <div class="arch">
+    <div class="arch-title">사용자 경험 → 기술 스택 → 판매자 인프라</div>
+    <div class="arch-layers">
+      <div class="arch-l al1">
+        <div class="al-label">사용자 접점</div>
+        <div class="al-items">
+          <div class="ai">🔍 Google Search AI Mode</div>
+          <div class="ai">✨ Gemini 앱</div>
+          <div class="ai">💬 Business Agent</div>
+        </div>
+      </div>
+      <div class="arch-arrow-down">▼</div>
+      <div class="arch-l al2">
+        <div class="al-label">AI 추천 엔진</div>
+        <div class="al-items">
+          <div class="ai">🧠 Gemini LLM</div>
+          <div class="ai">📊 Shopping Graph (45억+ 상품)</div>
+          <div class="ai">🎯 사용자 의도·이력 분석</div>
+        </div>
+      </div>
+      <div class="arch-arrow-down">▼</div>
+      <div class="arch-l al3">
+        <div class="al-label">커머스 프로토콜</div>
+        <div class="al-items">
+          <div class="ai">🛒 UCP (커머스 표준)</div>
+          <div class="ai">🤝 A2A (에이전트 통신)</div>
+          <div class="ai">🔌 MCP (도구 연결)</div>
+        </div>
+      </div>
+      <div class="arch-arrow-down">▼</div>
+      <div class="arch-l al4">
+        <div class="al-label">결제 · 광고</div>
+        <div class="al-items">
+          <div class="ai">💳 AP2 (결제 인증)</div>
+          <div class="ai">🏷️ Direct Offers (AI 광고)</div>
+          <div class="ai">📢 Performance Max</div>
+        </div>
+      </div>
+      <div class="arch-arrow-down">▼</div>
+      <div class="arch-l al5">
+        <div class="al-label">판매자 인프라</div>
+        <div class="al-items">
+          <div class="ai">📊 Merchant Center (데이터 허브)</div>
+          <div class="ai">💬 Business Agent (브랜드 에이전트)</div>
+          <div class="ai">🔗 Shopify / 자체몰 연동</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 4. AI Mode 쇼핑 플로우 ═══ -->
+<div class="section">
+  <div class="st">AI Mode 쇼핑 & 결제 플로우</div>
+  <div class="ss">사용자가 실제로 경험하게 될 쇼핑 여정</div>
+
+  <div class="flow-section">
+    <div class="flow-steps">
+      <div class="flow-s"><div class="flow-num">1</div><div class="flow-box"><h4>👤 사용자가 AI Mode에서 대화형 질문</h4><p>"여름 캠핑용 경량 텐트 추천해줘, 예산 20만원 이내"</p></div></div>
+      <div class="flow-conn"></div>
+      <div class="flow-s"><div class="flow-num">2</div><div class="flow-box"><h4>🧠 Gemini가 Shopping Graph + Merchant Center 데이터 분석</h4><p>45억+ 상품 DB에서 조건에 맞는 상품 탐색. 새로운 데이터 속성(FAQ, 호환 제품 등)도 참조하여 맥락에 맞는 추천 생성.</p></div></div>
+      <div class="flow-conn"></div>
+      <div class="flow-s"><div class="flow-num">3</div><div class="flow-box"><h4>🛍️ AI가 비교 결과 + 상품 패널 제시</h4><p>가격, 리뷰, 스펙 비교를 대화형으로 보여줌. 추가 질문도 가능 ("이 중에 방수 되는 건?").</p></div></div>
+      <div class="flow-conn"></div>
+      <div class="flow-s"><div class="flow-num">4</div><div class="flow-box"><h4>🏷️ Direct Offers: 구매 직전 맞춤 오퍼 노출</h4><p>사용자가 구매 의향을 보이면 → 광고주가 설정한 독점 할인/무료배송이 AI 판단에 의해 표시.</p></div></div>
+      <div class="flow-conn"></div>
+      <div class="flow-s"><div class="flow-num">5</div><div class="flow-box"><h4>💬 Business Agent로 브랜드와 직접 상담 (선택)</h4><p>"이 텐트 실제 사용감은?" → 브랜드의 AI 판매원이 제품 전문 상담 제공.</p></div></div>
+      <div class="flow-conn"></div>
+      <div class="flow-s"><div class="flow-num">6</div><div class="flow-box"><h4>🛒 UCP 기반 체크아웃 — 검색 내 결제 완료</h4><p>사이트 이탈 없이 바로 결제. AP2 프로토콜로 안전한 Mandate 기반 결제 처리. OAuth 2.0으로 로열티 포인트도 연동.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5. 기존 vs 에이전트 시대 비교 ═══ -->
+<div class="section">
+  <div class="st">광고·마케팅 패러다임 전환</div>
+  <div class="ss">기존 디지털 광고 방식이 에이전트 커머스 시대에 어떻게 바뀌는가</div>
+
+  <table class="impact-table">
+    <tr>
+      <th style="width:22%">영역</th>
+      <th style="width:39%">🖥️ 기존 (검색/쇼핑 광고)</th>
+      <th style="width:39%">🤖 에이전트 시대 (AI Mode)</th>
+    </tr>
+    <tr>
+      <td><strong>사용자 행동</strong></td>
+      <td class="before">키워드 검색 → 여러 링크 클릭 → 비교 → 결제</td>
+      <td class="after">자연어 대화 → AI 추천 → 검색 내 즉시 결제</td>
+    </tr>
+    <tr>
+      <td><strong>핵심 KPI</strong></td>
+      <td class="before">CTR, CPC, ROAS</td>
+      <td class="after">AI 추천 점유율(AI Citation Share), 전환율, AOV</td>
+    </tr>
+    <tr>
+      <td><strong>광고 형태</strong></td>
+      <td class="before">PLA, 텍스트 광고, 쇼핑 광고</td>
+      <td class="after">Direct Offers (맞춤 프로모션) + PMax AI 자동화</td>
+    </tr>
+    <tr>
+      <td><strong>상품 데이터</strong></td>
+      <td class="before">제목, 가격, 이미지, 카테고리</td>
+      <td class="after">+ FAQ, 호환 제품, 대체품, 사용 시나리오 등 풍부한 속성</td>
+    </tr>
+    <tr>
+      <td><strong>최적화 대상</strong></td>
+      <td class="before">키워드 입찰, 광고 소재, 랜딩페이지</td>
+      <td class="after">상품 피드 품질, 구조화 데이터, 브랜드 신뢰도</td>
+    </tr>
+    <tr>
+      <td><strong>브랜드 접점</strong></td>
+      <td class="before">광고 → 랜딩페이지 → 자사 사이트</td>
+      <td class="after">Business Agent(AI 판매원) + AI Mode 내 직접 체크아웃</td>
+    </tr>
+    <tr>
+      <td><strong>경쟁 구도</strong></td>
+      <td class="before">키워드 입찰 경쟁</td>
+      <td class="after">피드 품질 + AI 추천 알고리즘 이해 경쟁</td>
+    </tr>
+    <tr>
+      <td><strong>트래픽 흐름</strong></td>
+      <td class="before">Google → 자사 사이트 (유입)</td>
+      <td class="after">Google 내 결제 완결 (유입 감소 가능)</td>
+    </tr>
+    <tr>
+      <td><strong>SEO 전략</strong></td>
+      <td class="before">키워드 SEO, 백링크</td>
+      <td class="after">AEO (Answer Engine Optimization), 구조화 데이터, E-E-A-T</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══ 6. 대행사 대응 전략 ═══ -->
+<div class="section">
+  <div class="st">디지털 광고 대행사 대응 전략</div>
+  <div class="ss">기술적 · 운영적 측면에서 즉시 실행해야 할 것들</div>
+
+  <div class="resp-grid">
+
+    <!-- 기술 1: 피드 최적화 -->
+    <div class="resp-card r1">
+      <div class="tag" style="background:rgba(66,133,244,.12);color:#4285f4">기술적 대응 · 최우선</div>
+      <h3>🔧 Merchant Center 피드 고도화</h3>
+      <p>에이전트 커머스에서 <strong>피드 품질 = 생존</strong>. PMax 지출의 74~97%가 피드 기반이며, AI 추천에 선택되려면 풍부한 데이터가 필수.</p>
+      <ul class="action-list">
+        <li><span class="ali">→</span> 신규 데이터 속성(FAQ, 호환 액세서리, 대체품, 사용 시나리오) 즉시 등록</li>
+        <li><span class="ali">→</span> 상품 제목·설명을 자연어 대화 맥락에 맞게 재구성</li>
+        <li><span class="ali">→</span> 가격·재고·배송 정보 실시간 동기화 (Shopping Graph 연동)</li>
+        <li><span class="ali">→</span> 피드 오류 제로(0 errors) 상태 유지 자동화 체계 구축</li>
+      </ul>
+    </div>
+
+    <!-- 기술 2: UCP 통합 -->
+    <div class="resp-card r2">
+      <div class="tag" style="background:rgba(52,168,83,.12);color:#34a853">기술적 대응</div>
+      <h3>🛒 UCP 조기 도입 지원</h3>
+      <p>고객사(판매자)의 UCP 온보딩을 선제적으로 지원하여, AI Mode 체크아웃에서 경쟁 우위 확보.</p>
+      <ul class="action-list">
+        <li><span class="ali">→</span> Merchant Center 내 UCP 온보딩 프로세스 숙지 및 가이드 제작</li>
+        <li><span class="ali">→</span> Shopify 기반 고객사는 UCP 자동 연동 활용</li>
+        <li><span class="ali">→</span> 자체몰 고객사는 UCP API 통합 기술 컨설팅 제공</li>
+        <li><span class="ali">→</span> AP2 결제 프로토콜 지원 여부 확인 (Visa, MC 등)</li>
+      </ul>
+    </div>
+
+    <!-- 기술 3: AEO -->
+    <div class="resp-card r3">
+      <div class="tag" style="background:rgba(251,188,4,.12);color:#fbbc04">기술적 대응</div>
+      <h3>🔍 AEO (Answer Engine Optimization)</h3>
+      <p>기존 SEO를 넘어, <strong>AI가 답변으로 인용(citation)할 수 있는 구조</strong>로 콘텐츠와 데이터를 재설계.</p>
+      <ul class="action-list">
+        <li><span class="ali">→</span> 구조화 데이터(Schema.org) 적용 확대: Product, FAQ, Review, HowTo</li>
+        <li><span class="ali">→</span> E-E-A-T(경험·전문성·권위·신뢰) 신호 강화</li>
+        <li><span class="ali">→</span> 자연어 질문에 답변하는 콘텐츠 구조 (Q&A 형태)</li>
+        <li><span class="ali">→</span> AI 추천 점유율(AI Citation Share) 모니터링 도구 도입</li>
+      </ul>
+    </div>
+
+    <!-- 운영 1: Direct Offers -->
+    <div class="resp-card r4">
+      <div class="tag" style="background:rgba(234,67,53,.12);color:#ea4335">운영적 대응 · 매출 직결</div>
+      <h3>🏷️ Direct Offers 캠페인 전략</h3>
+      <p>AI Mode 내에서 구매 직전 사용자에게 노출되는 <strong>새로운 수익 기회</strong>. 파일럿 단계부터 참여가 필수.</p>
+      <ul class="action-list">
+        <li><span class="ali">→</span> Google Ads에서 Direct Offers 파일럿 즉시 신청</li>
+        <li><span class="ali">→</span> 고객사별 할인·번들·무료배송 오퍼 전략 수립</li>
+        <li><span class="ali">→</span> 기존 PMax/쇼핑 캠페인과의 예산 배분 최적화</li>
+        <li><span class="ali">→</span> AI Mode 전용 전환 추적 및 성과 측정 체계 구축</li>
+      </ul>
+    </div>
+
+    <!-- 운영 2: Business Agent -->
+    <div class="resp-card r5">
+      <div class="tag" style="background:rgba(139,92,246,.12);color:#a78bfa">운영적 대응</div>
+      <h3>💬 Business Agent 설정 & 운영</h3>
+      <p>브랜드 전용 AI 판매원 — 대행사가 <strong>새로운 서비스 상품으로 포지셔닝</strong>할 수 있는 기회.</p>
+      <ul class="action-list">
+        <li><span class="ali">→</span> 고객 브랜드의 Business Agent 활성화 및 톤·매너 커스터마이징</li>
+        <li><span class="ali">→</span> 브랜드 데이터(상품 지식, FAQ, 정책)로 에이전트 학습 지원</li>
+        <li><span class="ali">→</span> 에이전트 대화 품질 모니터링 및 지속 개선 운영</li>
+        <li><span class="ali">→</span> 고객 인사이트 대시보드 분석 → 마케팅 전략에 반영</li>
+      </ul>
+    </div>
+
+    <!-- 운영 3: 조직·역량 -->
+    <div class="resp-card r6">
+      <div class="tag" style="background:rgba(6,182,212,.12);color:#06b6d4">조직 역량</div>
+      <h3>🏢 대행사 조직 & 역량 전환</h3>
+      <p>PPC 매니저의 역할이 "검색 클릭 확보"에서 <strong>"AI 추천 확보"</strong>로 전환. 조직 차원의 변화 필요.</p>
+      <ul class="action-list">
+        <li><span class="ali">→</span> PPC팀 + SEO팀 + 데이터팀 통합 운영 (Paid-Organic 컨버전스)</li>
+        <li><span class="ali">→</span> "AI 커머스 스페셜리스트" 역할 신설 (UCP, 피드, 에이전트 전문)</li>
+        <li><span class="ali">→</span> 에이전틱 AI 도구 도입 (캠페인 자동 최적화, 크리에이티브 AI 생성)</li>
+        <li><span class="ali">→</span> 성과 보고에 AI Citation Share, 에이전트 전환율 등 신규 KPI 추가</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ 7. 대행사 실행 체크리스트 ═══ -->
+<div class="section">
+  <div class="checklist">
+    <h2>✅ 대행사 즉시 실행 체크리스트</h2>
+    <div class="cl-grid">
+      <div class="cl-item"><div class="cl-check">1</div><div class="cl-text"><strong>Merchant Center 피드 감사:</strong> 모든 고객사 피드의 오류율, 데이터 완전성, 신규 속성 지원 여부 점검</div></div>
+      <div class="cl-item"><div class="cl-check">2</div><div class="cl-text"><strong>신규 데이터 속성 추가:</strong> FAQ, 호환 제품, 대체품, 사용 시나리오를 모든 주요 상품에 등록</div></div>
+      <div class="cl-item"><div class="cl-check">3</div><div class="cl-text"><strong>UCP 온보딩 확인:</strong> Merchant Center에서 UCP 통합 가능 여부 확인, Shopify 고객은 자동 연동 검증</div></div>
+      <div class="cl-item"><div class="cl-check">4</div><div class="cl-text"><strong>Direct Offers 파일럿 신청:</strong> Google Ads 담당자를 통해 파일럿 참여 신청, 오퍼 전략 수립</div></div>
+      <div class="cl-item"><div class="cl-check">5</div><div class="cl-text"><strong>Business Agent 활성화:</strong> 미국 대상 고객사의 Merchant Center에서 Business Agent 활성화</div></div>
+      <div class="cl-item"><div class="cl-check">6</div><div class="cl-text"><strong>구조화 데이터 점검:</strong> Schema.org Product, FAQ, Review 마크업 적용 현황 전수 조사</div></div>
+      <div class="cl-item"><div class="cl-check">7</div><div class="cl-text"><strong>AI Mode 성과 추적 설정:</strong> AI Mode 경유 전환을 별도 추적할 수 있는 측정 체계 구성</div></div>
+      <div class="cl-item"><div class="cl-check">8</div><div class="cl-text"><strong>팀 교육:</strong> UCP, AP2, AEO, Business Agent에 대한 내부 교육 프로그램 실시</div></div>
+      <div class="cl-item"><div class="cl-check">9</div><div class="cl-text"><strong>경쟁사 벤치마킹:</strong> 주요 경쟁사의 AI Mode 노출·추천 현황 모니터링 시작</div></div>
+      <div class="cl-item"><div class="cl-check">10</div><div class="cl-text"><strong>서비스 패키지 개발:</strong> "에이전트 커머스 최적화" 서비스를 대행사 상품으로 패키징</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 8. 리스크 & 주의사항 ═══ -->
+<div class="section">
+  <div class="st">대행사가 주의해야 할 리스크</div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:40px">
+    <div style="background:#0a0f1a;border:1px solid #2a1a1a;border-radius:14px;padding:24px">
+      <h4 style="color:#ff8a80;font-size:15px;font-weight:600;margin-bottom:8px">⚠️ 자사 사이트 트래픽 감소</h4>
+      <p style="color:#7a8baa;font-size:13px">AI Mode 내 결제 완결 → 고객사 사이트 직접 방문 감소 가능. 자사 사이트 의존도가 높은 고객에게는 위험 요인이며, 리타겟팅·CRM 데이터 수집 경로에 영향.</p>
+    </div>
+    <div style="background:#0a0f1a;border:1px solid #2a1a1a;border-radius:14px;padding:24px">
+      <h4 style="color:#ff8a80;font-size:15px;font-weight:600;margin-bottom:8px">⚠️ 플랫폼 종속 심화</h4>
+      <p style="color:#7a8baa;font-size:13px">발견·비교·결제가 모두 Google 내에서 이루어지면, 브랜드의 플랫폼 의존도가 더 높아짐. 멀티채널(OpenAI ACP 등) 전략으로 분산 필요.</p>
+    </div>
+    <div style="background:#0a0f1a;border:1px solid #2a1a1a;border-radius:14px;padding:24px">
+      <h4 style="color:#ff8a80;font-size:15px;font-weight:600;margin-bottom:8px">⚠️ 측정·어트리뷰션 불확실성</h4>
+      <p style="color:#7a8baa;font-size:13px">AI Mode 내 추천·광고·오가닉의 경계가 모호해지면서, 기존 어트리뷰션 모델로는 정확한 성과 측정이 어려워질 수 있음.</p>
+    </div>
+    <div style="background:#0a0f1a;border:1px solid #2a1a1a;border-radius:14px;padding:24px">
+      <h4 style="color:#ff8a80;font-size:15px;font-weight:600;margin-bottom:8px">⚠️ 광고 비용 변동</h4>
+      <p style="color:#7a8baa;font-size:13px">Direct Offers 등 새로운 광고 포맷의 가격 체계가 아직 확정되지 않음. 초기에 비용 효율이 좋더라도, 경쟁 심화 시 비용 상승 가능.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOTTOM ═══ -->
+<div class="section">
+  <div class="bottom">
+    <h2>📌 핵심 결론</h2>
+    <p>
+      Google의 에이전트 커머스 전략은 전혀 새로운 것이 아닙니다.
+      <strong>기존의 Search + Shopping Graph + Merchant Center + Ads</strong> 위에
+      <strong>AI Mode + UCP + Business Agent + Direct Offers</strong>를 얹어
+      <strong>"검색에서 구매까지"를 Google 안에서 완결</strong>시키는 것입니다.<br><br>
+      디지털 광고 대행사에게 이것은 위기이자 기회입니다.<br>
+      <strong>Merchant Center 피드 품질이 곧 AI 추천 품질</strong>이 되는 시대에,
+      "키워드 입찰 관리자"에서 <strong>"AI 커머스 최적화 전문가"</strong>로 역할을 전환하는 대행사만이 살아남을 것입니다.
+    </p>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+  <ul class="src">
+    <strong style="color:#7a8baa">참고 자료 (Sources):</strong>
+    <li>1. <a href="https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/" target="_blank">Google Blog — New tech and tools for retailers in agentic shopping era</a></li>
+    <li>2. <a href="https://developers.google.com/merchant/ucp" target="_blank">Google Developers — Universal Commerce Protocol (UCP) Guide</a></li>
+    <li>3. <a href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank">Google Developers Blog — Under the Hood: UCP</a></li>
+    <li>4. <a href="https://blog.google/products/ads-commerce/digital-advertising-commerce-2026/" target="_blank">Google Blog — What to expect in digital advertising and commerce in 2026</a></li>
+    <li>5. <a href="https://www.constellationr.com/blog-news/insights/google-launches-agentic-commerce-tools-universal-commerce-protocol-gemini" target="_blank">Constellation Research — Google Agentic Commerce Launch Analysis</a></li>
+    <li>6. <a href="https://searchengineland.com/google-shares-whats-next-in-digital-advertising-and-commerce-in-2026-468995" target="_blank">Search Engine Land — Google AI-powered future for shopping and ads in 2026</a></li>
+    <li>7. <a href="https://www.brainlabsdigital.com/google-2026-ai-shopping-announcements-explained/" target="_blank">Brainlabs — Google's AI Shopping Announcements Explained</a></li>
+    <li>8. <a href="https://ppc.land/google-unveils-shopping-ads-in-ai-mode-doubling-down-on-conversational-commerce/" target="_blank">PPC Land — Shopping Ads in AI Mode</a></li>
+    <li>9. <a href="https://www.channelengine.com/en/blog/google-universal-commerce-protocol-merchant-center-ai-shopping" target="_blank">ChannelEngine — UCP and Merchant Center for AI Shopping</a></li>
+    <li>10. <a href="https://smarter-ecommerce.com/blog/en/google-ads/ai-changed-role-of-ppc-managers-2026/" target="_blank">Smarter eCommerce — How AI changed the role of PPC managers in 2026</a></li>
+  </ul>
+  <p>2026년 4월 기준 정리. Google의 제품·정책은 빠르게 변동됩니다.</p>
+</div>
+
+</body>
+</html>

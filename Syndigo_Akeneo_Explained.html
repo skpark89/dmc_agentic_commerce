@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syndigo & Akeneo — AI 커머스 상품 데이터의 핵심을 쉽게 이해하기</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans KR',sans-serif;background:#06090f;color:#e0e6f0;line-height:1.9;-webkit-font-smoothing:antialiased}
+
+  /* ── HERO ── */
+  .hero{min-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px 50px;background:radial-gradient(ellipse at 50% 20%,#0d1830 0%,#06090f 70%)}
+  .badge{display:inline-block;background:linear-gradient(135deg,#a78bfa,#0072ff);color:#fff;font-size:11px;font-weight:700;padding:6px 20px;border-radius:50px;margin-bottom:18px;letter-spacing:1.5px}
+  .hero h1{font-size:clamp(22px,4.5vw,40px);font-weight:900;line-height:1.3;margin-bottom:14px}
+  .hero h1 .hl{background:linear-gradient(135deg,#a78bfa,#0072ff,#00c853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:clamp(13px,1.8vw,16px);color:#7a8baa;max-width:780px;line-height:1.8}
+
+  /* ── COMMON ── */
+  .section{max-width:1060px;margin:0 auto;padding:72px 24px}
+  .st{font-size:clamp(18px,3.2vw,28px);font-weight:800;text-align:center;margin-bottom:8px}
+  .ss{text-align:center;color:#7a8baa;font-size:14px;max-width:720px;margin:0 auto 40px}
+  .divider{width:60px;height:3px;background:linear-gradient(135deg,#a78bfa,#0072ff);border-radius:3px;margin:14px auto 18px}
+
+  /* ── ANALOGY ── */
+  .analogy{max-width:1000px;margin:-10px auto 0;padding:0 24px}
+  .analogy-box{border-radius:20px;padding:36px 32px;position:relative;overflow:hidden}
+  .analogy-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#a78bfa,#0072ff,#00c853)}
+  .ab-orange{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(239,68,68,.04));border:1px solid rgba(251,191,36,.15)}
+  .analogy-box h2{font-size:20px;font-weight:800;margin-bottom:14px}
+  .analogy-box p{color:#a0b0c8;font-size:15px;line-height:1.9}
+
+  .analogy-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;margin-top:24px;align-items:stretch}
+  .ac-col{border-radius:14px;padding:24px}
+  .ac-old{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.12)}
+  .ac-new{background:rgba(0,200,83,.06);border:1px solid rgba(0,200,83,.12)}
+  .ac-arrow{display:flex;align-items:center;justify-content:center;font-size:32px;color:#5a6a8a}
+  .ac-col h4{font-size:14px;font-weight:700;margin-bottom:10px}
+  .ac-col p{font-size:13px;color:#8899b5;line-height:1.7}
+  .ac-col .ac-example{background:rgba(0,0,0,.15);border-radius:10px;padding:14px;margin-top:12px;font-size:12px;color:#a0b0c8;font-family:'Courier New',monospace;line-height:1.5}
+
+  /* ── COMPANY DEEP DIVE ── */
+  .company{background:#080d18;border:1px solid #141e35;border-radius:20px;overflow:hidden;margin-bottom:32px}
+  .company-header{padding:32px 32px 24px;position:relative}
+  .company-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+  .ch-syndigo::before{background:linear-gradient(90deg,#0072ff,#00c6ff)}
+  .ch-akeneo::before{background:linear-gradient(90deg,#a78bfa,#c084fc)}
+  .company-header h3{font-size:24px;font-weight:900}
+  .company-header .ch-sub{font-size:14px;color:#7a8baa;margin-top:4px}
+  .company-header .ch-stats{display:flex;gap:24px;margin-top:16px;flex-wrap:wrap}
+  .ch-stat{text-align:center}
+  .ch-stat .cs-num{font-size:22px;font-weight:900}
+  .cs-blue{color:#60a5fa}
+  .cs-purple{color:#a78bfa}
+  .cs-green{color:#4ade80}
+  .ch-stat .cs-label{font-size:10px;color:#5a6a8a}
+  .company-body{padding:0 32px 32px}
+
+  /* ── WHAT-IS BOX ── */
+  .what-is{border-radius:14px;padding:24px;margin-bottom:20px}
+  .wi-blue{background:rgba(0,114,255,.06);border:1px solid rgba(0,114,255,.12)}
+  .wi-purple{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12)}
+  .wi-green{background:rgba(0,200,83,.06);border:1px solid rgba(0,200,83,.12)}
+  .wi-yellow{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.12)}
+  .what-is h4{font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .what-is p{font-size:14px;color:#a0b0c8;line-height:1.8}
+
+  /* ── FLOW DIAGRAM ── */
+  .flow{background:rgba(0,0,0,.2);border:1px solid #1a2040;border-radius:16px;padding:28px 20px;margin:20px 0;overflow-x:auto}
+  .flow-title{text-align:center;font-size:15px;font-weight:700;margin-bottom:20px}
+  .flow-steps{display:flex;align-items:stretch;gap:0;min-width:600px}
+  .flow-step{flex:1;text-align:center;padding:16px 12px;position:relative}
+  .flow-step::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:20px;color:#3a4a6a;font-weight:900}
+  .flow-step:last-child::after{display:none}
+  .fs-icon{font-size:28px;margin-bottom:8px}
+  .fs-name{font-size:13px;font-weight:700;color:#e0e6f0;margin-bottom:4px}
+  .fs-desc{font-size:11px;color:#7a8baa;line-height:1.5}
+  .fs-box{border-radius:12px;padding:14px 10px;height:100%}
+  .fsb-input{background:rgba(0,200,83,.06);border:1px solid rgba(0,200,83,.12)}
+  .fsb-process{background:rgba(0,114,255,.06);border:1px solid rgba(0,114,255,.12)}
+  .fsb-output{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12)}
+  .fsb-result{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.12)}
+
+  /* ── EXAMPLE ── */
+  .example-box{background:rgba(0,0,0,.2);border:1px solid #1a2040;border-radius:14px;overflow:hidden;margin:20px 0}
+  .example-header{background:rgba(0,114,255,.08);padding:14px 20px;font-size:14px;font-weight:700;color:#60a5fa;display:flex;align-items:center;gap:8px}
+  .example-body{padding:20px}
+  .example-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .ex-col h5{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .ex-col .ex-code{background:rgba(0,0,0,.3);border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:12px;line-height:1.6;color:#a0b0c8;overflow-x:auto}
+  .ex-highlight{color:#c3e88d}
+  .ex-key{color:#c792ea}
+  .ex-comment{color:#546e7a;font-style:italic}
+
+  /* ── WHY NEEDED ── */
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
+  .why-card{background:#080d18;border:1px solid #141e35;border-radius:14px;padding:24px;position:relative;overflow:hidden}
+  .why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+  .wc1::before{background:linear-gradient(90deg,#ef4444,#f87171)}
+  .wc2::before{background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+  .wc3::before{background:linear-gradient(90deg,#0072ff,#60a5fa)}
+  .why-card h4{font-size:15px;font-weight:700;margin-bottom:8px}
+  .why-card p{font-size:13px;color:#7a8baa;line-height:1.7}
+
+  /* ── TABLE ── */
+  .tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:14px;overflow:hidden;margin:20px 0;font-size:13px}
+  .tbl thead th{background:#0d1530;padding:12px 14px;font-weight:700;text-align:left;color:#a0b0c8;font-size:11px;letter-spacing:.5px}
+  .tbl tbody td{padding:12px 14px;border-bottom:1px solid #141e35;color:#c0d0e8}
+  .tbl tbody tr:hover{background:rgba(0,114,255,.03)}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl .bold{font-weight:700;color:#e0e6f0}
+
+  /* ── KOREA GAP ── */
+  .gap-box{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(239,68,68,.04));border:2px solid rgba(251,191,36,.2);border-radius:20px;padding:32px;margin:24px 0}
+  .gap-box h3{font-size:20px;font-weight:800;margin-bottom:16px;color:#fbbf24}
+  .gap-box p{font-size:14px;color:#a0b0c8;line-height:1.8}
+  .gap-list{list-style:none;padding:0;margin-top:16px}
+  .gap-list li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(251,191,36,.08);font-size:14px;color:#c0d0e8;align-items:flex-start;line-height:1.6}
+  .gap-list li:last-child{border-bottom:none}
+
+  /* ── FOOTER ── */
+  footer{text-align:center;padding:50px 24px;color:#3a4a6a;font-size:12px}
+  footer a{color:#0072ff;text-decoration:none}
+
+  @media(max-width:768px){
+    .analogy-compare{grid-template-columns:1fr;gap:10px}
+    .ac-arrow{transform:rotate(90deg)}
+    .example-cols{grid-template-columns:1fr}
+    .flow-steps{min-width:auto;flex-wrap:wrap}
+    .flow-step::after{display:none}
+    .company-header,.company-body{padding-left:20px;padding-right:20px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <span class="badge">DEEP DIVE — 2026.04</span>
+  <h1>Syndigo & Akeneo<br><span class="hl">AI 시대 상품 데이터의 핵심을 쉽게 이해하기</span></h1>
+  <p class="hero-sub">
+    "AI 에이전트가 내 상품을 추천하려면, 먼저 내 상품을 <strong>이해</strong>해야 합니다."<br>
+    이 두 회사가 정확히 무슨 일을 하는지, 왜 중요한지, 그리고 왜 한국에는 아직 없는지를 쉽게 설명합니다.
+  </p>
+</section>
+
+<!-- ═══════════════ 먼저 이해해야 할 배경 ═══════════════ -->
+<div class="analogy" style="margin-top:-10px">
+  <div class="analogy-box ab-orange">
+    <h2>🧩 먼저 이해해야 할 것: "상품 데이터"가 왜 중요해졌나?</h2>
+    <p>
+      <strong>비유로 설명하겠습니다.</strong><br><br>
+      백화점에 가면 직원이 "어떤 걸 찾으세요?"라고 물어봅니다. 직원은 매장의 모든 상품을 알고 있기 때문에
+      "가볍고 출장갈 때 좋은 가방"이라고 말하면 적절한 상품을 찾아줍니다.<br><br>
+      이제 <strong>AI 에이전트가 그 직원 역할</strong>을 합니다. ChatGPT에게 "출장용 가방 추천해줘"라고 말하면
+      AI가 여러 쇼핑몰의 상품 중 최적의 것을 골라줍니다.<br><br>
+      그런데 문제가 있습니다. 쇼핑몰의 상품 데이터는 원래 <strong>"사람이 보는 웹페이지"를 위해 만든 것</strong>입니다.
+      예쁜 이미지, HTML로 된 상세페이지, 키워드 나열... AI가 이걸 "이해"하기 어렵습니다.
+    </p>
+
+    <div class="analogy-compare">
+      <div class="ac-col ac-old">
+        <h4 style="color:#f87171">❌ 기존 상품 데이터 (사람용)</h4>
+        <p>예쁜 이미지, 긴 HTML 상세페이지, 키워드 나열, 비정형 텍스트.<br>AI가 읽으면 핵심 정보를 파악하기 어려움.</p>
+        <div class="ac-example">
+상품명: [특가] 가죽 서류가방 블랙 A-302<br>
+상세: &lt;img src="..."&gt; &lt;div&gt;고급 소가죽...<br>
+&lt;b&gt;사이즈: 가로39 세로28&lt;/b&gt;...<br>
+카테고리: 패션 > 가방 > 서류가방
+        </div>
+      </div>
+      <div class="ac-arrow">→</div>
+      <div class="ac-col ac-new">
+        <h4 style="color:#4ade80">✅ AI-Ready 상품 데이터 (AI용)</h4>
+        <p>구조화된 JSON, 대화형 속성, 인증 정보, 리뷰 요약.<br>AI가 즉시 이해하고 고객에게 자연스럽게 설명 가능.</p>
+        <div class="ac-example">
+{<br>
+&nbsp;&nbsp;"title": "소가죽 서류가방",<br>
+&nbsp;&nbsp;"use_case": ["출장", "비즈니스"],<br>
+&nbsp;&nbsp;"weight": "680g (가벼운)",<br>
+&nbsp;&nbsp;"material": "소가죽",<br>
+&nbsp;&nbsp;"laptop_fit": "15인치까지",<br>
+&nbsp;&nbsp;"reviews_summary": "가볍고 튼튼...",<br>
+&nbsp;&nbsp;"faq": [{"Q":"방수되나요?","A":"..."}]<br>
+}
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px">
+      <strong>이 변환을 해주는 회사가 바로 Syndigo와 Akeneo입니다.</strong><br>
+      이들은 "사람용 상품 데이터"를 "AI가 이해하는 상품 데이터"로 바꿔주고,
+      그 데이터를 ChatGPT, Google AI, Claude 같은 AI 에이전트에 <strong>직접 연결</strong>해줍니다.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════ "대화형 속성"이란? ═══════════════ -->
+<section class="section">
+  <h2 class="st">"대화형 속성(Conversational Attributes)"이란?</h2>
+  <div class="divider"></div>
+  <p class="ss">AI 에이전트가 고객과 자연스러운 대화를 나누기 위해 필요한 새로운 형태의 상품 정보</p>
+
+  <div class="what-is wi-green">
+    <h4 style="color:#4ade80">💬 쉽게 말하면</h4>
+    <p>
+      기존 상품 데이터는 <strong>"사이즈: 39×28cm, 무게: 680g, 색상: 블랙"</strong> 같은 스펙 나열이었습니다.<br>
+      대화형 속성은 <strong>"이 가방은 가볍고, 15인치 노트북이 들어가고, 출장갈 때 딱 좋아요"</strong>처럼
+      AI가 고객과 대화할 때 사용할 수 있는 <strong>맥락이 있는 정보</strong>입니다.
+    </p>
+  </div>
+
+  <div class="example-box">
+    <div class="example-header">📋 실제 예시: 같은 상품, 두 가지 데이터 형태</div>
+    <div class="example-body">
+      <div class="example-cols">
+        <div class="ex-col">
+          <h5 style="color:#f87171">❌ 기존 상품 스펙 데이터</h5>
+          <div class="ex-code">
+<span class="ex-key">상품명:</span> LG 그램 17 2026<br>
+<span class="ex-key">무게:</span> 1,350g<br>
+<span class="ex-key">화면:</span> 17인치 WQXGA<br>
+<span class="ex-key">CPU:</span> Intel Core Ultra 7<br>
+<span class="ex-key">RAM:</span> 16GB<br>
+<span class="ex-key">배터리:</span> 80Wh<br>
+<span class="ex-key">가격:</span> 1,890,000원<br>
+<br>
+<span class="ex-comment">→ AI: "이 노트북이 출장용으로 좋은지"<br>
+&nbsp;&nbsp;&nbsp;판단할 근거가 부족함</span>
+          </div>
+        </div>
+        <div class="ex-col">
+          <h5 style="color:#4ade80">✅ 대화형 속성이 추가된 데이터</h5>
+          <div class="ex-code">
+<span class="ex-key">title:</span> <span class="ex-highlight">"LG 그램 17 2026"</span><br>
+<span class="ex-key">weight_feel:</span> <span class="ex-highlight">"매우 가벼운 (1.35kg)"</span><br>
+<span class="ex-key">best_for:</span> <span class="ex-highlight">["출장","대학생","재택근무"]</span><br>
+<span class="ex-key">screen_experience:</span> <span class="ex-highlight">"큰 화면 멀티태스킹"</span><br>
+<span class="ex-key">battery_life:</span> <span class="ex-highlight">"하루종일 사용 가능"</span><br>
+<span class="ex-key">compared_to:</span> <span class="ex-highlight">"맥북 에어보다 가벼움"</span><br>
+<span class="ex-key">reviews_summary:</span> <span class="ex-highlight">"가볍고 배터리<br>&nbsp;좋다는 평 89%"</span><br>
+<span class="ex-key">faq:</span> [{<span class="ex-highlight">"Q":"게임 되나요?"</span>,<br>
+&nbsp;&nbsp;<span class="ex-highlight">"A":"가벼운 게임은 OK"</span>}]<br>
+<br>
+<span class="ex-comment">→ AI: "출장 많은 분이시군요.<br>
+&nbsp;&nbsp;&nbsp;LG 그램 17이 딱이에요.<br>
+&nbsp;&nbsp;&nbsp;1.35kg으로 매우 가볍고..."</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="what-is wi-yellow">
+    <h4 style="color:#fbbf24">⚡ 왜 이게 중요한가?</h4>
+    <p>
+      Google이 Merchant Center에 <strong>대화형 속성(Conversational Attributes)</strong>을 새 필드로 추가했고,
+      OpenAI의 ACP도 이런 구조화된 데이터를 요구합니다.<br>
+      <strong>대화형 속성이 없는 상품은 AI 에이전트에게 "보이지 않는 상품"</strong>이 됩니다.
+      마치 SEO를 안 하면 구글 검색에 안 나오는 것처럼, 대화형 속성이 없으면 AI 추천에서 빠집니다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════ SYNDIGO DEEP DIVE ═══════════════ -->
+<section class="section" style="padding-top:0">
+  <h2 class="st">Syndigo — 상세 분석</h2>
+  <div class="divider"></div>
+
+  <div class="company">
+    <div class="company-header ch-syndigo">
+      <h3>Syndigo</h3>
+      <div class="ch-sub">AI 시대의 상품 데이터 허브 — "상품 정보의 구글"</div>
+      <div class="ch-stats">
+        <div class="ch-stat"><div class="cs-num cs-blue">$3.5B</div><div class="cs-label">기업가치</div></div>
+        <div class="ch-stat"><div class="cs-num cs-blue">18,000+</div><div class="cs-label">고객사</div></div>
+        <div class="ch-stat"><div class="cs-num cs-blue">1,500+</div><div class="cs-label">직원</div></div>
+        <div class="ch-stat"><div class="cs-num cs-blue">60</div><div class="cs-label">진출 국가</div></div>
+      </div>
+    </div>
+    <div class="company-body">
+
+      <!-- 이 회사가 뭐하는 회사? -->
+      <div class="what-is wi-blue">
+        <h4 style="color:#60a5fa">🏢 이 회사가 뭐 하는 회사인가?</h4>
+        <p>
+          <strong>한 줄 요약:</strong> 브랜드/제조사의 상품 정보를 한곳에 모아서 관리하고,
+          이것을 아마존·월마트·쿠팡 같은 유통 채널에 자동으로 배포해주는 <strong>상품 정보 관리(PIM) 플랫폼</strong>입니다.<br><br>
+          <strong>비유:</strong> 마치 <strong>"상품 정보의 우체국"</strong>과 같습니다.
+          브랜드가 상품 정보(이름, 사진, 스펙, 가격 등)를 Syndigo에 넣으면,
+          Syndigo가 알아서 아마존용, 월마트용, 이제는 ChatGPT용으로 포맷을 바꿔서 보내줍니다.<br><br>
+          미국 상위 20개 리테일러 중 90%가 Syndigo를 사용합니다.
+        </p>
+      </div>
+
+      <!-- OpenAI Connect -->
+      <div class="what-is wi-green" style="margin-top:16px">
+        <h4 style="color:#4ade80">🔗 서비스 ①: Syndigo OpenAI Connect</h4>
+        <p>
+          <strong>한 줄 요약:</strong> 상품 데이터를 OpenAI의 ACP(Agentic Commerce Protocol) 규격에 맞게 변환해서
+          <strong>ChatGPT에 직접 보내주는</strong> 파이프라인입니다.
+        </p>
+      </div>
+
+      <!-- HOW IT WORKS: OpenAI Connect -->
+      <div class="flow">
+        <div class="flow-title">Syndigo OpenAI Connect — 작동 방식</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="fs-box fsb-input">
+              <div class="fs-icon">🏭</div>
+              <div class="fs-name">브랜드/제조사</div>
+              <div class="fs-desc">상품 정보를<br>Syndigo에 등록<br>(이미 15,000+ 브랜드가<br>사용 중)</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-process">
+              <div class="fs-icon">⚙️</div>
+              <div class="fs-name">Syndigo 변환</div>
+              <div class="fs-desc">상품명, 영양정보,<br>인증, 가격, 재고를<br><strong>ACP 규격 JSON</strong>으로<br>자동 변환</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-output">
+              <div class="fs-icon">📡</div>
+              <div class="fs-name">OpenAI에 전송</div>
+              <div class="fs-desc">ACP 호환 피드를<br>OpenAI 서버에<br>직접 전달<br>(실시간 업데이트)</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-result">
+              <div class="fs-icon">🛒</div>
+              <div class="fs-name">ChatGPT에서 추천</div>
+              <div class="fs-desc">"유기농 시리얼 추천"<br>→ AI가 정확한 정보로<br>상품 추천 + 바로 구매<br>(Instant Checkout)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="what-is wi-blue" style="margin-top:16px">
+        <h4 style="color:#60a5fa">💡 구체적으로 어떤 데이터를 변환하나?</h4>
+        <p>
+          Syndigo OpenAI Connect가 만드는 <strong>ACP 호환 피드</strong>에는 다음이 포함됩니다:
+        </p>
+        <table class="tbl" style="margin-top:12px">
+          <thead><tr><th>데이터 종류</th><th>예시</th><th>AI가 이걸로 뭘 하나?</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">기본 정보</td><td>상품ID, 상품명, 브랜드, 카테고리</td><td>정확한 상품 식별 및 분류</td></tr>
+            <tr><td class="bold">가격/재고</td><td>판매가, 할인가, 실시간 재고</td><td>"지금 살 수 있어요" 안내</td></tr>
+            <tr><td class="bold">영양/성분</td><td>칼로리, 알레르겐, 원재료</td><td>"글루텐프리 시리얼 찾아줘" 대응</td></tr>
+            <tr><td class="bold">인증/지속가능성</td><td>유기농인증, 비건인증, 탄소발자국</td><td>"친환경 제품만 보여줘" 필터링</td></tr>
+            <tr><td class="bold">리뷰 요약</td><td>평점, 리뷰 수, 핵심 긍정/부정</td><td>"이거 평판 좋아?" 질문 답변</td></tr>
+            <tr><td class="bold">FAQ</td><td>자주 묻는 질문 + 답변</td><td>"이거 전자레인지에 돌려도 돼?" 즉시 답변</td></tr>
+            <tr><td class="bold">미디어 메타데이터</td><td>이미지 설명, 사용법 영상 링크</td><td>시각적 정보 제공</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- GEO -->
+      <div class="what-is wi-green" style="margin-top:16px">
+        <h4 style="color:#4ade80">🔍 서비스 ②: Syndigo GEO (Generative Engine Optimization)</h4>
+        <p>
+          <strong>한 줄 요약:</strong> SEO가 "구글 검색에 잘 나오게 최적화"하는 것이라면,
+          GEO는 <strong>"AI 에이전트에 잘 추천되게 최적화"</strong>하는 것입니다.<br><br>
+          <strong>구체적으로 하는 일:</strong>
+        </p>
+        <table class="tbl" style="margin-top:12px">
+          <thead><tr><th>기능</th><th>설명</th><th>SEO와의 차이</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">AI 가독성 최적화</td><td>상품 데이터를 LLM이 쉽게 파싱할 수 있는 구조로 변환</td><td>SEO는 HTML 메타태그, GEO는 JSON 구조화</td></tr>
+            <tr><td class="bold">속성 풍부도 강화</td><td>AI가 답변에 사용할 수 있는 대화형 속성 자동 생성</td><td>SEO는 키워드 밀도, GEO는 질문-답변 쌍</td></tr>
+            <tr><td class="bold">멀티 LLM 최적화</td><td>ChatGPT뿐 아니라 Google AI, Claude, Perplexity 등 모든 LLM 대응</td><td>SEO는 구글 한 곳, GEO는 모든 AI 플랫폼</td></tr>
+            <tr><td class="bold">신뢰도 검증</td><td>모든 속성에 출처, 타임스탬프, 승인 이력 포함</td><td>AI 환각(Hallucination) 방지</td></tr>
+            <tr><td class="bold">성과 모니터링</td><td>내 상품이 AI에서 얼마나 노출·추천되는지 추적</td><td>검색 순위 추적 → AI 추천 빈도 추적</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ AKENEO DEEP DIVE ═══════════════ -->
+<section class="section" style="padding-top:0">
+  <h2 class="st">Akeneo — 상세 분석</h2>
+  <div class="divider"></div>
+
+  <div class="company">
+    <div class="company-header ch-akeneo">
+      <h3>Akeneo</h3>
+      <div class="ch-sub">AI 모델에 상품 데이터를 "직접 연결"하는 PIM — "상품 데이터의 통역사"</div>
+      <div class="ch-stats">
+        <div class="ch-stat"><div class="cs-num cs-purple">2026.01</div><div class="cs-label">Winter Release</div></div>
+        <div class="ch-stat"><div class="cs-num cs-purple">MCP</div><div class="cs-label">네이티브 서버</div></div>
+        <div class="ch-stat"><div class="cs-num cs-purple">Stripe</div><div class="cs-label">결제 파트너</div></div>
+        <div class="ch-stat"><div class="cs-num cs-purple">글로벌</div><div class="cs-label">엔터프라이즈</div></div>
+      </div>
+    </div>
+    <div class="company-body">
+
+      <div class="what-is wi-purple">
+        <h4 style="color:#a78bfa">🏢 이 회사가 뭐 하는 회사인가?</h4>
+        <p>
+          <strong>한 줄 요약:</strong> Akeneo도 Syndigo처럼 <strong>상품 정보 관리(PIM)</strong> 회사입니다.
+          다만 Syndigo가 "데이터 배포"에 강하다면, Akeneo는 <strong>"데이터 품질 관리와 AI 연결"</strong>에 더 집중합니다.<br><br>
+          <strong>비유:</strong> Syndigo가 "상품 정보의 우체국"이라면, Akeneo는 <strong>"상품 정보의 통역사"</strong>입니다.
+          다양한 형태의 상품 데이터를 받아서, AI가 이해할 수 있는 언어로 번역하고,
+          품질을 검증하고, 안전하게 연결해줍니다.
+        </p>
+      </div>
+
+      <!-- MCP Server -->
+      <div class="what-is wi-green" style="margin-top:16px">
+        <h4 style="color:#4ade80">🔌 서비스 ①: Akeneo MCP Server</h4>
+        <p>
+          <strong>한 줄 요약:</strong> AI 모델(Claude, ChatGPT 등)이 상품 데이터에 <strong>직접 접근할 수 있는 통로</strong>를 만들어줍니다.<br><br>
+          <strong>MCP(Model Context Protocol)</strong>란 Anthropic이 만든 표준으로,
+          "AI가 외부 데이터와 도구에 연결하는 방법"을 정한 규약입니다.
+          마치 USB가 어떤 장치든 컴퓨터에 연결해주는 것처럼, MCP는 AI를 외부 데이터에 연결합니다.<br><br>
+          <strong>Akeneo MCP Server의 핵심 역할: "거버넌스(관리) 레이어"</strong><br>
+          AI가 상품 데이터에 접근할 때, 아무 데이터나 마음대로 사용하면 안 됩니다.
+          브랜드 가이드라인, 법적 규정, 데이터 정확성이 보장되어야 합니다.
+          Akeneo MCP Server는 이 <strong>"교통 정리"</strong> 역할을 합니다.
+        </p>
+      </div>
+
+      <!-- HOW IT WORKS: MCP Server -->
+      <div class="flow">
+        <div class="flow-title">Akeneo MCP Server — 작동 방식</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="fs-box fsb-input">
+              <div class="fs-icon">🏭</div>
+              <div class="fs-name">기업 상품 DB</div>
+              <div class="fs-desc">기업의 기존 상품 데이터<br>(ERP, 엑셀, DB 등)를<br>Akeneo PIM에 저장</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-process">
+              <div class="fs-icon">🛡️</div>
+              <div class="fs-name">MCP Server<br>(거버넌스 레이어)</div>
+              <div class="fs-desc">브랜드 규정 적용<br>법적 컴플라이언스 확인<br>데이터 정확성 검증<br><strong>허가된 데이터만 통과</strong></div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-output">
+              <div class="fs-icon">🤖</div>
+              <div class="fs-name">AI 모델 직접 쿼리</div>
+              <div class="fs-desc">Claude, ChatGPT 등이<br>MCP를 통해<br>"이 상품 스펙 알려줘"<br>식으로 직접 질의</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-result">
+              <div class="fs-icon">✅</div>
+              <div class="fs-name">정확한 답변 제공</div>
+              <div class="fs-desc">AI가 추측이 아닌<br><strong>검증된 실제 데이터</strong>로<br>고객에게 답변<br>(환각 방지)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="what-is wi-purple" style="margin-top:16px">
+        <h4 style="color:#a78bfa">💡 왜 "거버넌스"가 중요한가?</h4>
+        <p>
+          AI가 상품 정보를 마음대로 수집하면 이런 문제가 생깁니다:<br>
+          ① <strong>잘못된 가격</strong> — 옛날 가격을 최신으로 착각해서 안내<br>
+          ② <strong>허위 인증</strong> — 유기농이 아닌데 유기농이라고 추천<br>
+          ③ <strong>브랜드 가이드 위반</strong> — "저렴한 대안"으로 프리미엄 브랜드를 소개<br>
+          ④ <strong>법적 위험</strong> — 의약품 효능을 과장해서 설명<br><br>
+          Akeneo MCP Server는 이런 문제를 <strong>데이터가 AI에 전달되기 전에 차단</strong>합니다.
+        </p>
+      </div>
+
+      <!-- Stripe Partnership -->
+      <div class="what-is wi-green" style="margin-top:16px">
+        <h4 style="color:#4ade80">💳 서비스 ②: Akeneo × Stripe 파트너십</h4>
+        <p>
+          <strong>한 줄 요약:</strong> Akeneo(상품 데이터) + Stripe(결제)를 합쳐서,
+          AI 에이전트가 <strong>상품 발견부터 결제까지 한 번에</strong> 처리할 수 있게 합니다.
+        </p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-title">Akeneo + Stripe — "발견에서 결제까지" 작동 방식</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="fs-box fsb-input">
+              <div class="fs-icon">📦</div>
+              <div class="fs-name">Akeneo PIM</div>
+              <div class="fs-desc">상품 정보, 가격,<br>재고를 관리하고<br>AI-Ready로 변환</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-process">
+              <div class="fs-icon">🔄</div>
+              <div class="fs-name">실시간 연동</div>
+              <div class="fs-desc">상품·가격·재고<br>정보를 실시간으로<br>Stripe에 전달</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-output">
+              <div class="fs-icon">💳</div>
+              <div class="fs-name">Stripe 결제</div>
+              <div class="fs-desc">AI 에이전트가<br>Stripe를 통해<br>결제 처리<br>(SPT 토큰 사용)</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="fs-box fsb-result">
+              <div class="fs-icon">🎉</div>
+              <div class="fs-name">구매 완료</div>
+              <div class="fs-desc">고객은 AI와 대화만<br>했는데 주문 완료!<br>판매자는 기존 시스템<br>변경 불필요</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="what-is wi-purple" style="margin-top:16px">
+        <h4 style="color:#a78bfa">🔑 이 파트너십의 핵심 포인트</h4>
+        <p>
+          <strong>역할 분담이 깔끔합니다:</strong><br>
+          • <strong>Akeneo 담당:</strong> 상품 발견(Discovery) — AI가 상품을 찾고 이해할 수 있게<br>
+          • <strong>Stripe 담당:</strong> 결제(Checkout) — AI가 안전하게 결제할 수 있게<br><br>
+          판매자 입장에서는 <strong>"Akeneo에 상품 데이터 넣고, Stripe 계정 연결하면 끝"</strong>입니다.
+          AI 에이전트(ChatGPT 등)에서 상품이 자동으로 보이고, 고객이 사면 결제도 자동 처리됩니다.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SYNDIGO vs AKENEO ═══════════════ -->
+<section class="section" style="padding-top:0">
+  <h2 class="st">Syndigo vs Akeneo 비교</h2>
+  <div class="divider"></div>
+  <p class="ss">같은 PIM 업계지만 에이전틱 커머스 접근 방식이 다릅니다</p>
+
+  <table class="tbl">
+    <thead><tr><th>비교 항목</th><th>Syndigo</th><th>Akeneo</th></tr></thead>
+    <tbody>
+      <tr><td class="bold">핵심 전략</td><td>OpenAI(ChatGPT)에 상품 피드를 <strong>직접 전송</strong></td><td>AI 모델이 상품 데이터를 <strong>직접 쿼리</strong>할 수 있게 MCP로 연결</td></tr>
+      <tr><td class="bold">주요 프로토콜</td><td><strong>ACP</strong> (OpenAI의 Agentic Commerce Protocol)</td><td><strong>MCP</strong> (Anthropic의 Model Context Protocol)</td></tr>
+      <tr><td class="bold">결제 파트너</td><td>OpenAI 내 Instant Checkout (Stripe 기반)</td><td><strong>Stripe</strong>와 직접 파트너십</td></tr>
+      <tr><td class="bold">데이터 흐름 방향</td><td>Syndigo → OpenAI 서버로 <strong>푸시(Push)</strong></td><td>AI가 Akeneo MCP Server를 <strong>풀(Pull)</strong></td></tr>
+      <tr><td class="bold">거버넌스</td><td>데이터 신뢰성 (출처·타임스탬프 포함)</td><td>MCP Server가 <strong>게이트키퍼</strong> 역할 (브랜드 규정·법적 컴플라이언스)</td></tr>
+      <tr><td class="bold">GEO (AI 최적화)</td><td>✅ Syndigo GEO 전용 제품</td><td>AI Data Architect Agent로 데이터 자동 보강</td></tr>
+      <tr><td class="bold">강점</td><td>규모 (18,000+ 고객, 미국 리테일 90% 커버)</td><td>데이터 품질 관리 + AI 연결 기술력</td></tr>
+      <tr><td class="bold">대상 고객</td><td>대기업·브랜드 (CPG, 식품, 리테일)</td><td>중견~대기업 (제조, 패션, 글로벌 유통)</td></tr>
+      <tr><td class="bold">한국 지원</td><td style="color:#f87171">❌ 없음</td><td style="color:#f87171">❌ 없음</td></tr>
+    </tbody>
+  </table>
+
+  <div class="what-is wi-blue" style="margin-top:16px">
+    <h4 style="color:#60a5fa">🤔 쉽게 정리하면</h4>
+    <p>
+      <strong>Syndigo</strong> = "내 상품 데이터를 ChatGPT에 <strong>보내서</strong> AI가 추천할 수 있게 하겠다" (Push 방식)<br>
+      <strong>Akeneo</strong> = "AI가 필요할 때 내 상품 데이터에 <strong>와서 물어볼</strong> 수 있게 하겠다" (Pull 방식)<br><br>
+      둘 다 결국 <strong>"AI 에이전트가 내 상품을 정확히 이해하고 추천할 수 있게 만드는 것"</strong>이 목적입니다.
+      접근 방식만 다릅니다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════ 왜 한국에 필요한가 ═══════════════ -->
+<section class="section" style="padding-top:0">
+  <h2 class="st">왜 한국에는 이런 도구가 없고, 왜 필요한가?</h2>
+  <div class="divider"></div>
+
+  <div class="why-grid">
+    <div class="why-card wc1">
+      <h4>❌ 한국 플랫폼 미지원</h4>
+      <p>Syndigo와 Akeneo는 <strong>Shopify, Amazon, WooCommerce</strong> 같은 글로벌 플랫폼만 지원합니다.
+      네이버 스마트스토어, 카페24, 고도몰, 메이크샵은 연결 자체가 불가능합니다.</p>
+    </div>
+    <div class="why-card wc2">
+      <h4>❌ 한국어 처리 불가</h4>
+      <p>"가성비 좋은", "출장갈 때 딱인", "이건 좀 그런데 그래도 괜찮아요" 같은 한국어 표현에서
+      <strong>대화형 속성을 추출하는 NLP 기능이 없습니다</strong>. 영어 기반으로만 최적화되어 있습니다.</p>
+    </div>
+    <div class="why-card wc3">
+      <h4>❌ 한국 인증 체계 미지원</h4>
+      <p>KC인증, 식약처인증, 유기농인증 등 <strong>한국 고유 인증마크</strong>를 AI가 이해할 수 있는 구조화 데이터로 변환하는 기능이 없습니다.
+      글로벌 스키마에 한국 인증 필드 자체가 없습니다.</p>
+    </div>
+  </div>
+
+  <div class="gap-box">
+    <h3>⚠️ 한국 판매자가 처한 상황</h3>
+    <p>
+      지금 한국 판매자 60만+는 다음과 같은 상황에 놓여 있습니다:
+    </p>
+    <ul class="gap-list">
+      <li>📌 <strong>ChatGPT Shopping이 확장 중</strong>인데, 내 상품이 추천되려면 ACP 호환 피드가 필요. 하지만 네이버 스마트스토어 EP를 ACP JSON으로 바꿔주는 도구가 없음.</li>
+      <li>📌 <strong>Google AI Mode가 쇼핑을 혁신</strong> 중인데, UCP .well-known 엔드포인트를 자동 생성해주는 도구가 없음.</li>
+      <li>📌 <strong>Claude, Perplexity도 쇼핑 기능</strong>을 도입 중인데, MCP Server를 통해 내 상품 데이터를 연결해주는 도구가 없음.</li>
+      <li>📌 <strong>카페24가 ChatGPT Apps에 진출</strong>했지만, 개별 판매자가 자기 상품을 AI-Ready로 최적화하는 셀프서비스 도구가 없음.</li>
+      <li>📌 결론: <strong>한국의 Syndigo/Akeneo</strong> — 네이버·카페24·고도몰 피드를 ACP/UCP/MCP 호환 대화형 속성으로 변환하고, AI 에이전트에 직접 연결해주는 한국어 특화 도구가 시급하게 필요합니다.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ 정리: 핵심 인사이트 ═══════════════ -->
+<section class="section" style="padding-top:0">
+  <h2 class="st">정리: 기억해야 할 핵심 인사이트</h2>
+  <div class="divider"></div>
+
+  <div class="what-is wi-green">
+    <h4 style="color:#4ade80">🎯 3줄 요약</h4>
+    <p>
+      ① <strong>AI 에이전트 시대에 "상품 데이터 품질"이 곧 "매출"</strong>입니다.
+      AI가 추천하지 않는 상품은 팔리지 않습니다. 마치 구글에 안 나오는 웹사이트처럼.<br><br>
+      ② <strong>Syndigo와 Akeneo는 이 문제를 해결하는 글로벌 기업</strong>입니다.
+      Syndigo는 ACP로 ChatGPT에 피드를 보내고, Akeneo는 MCP로 AI가 직접 데이터를 가져가게 합니다.<br><br>
+      ③ <strong>하지만 한국 시장은 빈 칸</strong>입니다.
+      한국어, 한국 이커머스 플랫폼(네이버·카페24·고도몰), 한국 인증 체계를 지원하는 동일한 도구가 전무합니다.
+      이것이 바로 한국 IT 기업의 기회입니다.
+    </p>
+  </div>
+
+  <table class="tbl" style="margin-top:16px">
+    <thead><tr><th>용어</th><th>쉬운 설명</th><th>왜 중요한지</th></tr></thead>
+    <tbody>
+      <tr><td class="bold">PIM</td><td>상품 정보 관리 시스템 (상품 데이터의 "본부")</td><td>흩어진 상품 데이터를 한 곳에서 관리</td></tr>
+      <tr><td class="bold">ACP</td><td>OpenAI가 만든 "AI 쇼핑 규격"</td><td>이 규격에 맞아야 ChatGPT에서 상품이 보임</td></tr>
+      <tr><td class="bold">MCP</td><td>Anthropic이 만든 "AI-데이터 연결 규격"</td><td>AI가 상품 DB에 직접 질문할 수 있는 통로</td></tr>
+      <tr><td class="bold">대화형 속성</td><td>AI가 고객과 대화할 때 쓸 수 있는 상품 정보</td><td>"출장용이에요?" 같은 질문에 AI가 답할 수 있게</td></tr>
+      <tr><td class="bold">GEO</td><td>AI 추천에 잘 나오게 최적화 (AI 시대의 SEO)</td><td>AI에 안 보이는 상품 = 존재하지 않는 상품</td></tr>
+      <tr><td class="bold">피드 변환</td><td>쇼핑몰 상품 데이터 → AI가 이해하는 형식</td><td>네이버 EP를 ChatGPT이 이해하는 JSON으로</td></tr>
+      <tr><td class="bold">거버넌스</td><td>AI에 전달되는 데이터의 정확성·합법성 보장</td><td>AI가 틀린 가격/허위 인증을 말하는 것 방지</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <p>Syndigo & Akeneo — AI 커머스 상품 데이터의 핵심을 쉽게 이해하기 | 2026년 4월 작성</p>
+  <p style="margin-top:8px">
+    Sources:
+    <a href="https://syndigo.com/news/syndigo-openai-connect-ai-shopping-integration/" target="_blank">Syndigo OpenAI Connect</a> ·
+    <a href="https://syndigo.com/agentic-commerce/" target="_blank">Syndigo Agentic Commerce</a> ·
+    <a href="https://syndigo.com/news/syndigo-acquires-1worldsync/" target="_blank">Syndigo $3.5B</a> ·
+    <a href="https://www.akeneo.com/press-release/akeneo-accelerates-commerce-velocity-as-agentic-ai-transforms-digital-engagement/" target="_blank">Akeneo Winter 2026</a> ·
+    <a href="https://api-prd.akeneo.com/mcp/overview.html" target="_blank">Akeneo MCP API</a> ·
+    <a href="https://www.prnewswire.com/news-releases/akeneo-partners-with-stripe-to-help-businesses-get-ready-to-sell-on-ai-agents-302689901.html" target="_blank">Akeneo × Stripe</a> ·
+    <a href="https://stripe.com/blog/agentic-commerce-suite" target="_blank">Stripe Agentic Commerce Suite</a> ·
+    <a href="https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/" target="_blank">Google Conversational Attributes</a>
+  </p>
+</footer>
+
+</body>
+</html>

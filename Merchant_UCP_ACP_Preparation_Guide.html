@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>판매자 실전 가이드: UCP & ACP 준비 사항</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans KR',sans-serif;background:#06090f;color:#e0e6f0;line-height:1.8}
+
+  .hero{min-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:70px 24px;background:radial-gradient(ellipse at 50% 20%,#0d1e3a 0%,#06090f 70%)}
+  .badge{display:inline-block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:12px;font-weight:700;padding:7px 22px;border-radius:50px;margin-bottom:20px;letter-spacing:1px}
+  .hero h1{font-size:clamp(24px,4.5vw,44px);font-weight:900;line-height:1.25;margin-bottom:12px}
+  .hero h1 .hl{background:linear-gradient(135deg,#f59e0b,#ef4444,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:clamp(13px,2vw,16px);color:#7a8baa;max-width:700px}
+  .hero-callout{margin-top:32px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:20px 28px;max-width:650px;font-size:14px;color:#fbbf24;text-align:center}
+
+  .section{max-width:1060px;margin:0 auto;padding:72px 24px}
+  .st{font-size:clamp(20px,3.5vw,30px);font-weight:700;text-align:center;margin-bottom:10px}
+  .ss{text-align:center;color:#7a8baa;font-size:15px;max-width:680px;margin:0 auto 44px}
+  .tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:6px;letter-spacing:.5px}
+
+  /* TWO COL COMPARE */
+  .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin:40px 0}
+  .col-card{background:#0a0f1a;border-radius:18px;overflow:hidden;border:2px solid}
+  .col-head{padding:24px 28px 18px;border-bottom:1px solid #1a2040}
+  .col-head h3{font-size:22px;font-weight:800}
+  .col-head h3 small{display:block;font-size:12px;font-weight:500;color:#7a8baa;margin-top:2px}
+  .col-body{padding:20px 28px 28px}
+  .col-body p{color:#8899b5;font-size:14px;margin-bottom:12px}
+  .info-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+  .info-row .ir-icon{flex-shrink:0;margin-top:2px;font-size:15px}
+  .info-row .ir-text{font-size:13px;color:#a0b0c8}
+  .info-row .ir-text strong{color:#e0e6f0}
+
+  /* STEP CARDS */
+  .step-section{margin:48px 0}
+  .step-card{display:flex;gap:20px;margin-bottom:20px;align-items:flex-start}
+  .step-num{min-width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0}
+  .step-box{background:#0a0f1a;border:1px solid #1a2040;border-radius:14px;padding:22px 26px;flex:1}
+  .step-box h4{font-size:16px;font-weight:700;margin-bottom:4px}
+  .step-box p{color:#7a8baa;font-size:13px;margin-bottom:8px}
+  .step-box .code-block{background:#080c14;border:1px solid #1a2040;border-radius:8px;padding:14px;font-family:'Courier New',monospace;font-size:12px;color:#8899b5;overflow-x:auto;margin-top:10px;line-height:1.6}
+  .step-box .code-block .key{color:#f59e0b}.step-box .code-block .val{color:#34d399}.step-box .code-block .bool{color:#60a5fa}
+
+  /* DATA TABLE */
+  .dtable{width:100%;border-collapse:separate;border-spacing:0;border-radius:14px;overflow:hidden;margin:24px 0;font-size:13px}
+  .dtable th{background:#0f1525;padding:12px 16px;font-weight:700;text-align:left;border-bottom:2px solid #1a2545}
+  .dtable td{padding:10px 16px;background:#0a0f1a;border-bottom:1px solid #111a2a}
+  .dtable tr:last-child td{border-bottom:none}
+  .dtable .req{color:#ef4444;font-weight:700;font-size:11px}
+  .dtable .rec{color:#f59e0b;font-weight:700;font-size:11px}
+  .dtable .new{color:#8b5cf6;font-weight:700;font-size:11px}
+
+  /* CHECKLIST */
+  .checklist{background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(139,92,246,.05));border:1px solid rgba(245,158,11,.2);border-radius:20px;padding:40px;margin:48px 0}
+  .checklist h2{font-size:22px;font-weight:700;margin-bottom:20px;text-align:center}
+  .cl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+  .cl-item{display:flex;gap:10px;align-items:flex-start;background:rgba(0,0,0,.2);border-radius:10px;padding:14px;font-size:13px}
+  .cl-item .cl-box{flex-shrink:0;width:22px;height:22px;border:2px solid;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:2px}
+  .cl-item .cl-text{color:#b0bdd0}
+  .cl-item .cl-text strong{color:#e0e6f0}
+  .cl-p1 .cl-box{border-color:#ef4444;color:#ef4444}
+  .cl-p2 .cl-box{border-color:#f59e0b;color:#f59e0b}
+  .cl-p3 .cl-box{border-color:#8b5cf6;color:#8b5cf6}
+
+  /* WARN BOX */
+  .warn{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:14px;padding:24px;margin:24px 0}
+  .warn h4{color:#ff8a80;font-size:15px;font-weight:700;margin-bottom:6px}
+  .warn p{color:#b0a0a0;font-size:13px}
+
+  /* COMPARE TABLE */
+  .cmp{width:100%;border-collapse:separate;border-spacing:0;border-radius:14px;overflow:hidden;margin:40px 0;font-size:13px}
+  .cmp th{background:#0f1525;padding:14px 16px;font-weight:700;text-align:center;border-bottom:2px solid #1a2545}
+  .cmp th:first-child{text-align:left}
+  .cmp td{padding:12px 16px;background:#0a0f1a;border-bottom:1px solid #111a2a;text-align:center}
+  .cmp td:first-child{text-align:left;font-weight:600;color:#c0cbe0}
+  .cmp tr:last-child td{border-bottom:none}
+  .cmp .g{color:#4285f4;font-weight:600}.cmp .o{color:#f472b6;font-weight:600}
+
+  /* BOTTOM */
+  .bottom{background:linear-gradient(135deg,#0d1530,#1a0d20);border:1px solid #2a2a5a;border-radius:20px;padding:44px;text-align:center;margin:48px 0}
+  .bottom h2{font-size:24px;font-weight:700;margin-bottom:14px;color:#f59e0b}
+  .bottom p{color:#b0bdd0;font-size:15px;max-width:720px;margin:0 auto;line-height:1.9}
+
+  .footer{text-align:center;padding:50px 24px 36px;color:#3a4a6a;font-size:12px;border-top:1px solid #111a2a}
+  .footer a{color:#5a9cf5;text-decoration:none}
+  .footer .src{max-width:860px;margin:0 auto 16px;text-align:left;list-style:none}
+  .footer .src li{margin-bottom:3px}
+
+  @media(max-width:768px){
+    .two-col{grid-template-columns:1fr}
+    .step-card{flex-direction:column;gap:10px}
+    .step-num{width:100%;border-radius:10px;height:auto;padding:8px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="badge">판매자 실전 가이드 &middot; 2026</div>
+  <h1>판매자가 <span class="hl">진짜 준비해야 할 것</span><br>UCP & ACP 실전 가이드</h1>
+  <p class="hero-sub">복잡한 프로토콜 이론은 잊으세요. 판매자에게 필요한 것은 딱 두 가지 — <strong>Google UCP</strong>(AI Mode/Gemini)와 <strong>OpenAI ACP</strong>(ChatGPT)입니다.</p>
+  <div class="hero-callout">
+    ⚡ <strong>핵심 진실:</strong> 에이전트 커머스의 미래는 어떤 플랫폼을 선택하느냐가 아니라, <strong>상품 데이터의 성숙도</strong>에 달려 있습니다.<br>UCP와 ACP 모두 동일한 전략적 진실로 수렴합니다.
+  </div>
+</div>
+
+<!-- ═══ 1. UCP vs ACP 한눈에 비교 ═══ -->
+<div class="section">
+  <div class="st">UCP vs ACP — 판매자 관점 비교</div>
+  <div class="ss">두 프로토콜 모두 준비하는 것이 이상적이지만, 각각의 특성을 이해해야 합니다</div>
+
+  <table class="cmp">
+    <tr>
+      <th style="width:22%">항목</th>
+      <th style="width:39%">🔵 Google UCP</th>
+      <th style="width:39%">🟣 OpenAI ACP</th>
+    </tr>
+    <tr>
+      <td>노출 채널</td>
+      <td class="g">Google AI Mode, Gemini 앱, Business Agent</td>
+      <td class="o">ChatGPT (Instant Checkout)</td>
+    </tr>
+    <tr>
+      <td>데이터 소스</td>
+      <td class="g">Google Merchant Center 피드</td>
+      <td class="o">전용 피드 엔드포인트 (JSONL/CSV/XML)</td>
+    </tr>
+    <tr>
+      <td>결제 처리</td>
+      <td class="g">Google Pay + AP2 Mandate</td>
+      <td class="o">Stripe Shared Payment Token (SPT)</td>
+    </tr>
+    <tr>
+      <td>수수료</td>
+      <td class="g">현재 미공개 (파일럿)</td>
+      <td class="o">4% (OpenAI) + ~2.9%+$0.30 (Stripe)</td>
+    </tr>
+    <tr>
+      <td>가입 방법</td>
+      <td class="g">Merchant Center → UCP 웨이트리스트</td>
+      <td class="o">chatgpt.com/merchants 신청</td>
+    </tr>
+    <tr>
+      <td>Shopify 연동</td>
+      <td class="g">자동 (UCP Agent 앱 설치)</td>
+      <td class="o">자동 (Shopify Admin에서 활성화)</td>
+    </tr>
+    <tr>
+      <td>자체몰 연동</td>
+      <td class="g">API + .well-known/ucp 엔드포인트</td>
+      <td class="o">5개 REST API + 피드 엔드포인트 구현</td>
+    </tr>
+    <tr>
+      <td>현재 상태</td>
+      <td class="g">Etsy, Wayfair 라이브 / 확대 중</td>
+      <td class="o">미국 Shopify 판매자 100만+ 연동</td>
+    </tr>
+    <tr>
+      <td>성과 데이터</td>
+      <td class="g">에이전트 트래픽 전환율 +28% (기존 검색 대비)</td>
+      <td class="o">양쪽 동시 구현 시 에이전트 트래픽 +40%</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══ 2. 공통 준비사항: 상품 데이터 ═══ -->
+<div class="section">
+  <div class="st">⓪ 최우선: 상품 데이터 품질 (공통)</div>
+  <div class="ss">UCP든 ACP든, 모든 것의 시작점은 <strong>상품 데이터</strong>입니다. 이것이 없으면 아무것도 시작할 수 없습니다.</div>
+
+  <div style="background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(239,68,68,.06));border:1px solid rgba(245,158,11,.25);border-radius:18px;padding:36px;margin-bottom:36px;text-align:center">
+    <p style="font-size:18px;font-weight:700;color:#fbbf24;margin-bottom:8px">피드 품질 = AI 추천 품질 = 매출</p>
+    <p style="font-size:14px;color:#b0a0a0">PMax 광고 지출의 <strong>74~97%</strong>가 피드 기반 | 피드 오류 → AI 에이전트가 상품을 <strong>자동 제외</strong></p>
+  </div>
+
+  <!-- 필수 데이터 속성 테이블 -->
+  <h3 style="font-size:18px;font-weight:700;margin-bottom:16px">📋 상품 데이터 속성 체크리스트</h3>
+
+  <table class="dtable">
+    <tr>
+      <th style="width:8%">등급</th>
+      <th style="width:24%">속성</th>
+      <th style="width:34%">설명</th>
+      <th style="width:34%">AI 에이전트가 활용하는 방식</th>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>title</strong></td>
+      <td>상품명 (UCP: 제한없음 / ACP: 150자)</td>
+      <td>자연어 검색 매칭, 추천 문장 생성</td>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>description</strong></td>
+      <td>상세 설명 (ACP: 5,000자)</td>
+      <td>사용자 질문에 답변, 비교 분석 근거</td>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>price / priceCurrency</strong></td>
+      <td>가격 + 통화코드 (ISO 4217)</td>
+      <td>가격 비교, 예산 필터링</td>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>availability</strong></td>
+      <td>재고 상태 (실시간 동기화 필수)</td>
+      <td>구매 가능 여부 즉시 판단</td>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>image_link + 추가 이미지 3장+</strong></td>
+      <td>메인 이미지 + 다양한 각도</td>
+      <td>비전 모델이 색상, 소재, 스타일, 사용 맥락 분석</td>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>GTIN / SKU / brand</strong></td>
+      <td>글로벌 상품 식별자</td>
+      <td>Shopping Graph 매칭, 정품 확인</td>
+    </tr>
+    <tr>
+      <td><span class="req">필수</span></td>
+      <td><strong>shipping / return_policy</strong></td>
+      <td>배송 조건, 반품 정책</td>
+      <td>UCP 체크아웃에 필수 (MerchantReturnPolicy)</td>
+    </tr>
+    <tr><td colspan="4" style="background:#0d1220;padding:8px 16px;font-size:12px;font-weight:700;color:#f59e0b">▼ 아래는 에이전트 시대 신규 속성 — 경쟁사 대비 차별화 핵심</td></tr>
+    <tr>
+      <td><span class="new">신규</span></td>
+      <td><strong>product_highlight</strong></td>
+      <td>상품 핵심 차별화 포인트 (예: "IPX7 방수", "100% 유기농")</td>
+      <td>AI가 "왜 이 상품을 추천하는지" 설명할 때 활용</td>
+    </tr>
+    <tr>
+      <td><span class="new">신규</span></td>
+      <td><strong>product_detail (FAQ)</strong></td>
+      <td>자주 묻는 질문과 답변</td>
+      <td>대화형 쇼핑에서 사용자 질문에 직접 답변</td>
+    </tr>
+    <tr>
+      <td><span class="new">신규</span></td>
+      <td><strong>compatible_products</strong></td>
+      <td>호환 액세서리·부속품</td>
+      <td>"이 카메라에 맞는 렌즈는?" 같은 질문에 연계 추천</td>
+    </tr>
+    <tr>
+      <td><span class="new">신규</span></td>
+      <td><strong>substitute_products</strong></td>
+      <td>대체 가능 상품</td>
+      <td>품절·예산 초과 시 대안 자동 추천</td>
+    </tr>
+    <tr>
+      <td><span class="new">신규</span></td>
+      <td><strong>use_scenario</strong></td>
+      <td>사용 시나리오 (예: "캠핑", "출퇴근")</td>
+      <td>"캠핑용 텐트" 같은 목적 기반 검색에 매칭</td>
+    </tr>
+    <tr>
+      <td><span class="rec">권장</span></td>
+      <td><strong>native_commerce = true</strong></td>
+      <td>UCP 체크아웃 활성화 플래그</td>
+      <td>이 값이 false이면 AI Mode 체크아웃 대상에서 제외됨</td>
+    </tr>
+  </table>
+
+  <div class="warn">
+    <h4>⚠️ 데이터 불일치 = 즉시 제외</h4>
+    <p>상품 페이지(PDP)에 49,900원인데 피드에 59,900원이면 → AI 에이전트가 "신뢰할 수 없는 데이터"로 판단하여 <strong>해당 상품을 자동 제외</strong>합니다. 웹사이트, Merchant Center 피드, Schema.org 마크업 간 <strong>가격·재고·배송 정보가 100% 일치</strong>해야 합니다.</p>
+  </div>
+</div>
+
+<!-- ═══ 3. UCP 준비 단계 ═══ -->
+<div class="section">
+  <div class="st">① Google UCP 준비 단계</div>
+  <div class="ss">Google AI Mode와 Gemini에 내 상품이 노출·판매되기 위한 준비</div>
+
+  <div class="step-section">
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#4285f4,#60a5fa)">1</div>
+      <div class="step-box">
+        <h4>Merchant Center 계정 정비</h4>
+        <p>이미 Merchant Center를 사용 중이라면 기존 계정을 활용. 없다면 새로 생성.</p>
+        <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">상품 피드 <strong>오류 0건</strong> 상태 달성 (disapproval 모두 해결)</div></div>
+        <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">배송(shipping) 및 반품(return) 정책 설정 완료</div></div>
+        <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">신규 데이터 속성 (product_highlight, FAQ, 호환제품 등) 추가</div></div>
+        <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text"><strong>native_commerce = true</strong> 설정 (체크아웃 대상 상품)</div></div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#4285f4,#60a5fa)">2</div>
+      <div class="step-box">
+        <h4>결제 인프라 준비</h4>
+        <p>Google Pay & Wallet Console 계정 생성 + PSP(결제 서비스 제공자) 연동.</p>
+        <div class="info-row"><div class="ir-icon">💳</div><div class="ir-text">Google Pay API 연동 (PSP가 미연동이면 PSP에 온보딩 요청)</div></div>
+        <div class="info-row"><div class="ir-icon">🔐</div><div class="ir-text">AP2 Mandate 기반 결제 지원 확인 (Visa, Mastercard 등)</div></div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#4285f4,#60a5fa)">3</div>
+      <div class="step-box">
+        <h4>UCP 통합 (플랫폼별 방법)</h4>
+        <p><strong>Shopify:</strong> App Store에서 "Universal Commerce Agent" 앱 설치 (10분 이내)</p>
+        <div class="info-row"><div class="ir-icon">🛍️</div><div class="ir-text">설치 후 Agent Policy 설정: 먼저 <strong>Read-Only</strong>로 테스트 → 검증 후 <strong>Create Carts</strong> 활성화</div></div>
+        <div class="info-row"><div class="ir-icon">🗂️</div><div class="ir-text">메타필드(Size, Color, Material 등) → UCP 표준 필드에 매핑</div></div>
+
+        <p style="margin-top:16px"><strong>자체몰 (WooCommerce, Magento, 카페24 등):</strong></p>
+        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text"><strong>.well-known/ucp</strong> 엔드포인트 구현 (AI 에이전트가 가게를 발견하는 입구)</div></div>
+        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text">Checkout, Identity Linking, Order Management API 구현</div></div>
+        <div class="info-row"><div class="ir-icon">⚡</div><div class="ir-text">API 응답 속도 P99 <strong>&lt; 100ms</strong> 목표 (느리면 AI가 다른 판매자 선택)</div></div>
+
+        <div class="code-block">
+<span class="key">// .well-known/ucp 매니페스트 예시</span>
+{
+  "<span class="key">name</span>": "<span class="val">내 쇼핑몰</span>",
+  "<span class="key">capabilities</span>": ["<span class="val">checkout</span>", "<span class="val">catalog</span>", "<span class="val">orders</span>"],
+  "<span class="key">endpoints</span>": {
+    "<span class="key">checkout</span>": "<span class="val">https://mystore.com/api/ucp/checkout</span>",
+    "<span class="key">catalog</span>": "<span class="val">https://mystore.com/api/ucp/catalog</span>"
+  },
+  "<span class="key">payment_methods</span>": ["<span class="val">google_pay</span>"],
+  "<span class="key">identity_linking</span>": <span class="bool">true</span>
+}
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#4285f4,#60a5fa)">4</div>
+      <div class="step-box">
+        <h4>웨이트리스트 신청 & 승인</h4>
+        <div class="info-row"><div class="ir-icon">📝</div><div class="ir-text"><a href="https://developers.google.com/merchant/ucp" style="color:#60a5fa" target="_blank">developers.google.com/merchant/ucp</a> → 웨이트리스트 등록</div></div>
+        <div class="info-row"><div class="ir-icon">🔍</div><div class="ir-text">Google이 통합 검토 후 승인 → AI Mode / Gemini에 라이브</div></div>
+        <div class="info-row"><div class="ir-icon">📊</div><div class="ir-text">초기 도입자: 30일 내 AI Mode 트래픽 유입, 60일 차 매출 유의미 상승</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 4. ACP 준비 단계 ═══ -->
+<div class="section">
+  <div class="st">② OpenAI ACP 준비 단계</div>
+  <div class="ss">ChatGPT Instant Checkout에서 내 상품이 판매되기 위한 준비</div>
+
+  <div class="step-section">
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#ec4899,#f472b6)">1</div>
+      <div class="step-box">
+        <h4>판매자 신청</h4>
+        <div class="info-row"><div class="ir-icon">📝</div><div class="ir-text"><a href="https://chatgpt.com/merchants" style="color:#f472b6" target="_blank">chatgpt.com/merchants</a> 에서 신청</div></div>
+        <div class="info-row"><div class="ir-icon">🇺🇸</div><div class="ir-text"><strong>현재 요건:</strong> 미국 기반, Shopify 유료 플랜, Stripe Payments 활성화</div></div>
+        <div class="info-row"><div class="ir-icon">🌏</div><div class="ir-text">글로벌 확장 예정 — 한국 판매자는 Shopify 글로벌 스토어 먼저 구축 권장</div></div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#ec4899,#f472b6)">2</div>
+      <div class="step-box">
+        <h4>상품 피드 구축 (3가지 구현 필요)</h4>
+        <p><strong>① 상품 피드 엔드포인트:</strong> OpenAI 제공 엔드포인트에 매일 업데이트</p>
+        <div class="info-row"><div class="ir-icon">📦</div><div class="ir-text">포맷: gzip 압축 (<strong>.jsonl.gz / .csv.gz / .xml.gz</strong>)</div></div>
+        <div class="info-row"><div class="ir-icon">📋</div><div class="ir-text">필수 필드: title(150자), description(5,000자), price+통화, availability, images, checkout 가능 여부 플래그</div></div>
+
+        <p style="margin-top:12px"><strong>② Checkout API (5개 REST 엔드포인트):</strong></p>
+        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text">체크아웃 세션 생성/업데이트, 배송 옵션 조회, 세금 계산, 결제 처리</div></div>
+
+        <p style="margin-top:12px"><strong>③ Stripe 결제 연동:</strong></p>
+        <div class="info-row"><div class="ir-icon">💳</div><div class="ir-text"><strong>Shared Payment Token (SPT)</strong> — ChatGPT가 결제 정보 노출 없이 결제 가능한 토큰</div></div>
+        <div class="info-row"><div class="ir-icon">⚡</div><div class="ir-text">이미 Stripe 사용 중이면 <strong>코드 1줄 추가</strong>로 연동 가능</div></div>
+
+        <div class="code-block">
+<span class="key">// Stripe SPT 활성화 (기존 Stripe 사용자)</span>
+stripe.paymentIntents.create({
+  <span class="key">amount</span>: <span class="val">49900</span>,
+  <span class="key">currency</span>: '<span class="val">usd</span>',
+  <span class="key">payment_method_types</span>: ['<span class="val">shared_payment_token</span>'],
+  <span class="key">metadata</span>: { <span class="key">source</span>: '<span class="val">chatgpt_acp</span>' }
+});
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:linear-gradient(135deg,#ec4899,#f472b6)">3</div>
+      <div class="step-box">
+        <h4>적합성 테스트 & 승인</h4>
+        <div class="info-row"><div class="ir-icon">🧪</div><div class="ir-text">OpenAI가 자동화된 적합성 테스트 진행: 피드 검증, 체크아웃 플로우, 결제 처리</div></div>
+        <div class="info-row"><div class="ir-icon">💰</div><div class="ir-text"><strong>수수료:</strong> 거래당 4% (OpenAI) + ~2.9%+$0.30 (Stripe) — 약 <strong>총 7%</strong></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5. 웹사이트 구조화 데이터 ═══ -->
+<div class="section">
+  <div class="st">③ 웹사이트 구조화 데이터 (Schema.org)</div>
+  <div class="ss">피드와 별개로, 웹사이트 자체에도 AI가 읽을 수 있는 구조화 데이터가 필요합니다</div>
+
+  <div style="background:#0a0f1a;border:1px solid #1a2040;border-radius:16px;padding:28px">
+    <h4 style="font-size:15px;font-weight:700;margin-bottom:12px">필수 Schema.org 마크업</h4>
+    <div class="info-row"><div class="ir-icon">🏷️</div><div class="ir-text"><strong>Product</strong> — 상품 기본 정보 (name, image, description, sku, gtin, brand)</div></div>
+    <div class="info-row"><div class="ir-icon">💰</div><div class="ir-text"><strong>Offer</strong> — 가격, 재고, 판매자, 배송, 반품 정책 (Merchant Center 피드와 100% 일치)</div></div>
+    <div class="info-row"><div class="ir-icon">⭐</div><div class="ir-text"><strong>AggregateRating / Review</strong> — 리뷰 평점, 리뷰 수</div></div>
+    <div class="info-row"><div class="ir-icon">❓</div><div class="ir-text"><strong>FAQPage</strong> — 상품 관련 자주 묻는 질문</div></div>
+    <div class="info-row"><div class="ir-icon">📐</div><div class="ir-text"><strong>HowTo</strong> — 사용법, 설치 방법 (해당되는 경우)</div></div>
+
+    <div class="code-block" style="margin-top:16px">
+<span class="key">// JSON-LD 예시 (상품 페이지에 삽입)</span>
+&lt;script type="application/ld+json"&gt;
+{
+  "<span class="key">@type</span>": "<span class="val">Product</span>",
+  "<span class="key">name</span>": "<span class="val">경량 캠핑 텐트 2인용</span>",
+  "<span class="key">image</span>": ["<span class="val">main.jpg</span>", "<span class="val">side.jpg</span>", "<span class="val">interior.jpg</span>", "<span class="val">packed.jpg</span>"],
+  "<span class="key">description</span>": "<span class="val">IPX7 방수, 1.8kg 초경량, 3계절용...</span>",
+  "<span class="key">sku</span>": "<span class="val">TENT-LW-2P</span>",
+  "<span class="key">brand</span>": { "<span class="key">name</span>": "<span class="val">캠프메이트</span>" },
+  "<span class="key">offers</span>": {
+    "<span class="key">price</span>": <span class="val">189000</span>,
+    "<span class="key">priceCurrency</span>": "<span class="val">KRW</span>",
+    "<span class="key">availability</span>": "<span class="val">InStock</span>",
+    "<span class="key">shippingDetails</span>": { ... },
+    "<span class="key">hasMerchantReturnPolicy</span>": { ... }
+  }
+}
+&lt;/script&gt;
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6. 판매자 유형별 경로 ═══ -->
+<div class="section">
+  <div class="st">판매자 유형별 최적 경로</div>
+
+  <div class="two-col">
+    <div class="col-card" style="border-color:rgba(52,211,153,.3)">
+      <div class="col-head">
+        <div class="tag" style="background:rgba(52,211,153,.12);color:#34d399">쉬움</div>
+        <h3 style="color:#34d399">Shopify 판매자<small>가장 빠르고 쉬운 경로</small></h3>
+      </div>
+      <div class="col-body">
+        <div class="info-row"><div class="ir-icon">🛒</div><div class="ir-text"><strong>UCP:</strong> App Store → "Universal Commerce Agent" 설치 → Agent Policy 설정 → 끝</div></div>
+        <div class="info-row"><div class="ir-icon">🟣</div><div class="ir-text"><strong>ACP:</strong> Shopify Admin → ChatGPT Instant Checkout 활성화 → 끝</div></div>
+        <div class="info-row"><div class="ir-icon">⏱️</div><div class="ir-text">소요 시간: 각 <strong>10분</strong> 이내</div></div>
+        <div class="info-row"><div class="ir-icon">📋</div><div class="ir-text">남은 할 일: 상품 데이터 품질 향상 (신규 속성 추가), 메타필드 매핑</div></div>
+      </div>
+    </div>
+    <div class="col-card" style="border-color:rgba(245,158,11,.3)">
+      <div class="col-head">
+        <div class="tag" style="background:rgba(245,158,11,.12);color:#f59e0b">중급</div>
+        <h3 style="color:#f59e0b">자체몰 / 카페24 / 고도몰<small>개발 리소스 필요</small></h3>
+      </div>
+      <div class="col-body">
+        <div class="info-row"><div class="ir-icon">🛒</div><div class="ir-text"><strong>UCP:</strong> .well-known/ucp + Checkout/Catalog/Orders API 직접 구현</div></div>
+        <div class="info-row"><div class="ir-icon">🟣</div><div class="ir-text"><strong>ACP:</strong> 피드 엔드포인트 + 5개 REST API + Stripe 연동</div></div>
+        <div class="info-row"><div class="ir-icon">⏱️</div><div class="ir-text">소요 시간: <strong>2~4주</strong> (개발자 1~2명 기준)</div></div>
+        <div class="info-row"><div class="ir-icon">💡</div><div class="ir-text"><strong>팁:</strong> UCP/ACP 연동 SaaS 솔루션이 등장하면 활용 (현재 개발 중인 스타트업 있음)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:0">
+    <div class="col-card" style="border-color:rgba(139,92,246,.3)">
+      <div class="col-head">
+        <div class="tag" style="background:rgba(139,92,246,.12);color:#a78bfa">한국 특화</div>
+        <h3 style="color:#a78bfa">네이버 스마트스토어 판매자<small>현재 직접 UCP/ACP 불가</small></h3>
+      </div>
+      <div class="col-body">
+        <div class="info-row"><div class="ir-icon">⚠️</div><div class="ir-text">네이버 스마트스토어에서 직접 UCP/ACP 연동은 현재 불가</div></div>
+        <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text"><strong>당장 할 것:</strong> 네이버 쇼핑 AI 에이전트용 데이터 품질 강화 (네이버 자체 에이전트)</div></div>
+        <div class="info-row"><div class="ir-icon">🌐</div><div class="ir-text"><strong>글로벌 진출:</strong> Shopify 글로벌 스토어를 병행 운영하여 UCP+ACP 동시 진입</div></div>
+        <div class="info-row"><div class="ir-icon">📊</div><div class="ir-text">Google Merchant Center에 상품 피드 등록 → AI Mode 노출 준비</div></div>
+      </div>
+    </div>
+    <div class="col-card" style="border-color:rgba(6,182,212,.3)">
+      <div class="col-head">
+        <div class="tag" style="background:rgba(6,182,212,.12);color:#06b6d4">대형</div>
+        <h3 style="color:#06b6d4">대형 리테일러 / 브랜드<small>풀스택 구현 + Business Agent</small></h3>
+      </div>
+      <div class="col-body">
+        <div class="info-row"><div class="ir-icon">🛒</div><div class="ir-text"><strong>UCP + ACP 양쪽 모두</strong> 직접 구현 (에이전트 트래픽 +40%)</div></div>
+        <div class="info-row"><div class="ir-icon">💬</div><div class="ir-text"><strong>Business Agent</strong> 활성화: 브랜드 전용 AI 판매원 운영</div></div>
+        <div class="info-row"><div class="ir-icon">🏷️</div><div class="ir-text"><strong>Direct Offers</strong> 캠페인 파일럿 참여</div></div>
+        <div class="info-row"><div class="ir-icon">🔗</div><div class="ir-text"><strong>Identity Linking (OAuth 2.0)</strong>: 로열티 프로그램·멤버십 가격 연동</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7. 총정리 체크리스트 ═══ -->
+<div class="section">
+  <div class="checklist">
+    <h2>✅ 판매자 총정리 체크리스트</h2>
+    <p style="text-align:center;color:#7a8baa;font-size:13px;margin-bottom:20px">
+      <span style="color:#ef4444">🔴 P1</span> = 즉시 실행 &nbsp;
+      <span style="color:#f59e0b">🟡 P2</span> = 1개월 내 &nbsp;
+      <span style="color:#8b5cf6">🟣 P3</span> = 3개월 내
+    </p>
+    <div class="cl-grid">
+      <div class="cl-item cl-p1"><div class="cl-box">P1</div><div class="cl-text"><strong>상품 피드 오류 제로:</strong> Merchant Center 경고·오류 모두 해결</div></div>
+      <div class="cl-item cl-p1"><div class="cl-box">P1</div><div class="cl-text"><strong>가격·재고 실시간 동기화:</strong> 웹사이트 = 피드 = Schema.org 100% 일치</div></div>
+      <div class="cl-item cl-p1"><div class="cl-box">P1</div><div class="cl-text"><strong>이미지 최소 4장:</strong> 메인 + 다양한 각도/사용 맥락 3장 이상</div></div>
+      <div class="cl-item cl-p1"><div class="cl-box">P1</div><div class="cl-text"><strong>GTIN/브랜드 등록:</strong> 모든 상품에 글로벌 식별자 부여</div></div>
+      <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>신규 속성 추가:</strong> product_highlight, FAQ, 호환제품, 대체품</div></div>
+      <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>Schema.org 마크업:</strong> Product, Offer, FAQ, Review JSON-LD 적용</div></div>
+      <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>배송·반품 정책 구조화:</strong> ShippingDetails, MerchantReturnPolicy 설정</div></div>
+      <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>native_commerce = true:</strong> 체크아웃 대상 상품 플래그 활성화</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>UCP 웨이트리스트 신청:</strong> developers.google.com/merchant/ucp</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>ACP 판매자 신청:</strong> chatgpt.com/merchants (미국 진출 시)</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>Business Agent 활성화:</strong> Merchant Center에서 설정 (미국 대상)</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>Direct Offers 파일럿 신청:</strong> Google Ads에서 오퍼 전략 설정</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOTTOM ═══ -->
+<div class="section">
+  <div class="bottom">
+    <h2>📌 판매자를 위한 한 줄 결론</h2>
+    <p>
+      지금 당장 <strong>Merchant Center 상품 피드를 완벽하게 만드세요</strong>.<br>
+      가격·재고 실시간 동기화, 이미지 4장 이상, 신규 속성(FAQ, 호환제품) 추가 — 이것만 해도 UCP와 ACP <strong>양쪽 모두</strong>에 대비됩니다.<br><br>
+      프로토콜 통합은 그 다음 문제입니다.<br>
+      <strong>데이터가 준비된 판매자만이 AI 에이전트에게 선택</strong>받습니다.
+    </p>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+  <ul class="src">
+    <strong style="color:#7a8baa">참고 자료:</strong>
+    <li>1. <a href="https://developers.google.com/merchant/ucp" target="_blank">Google — UCP Developer Guide & Merchant Center Setup</a></li>
+    <li>2. <a href="https://developers.google.com/merchant/ucp/guides/merchant-center" target="_blank">Google — Prepare your Merchant Center account for UCP</a></li>
+    <li>3. <a href="https://developers.openai.com/commerce" target="_blank">OpenAI — Agentic Commerce Protocol (ACP)</a></li>
+    <li>4. <a href="https://developers.openai.com/commerce/guides/get-started" target="_blank">OpenAI — ACP Get Started Guide</a></li>
+    <li>5. <a href="https://docs.stripe.com/agentic-commerce/protocol" target="_blank">Stripe — Integrate the Agentic Commerce Protocol</a></li>
+    <li>6. <a href="https://www.dataiads.io/en/blog/google-ucp-openai-acp-protocol-checklist-agentic-commerce" target="_blank">DataiAds — UCP & ACP Protocol Checklist</a></li>
+    <li>7. <a href="https://www.dataiads.io/en/blog/google-guidelines-attributs-merchant-center-ucp-commerce-agentic-protocol" target="_blank">DataiAds — Merchant Center Attributes for UCP</a></li>
+    <li>8. <a href="https://wearepresta.com/how-to-implement-universal-commerce-protocol-ucp-in-2026-complete-well-known-ucp-setup-guide/" target="_blank">WeArePresta — Complete .well-known/ucp Setup Guide</a></li>
+    <li>9. <a href="https://www.searchenginejournal.com/agentic-commerce-optimization-a-technical-guide-to-prepare-for-googles-ucp/566969/" target="_blank">SEJ — Technical Guide to Prepare for UCP</a></li>
+    <li>10. <a href="https://www.feedoptimise.com/blog/google-shopping-is-getting-more-agentic-feed-is-becoming-its-knowledge" target="_blank">Feedoptimise — Feed is Becoming AI's Knowledge Base</a></li>
+  </ul>
+  <p>2026년 4월 기준. Google/OpenAI 정책은 빠르게 변동됩니다.</p>
+</div>
+
+</body>
+</html>

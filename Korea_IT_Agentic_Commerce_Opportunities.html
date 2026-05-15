@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>국내 IT의 에이전트 커머스 참여 기회 & 제언</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans KR',sans-serif;background:#06090f;color:#e0e6f0;line-height:1.8}
+
+  .hero{min-height:55vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px;background:radial-gradient(ellipse at 50% 20%,#0d1830 0%,#06090f 70%)}
+  .badge{display:inline-block;background:linear-gradient(135deg,#0072ff,#00c853);color:#fff;font-size:12px;font-weight:700;padding:7px 22px;border-radius:50px;margin-bottom:24px;letter-spacing:1px}
+  .hero h1{font-size:clamp(26px,5vw,48px);font-weight:900;line-height:1.25;margin-bottom:14px}
+  .hero h1 .hl{background:linear-gradient(135deg,#0072ff,#00c853,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:clamp(14px,2vw,17px);color:#7a8baa;max-width:750px}
+
+  .section{max-width:1100px;margin:0 auto;padding:72px 24px}
+  .st{font-size:clamp(20px,3.5vw,32px);font-weight:700;text-align:center;margin-bottom:10px}
+  .ss{text-align:center;color:#7a8baa;font-size:15px;max-width:700px;margin:0 auto 48px}
+  .tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.5px}
+
+  /* LANDSCAPE */
+  .landscape{background:#0a0f1a;border:1px solid #1a2040;border-radius:20px;padding:40px 28px;margin:48px 0}
+  .land-row{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;align-items:stretch}
+  .land-col{flex:1;min-width:200px;background:rgba(255,255,255,.03);border:1px solid #1a2a45;border-radius:14px;padding:20px}
+  .land-col h4{font-size:14px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #1a2a45}
+  .land-col ul{list-style:none;padding:0}
+  .land-col ul li{font-size:13px;color:#8899b5;padding:4px 0;display:flex;gap:6px;align-items:flex-start}
+  .land-col ul li .li-dot{flex-shrink:0;margin-top:6px}
+
+  /* OPP CARDS */
+  .opp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+  .opp{background:#0a0f1a;border:1px solid #1a2040;border-radius:18px;overflow:hidden;transition:transform .3s}
+  .opp:hover{transform:translateY(-4px)}
+  .opp-head{padding:28px 28px 20px;border-bottom:1px solid #1a2040;position:relative}
+  .opp-head .opp-num{position:absolute;top:20px;right:24px;font-size:48px;font-weight:900;opacity:.08}
+  .opp-head h3{font-size:20px;font-weight:700;margin-bottom:4px}
+  .opp-head h3 small{display:block;font-size:12px;font-weight:500;color:#7a8baa;margin-top:2px}
+  .opp-body{padding:20px 28px 28px}
+  .opp-body p{color:#8899b5;font-size:14px;margin-bottom:12px}
+  .opp-body .opp-detail{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+  .opp-body .opp-detail .od-icon{flex-shrink:0;margin-top:2px;font-size:16px}
+  .opp-body .opp-detail .od-text{font-size:13px;color:#a0b0c8}
+  .opp-body .opp-detail .od-text strong{color:#e0e6f0}
+  .market-box{background:rgba(255,255,255,.04);border-radius:10px;padding:14px;margin-top:14px;font-size:12px;color:#7a8baa}
+  .market-box .mb-val{font-size:20px;font-weight:800;color:#0072ff}
+
+  /* PRIORITY MATRIX */
+  .matrix{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:40px 0;border-radius:16px;overflow:hidden;max-width:800px;margin-left:auto;margin-right:auto}
+  .matrix-cell{padding:28px;text-align:center;position:relative}
+  .matrix-cell h4{font-size:15px;font-weight:700;margin-bottom:8px}
+  .matrix-cell p{font-size:12px;color:#7a8baa}
+  .matrix-label-x{text-align:center;font-size:12px;color:#5a6a8a;margin-top:8px;max-width:800px;margin-left:auto;margin-right:auto}
+  .matrix-label-y{position:absolute;left:-60px;top:50%;transform:rotate(-90deg) translateX(-50%);font-size:12px;color:#5a6a8a;white-space:nowrap}
+  .m-high-high{background:linear-gradient(135deg,rgba(0,200,83,.1),rgba(0,114,255,.1));border:1px solid rgba(0,200,83,.2)}
+  .m-high-low{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15)}
+  .m-low-high{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15)}
+  .m-low-low{background:rgba(255,255,255,.02);border:1px solid #1a2040}
+
+  /* ROADMAP */
+  .roadmap{display:flex;gap:20px;margin:48px 0;flex-wrap:wrap}
+  .rm-phase{flex:1;min-width:260px;border-radius:16px;padding:28px;color:#fff}
+  .rm-phase h3{font-size:18px;font-weight:800;margin-bottom:4px}
+  .rm-phase .rm-period{font-size:12px;opacity:.8;margin-bottom:16px}
+  .rm-phase ul{list-style:none;padding:0}
+  .rm-phase ul li{font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1);display:flex;gap:8px}
+  .rm-phase ul li:last-child{border-bottom:none}
+  .rm1{background:linear-gradient(135deg,#0072ff,#00c6ff)}
+  .rm2{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+  .rm3{background:linear-gradient(135deg,#e91e63,#f48fb1)}
+
+  /* CASE STUDIES */
+  .case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:40px}
+  .case-card{background:#0a0f1a;border:1px solid #1a2040;border-radius:14px;padding:24px}
+  .case-card h4{font-size:16px;font-weight:700;margin-bottom:8px}
+  .case-card p{color:#7a8baa;font-size:13px}
+  .case-card .case-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:10px}
+
+  /* BOTTOM */
+  .bottom{background:linear-gradient(135deg,#0d1530,#0a1a20);border:1px solid #1a3a4a;border-radius:20px;padding:48px;text-align:center;margin:60px 0}
+  .bottom h2{font-size:24px;font-weight:700;margin-bottom:16px;color:#00c853}
+  .bottom p{color:#b0bdd0;font-size:15px;max-width:750px;margin:0 auto;line-height:1.9}
+
+  .footer{text-align:center;padding:60px 24px 40px;color:#3a4a6a;font-size:12px;border-top:1px solid #111a2a}
+  .footer a{color:#5a9cf5;text-decoration:none}
+  .footer .src{max-width:900px;margin:0 auto 20px;text-align:left;list-style:none}
+  .footer .src li{margin-bottom:4px}
+
+  @media(max-width:768px){
+    .land-row{flex-direction:column}
+    .matrix{grid-template-columns:1fr}
+    .roadmap{flex-direction:column}
+    .opp-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="badge">KOREA IT &middot; 참여 기회 &middot; 2026</div>
+  <h1>국내 IT의<br><span class="hl">에이전트 커머스 참여 기회</span><br>& 제언</h1>
+  <p class="hero-sub">글로벌 에이전트 커머스 프로토콜 생태계에서 한국 IT 기업·개발자·스타트업이 개발하고 참여할 수 있는 구체적 영역과 전략</p>
+</div>
+
+<!-- ═══ 1. 국내 현황 지형도 ═══ -->
+<div class="section">
+  <div class="st">국내 에이전트 커머스 지형도</div>
+  <div class="ss">이미 움직이고 있는 국내 기업들 — 하지만 글로벌 프로토콜 참여에는 아직 공백이 큽니다</div>
+
+  <div class="landscape">
+    <div class="land-row">
+      <div class="land-col" style="border-color:rgba(0,200,83,.3)">
+        <h4 style="color:#00c853">🟢 이미 시작한 영역</h4>
+        <ul>
+          <li><span class="li-dot">●</span><strong>네이버:</strong> 쇼핑 AI 에이전트 베타, 네이버플러스 스토어 적용, MCP 외부 연결 지원 계획</li>
+          <li><span class="li-dot">●</span><strong>카카오:</strong> PlayMCP 베타 오픈 (국내 최초 MCP 플랫폼), 에이전트 빌더, MCP Player 10 공모전</li>
+          <li><span class="li-dot">●</span><strong>신한카드:</strong> 마스터카드와 AI 에이전트 페이 실거래 성공, 에이전틱 AI 얼라이언스 참여</li>
+          <li><span class="li-dot">●</span><strong>쿠팡:</strong> AI 기반 물류 최적화, 수요 예측 시스템</li>
+          <li><span class="li-dot">●</span><strong>올거나이즈:</strong> MCP 기반 DART 에이전트 개발·제공</li>
+        </ul>
+      </div>
+      <div class="land-col" style="border-color:rgba(234,67,53,.3)">
+        <h4 style="color:#ea4335">🔴 아직 공백인 영역</h4>
+        <ul>
+          <li><span class="li-dot">●</span><strong>UCP 구현:</strong> Google UCP에 한국 판매자·플랫폼 연동 사례 전무</li>
+          <li><span class="li-dot">●</span><strong>AP2 결제:</strong> 신한카드 외 국내 결제사의 AP2 참여 미확인</li>
+          <li><span class="li-dot">●</span><strong>ACP 연동:</strong> OpenAI Instant Checkout에 한국 판매자 연동 전무</li>
+          <li><span class="li-dot">●</span><strong>A2A 참여:</strong> Linux Foundation A2A 프로젝트에 국내 기업 참여 미확인</li>
+          <li><span class="li-dot">●</span><strong>한국형 커머스 MCP 서버:</strong> 네이버/쿠팡/카카오 커머스 전용 MCP 서버 부재</li>
+          <li><span class="li-dot">●</span><strong>한국 결제(PG) MCP:</strong> 토스페이먼츠/NHN KCP 등 PG 연동 MCP 서버 부재</li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;padding:16px;background:rgba(234,67,53,.06);border:1px solid rgba(234,67,53,.15);border-radius:12px">
+      <p style="font-size:14px;color:#ff8a80;font-weight:600">⚡ 핵심 갭: 국내 플랫폼은 자체 AI 에이전트는 만들고 있지만, <strong>글로벌 프로토콜(UCP/ACP/AP2/A2A)과의 연결고리</strong>가 아직 없습니다.<br>이 공백이 바로 국내 IT의 기회입니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 2. 8대 참여 기회 ═══ -->
+<div class="section">
+  <div class="st">8대 개발 참여 기회</div>
+  <div class="ss">프로토콜 계층별로 한국 IT가 바로 뛰어들 수 있는 영역</div>
+
+  <div class="opp-grid">
+
+    <!-- 기회 1: 한국 커머스 MCP 서버 -->
+    <div class="opp" style="border-color:rgba(6,182,212,.3)">
+      <div class="opp-head">
+        <div class="opp-num">01</div>
+        <div class="tag" style="background:rgba(6,182,212,.12);color:#06b6d4">MCP · Layer 2</div>
+        <h3 style="color:#06b6d4">한국 커머스 플랫폼 MCP 서버<small>네이버/쿠팡/카카오 쇼핑 연동</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>AI 에이전트가 네이버 스마트스토어, 쿠팡 마켓플레이스, 카카오 선물하기 등에서 <strong>상품 검색·비교·주문·배송 추적</strong>을 할 수 있는 MCP 서버 개발.</p>
+        <div class="opp-detail"><div class="od-icon">🛒</div><div class="od-text"><strong>네이버 커머스 MCP:</strong> 스마트스토어 API 래핑, 네이버페이 연동, 상품 비교·리뷰 접근</div></div>
+        <div class="opp-detail"><div class="od-icon">📦</div><div class="od-text"><strong>쿠팡 MCP:</strong> Open API 연동, 로켓배송 재고 확인, 가격 모니터링, 주문 관리</div></div>
+        <div class="opp-detail"><div class="od-icon">🎁</div><div class="od-text"><strong>카카오 커머스 MCP:</strong> 카카오 선물하기, 카카오톡 스토어 연동</div></div>
+        <div class="market-box">
+          <strong>수익 모델:</strong> MCP 마켓플레이스 등록 (MCPize 85% 수익 배분) + 구독형 프리미엄 기능<br>
+          <strong>카카오 PlayMCP에도 등록 가능</strong> — 이미 2,000+ 개발자, 30+ 서버 등록
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 2: 한국 결제 MCP/AP2 -->
+    <div class="opp" style="border-color:rgba(52,211,153,.3)">
+      <div class="opp-head">
+        <div class="opp-num">02</div>
+        <div class="tag" style="background:rgba(52,211,153,.12);color:#34d399">결제 · Layer 4</div>
+        <h3 style="color:#34d399">한국 PG/간편결제 MCP & AP2 연동<small>토스·NHN KCP·카카오페이·네이버페이</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>AI 에이전트가 한국 결제 시스템을 통해 실제 결제할 수 있도록 <strong>한국 PG사·간편결제를 MCP 서버로 래핑</strong>하거나 <strong>AP2 프로토콜에 연동</strong>하는 미들웨어.</p>
+        <div class="opp-detail"><div class="od-icon">💳</div><div class="od-text"><strong>토스페이먼츠 MCP:</strong> 결제 요청·승인·취소·정산 조회를 AI가 호출</div></div>
+        <div class="opp-detail"><div class="od-icon">🔐</div><div class="od-text"><strong>AP2 Mandate ↔ 한국 인증:</strong> 공인인증/본인확인/3DS 등 한국 특유의 인증 체계와 AP2 위임장 시스템 브릿지</div></div>
+        <div class="opp-detail"><div class="od-icon">📱</div><div class="od-text"><strong>간편결제 통합:</strong> 네이버페이, 카카오페이, 삼성페이를 에이전트가 사용 가능하게</div></div>
+        <div class="market-box">
+          <strong>중요도:</strong> 한국의 독자적 결제 인프라(PG, 간편결제)를 글로벌 에이전트 프로토콜과 연결하는 <strong>필수 브릿지 레이어</strong>. 이것 없이는 한국에서 에이전트 커머스 불가.
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 3: UCP 한국 어댑터 -->
+    <div class="opp" style="border-color:rgba(59,130,246,.3)">
+      <div class="opp-head">
+        <div class="opp-num">03</div>
+        <div class="tag" style="background:rgba(59,130,246,.12);color:#60a5fa">UCP · Layer 5</div>
+        <h3 style="color:#60a5fa">UCP 한국 로컬라이제이션 어댑터<small>한국 판매자 → Google AI Mode 진입</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>한국 이커머스 판매자들이 Google UCP를 쉽게 구현하여 <strong>AI Mode, Gemini에서 한국 상품이 노출·판매</strong>될 수 있도록 돕는 로컬 어댑터/SDK.</p>
+        <div class="opp-detail"><div class="od-icon">🌐</div><div class="od-text"><strong>한국어 상품 데이터 → UCP 스키마 변환기:</strong> 네이버/카페24/고도몰 피드를 UCP 포맷으로 자동 변환</div></div>
+        <div class="opp-detail"><div class="od-icon">🏪</div><div class="od-text"><strong>카페24/NHN커머스 플러그인:</strong> 국내 쇼핑몰 솔루션에 UCP 연동 원클릭 플러그인</div></div>
+        <div class="opp-detail"><div class="od-icon">📊</div><div class="od-text"><strong>Merchant Center 자동 동기화:</strong> 신규 데이터 속성(FAQ, 호환제품 등) 자동 생성·동기화</div></div>
+        <div class="market-box">
+          <strong>비즈니스 기회:</strong> Shopify가 UCP 자동 연동을 제공하듯, 한국 쇼핑몰 솔루션(카페24, 고도몰)에 동일한 자동 연동 구현 → <strong>SaaS 구독 모델</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 4: 에이전트 빌더 플랫폼 -->
+    <div class="opp" style="border-color:rgba(139,92,246,.3)">
+      <div class="opp-head">
+        <div class="opp-num">04</div>
+        <div class="tag" style="background:rgba(139,92,246,.12);color:#a78bfa">플랫폼 · 풀스택</div>
+        <h3 style="color:#a78bfa">한국형 에이전트 빌더 플랫폼<small>노코드/로우코드 커머스 에이전트 개발</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>비개발자도 <strong>자사 쇼핑몰의 AI 쇼핑 에이전트를 쉽게 만들 수 있는 빌더 플랫폼</strong>. 카카오 에이전트 빌더의 커머스 특화 버전.</p>
+        <div class="opp-detail"><div class="od-icon">🧩</div><div class="od-text"><strong>드래그&드롭 에이전트 설계:</strong> 상품 추천, 장바구니 관리, 결제 연동, CS 응대 시나리오 구성</div></div>
+        <div class="opp-detail"><div class="od-icon">🔌</div><div class="od-text"><strong>멀티 프로토콜 지원:</strong> UCP/ACP/MCP 자동 연동, Google Business Agent + ChatGPT 동시 지원</div></div>
+        <div class="opp-detail"><div class="od-icon">📈</div><div class="od-text"><strong>한국어 특화:</strong> 한국 소비자 대화 패턴, 존댓말/반말 톤, 한국 쇼핑 문화(빠른배송 집착 등) 반영</div></div>
+        <div class="market-box">
+          <strong>레퍼런스:</strong> 카카오 PlayMCP가 한 달 만에 호출 5,000건 돌파 — 수요 검증됨.<br>
+          <strong>타깃:</strong> 네이버 스마트스토어 50만+ 판매자, 카페24 호스팅 판매자
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 5: AEO/피드 최적화 -->
+    <div class="opp" style="border-color:rgba(251,191,36,.3)">
+      <div class="opp-head">
+        <div class="opp-num">05</div>
+        <div class="tag" style="background:rgba(251,191,36,.12);color:#fbbf24">SaaS · 마케팅테크</div>
+        <h3 style="color:#fbbf24">AI 추천 최적화 SaaS (AEO 도구)<small>에이전트에게 선택받기 위한 최적화</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>기존 SEO 도구의 에이전트 시대 진화. AI 에이전트가 상품을 <strong>"추천하고 인용(citation)"하도록 최적화</strong>하는 전문 SaaS.</p>
+        <div class="opp-detail"><div class="od-icon">📊</div><div class="od-text"><strong>AI Citation Share 트래킹:</strong> Google AI Mode, ChatGPT, Gemini에서 자사 상품이 추천되는 비율 모니터링</div></div>
+        <div class="opp-detail"><div class="od-icon">🔧</div><div class="od-text"><strong>피드 자동 강화:</strong> Merchant Center 피드에 FAQ, 호환 제품, 사용 시나리오 AI 자동 생성·추가</div></div>
+        <div class="opp-detail"><div class="od-icon">🏆</div><div class="od-text"><strong>경쟁사 벤치마킹:</strong> 동일 카테고리 내 AI 추천 점유율 비교·분석</div></div>
+        <div class="market-box">
+          <strong>시장 규모:</strong> 기존 SEO 도구 시장($10B+)이 AEO로 전환 중. 한국 특화 AEO 도구는 전무 상태.
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 6: 한국어 쇼핑 에이전트 -->
+    <div class="opp" style="border-color:rgba(236,72,153,.3)">
+      <div class="opp-head">
+        <div class="opp-num">06</div>
+        <div class="tag" style="background:rgba(236,72,153,.12);color:#f472b6">소비자 앱 · B2C</div>
+        <h3 style="color:#f472b6">한국 특화 쇼핑 에이전트 앱<small>네이버+쿠팡+쿠폰 통합 AI 비서</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>네이버·쿠팡·쿠폰 사이트를 <strong>동시에 탐색하여 최저가를 찾고 자동 구매</strong>하는 한국 소비자 특화 쇼핑 에이전트.</p>
+        <div class="opp-detail"><div class="od-icon">🔍</div><div class="od-text"><strong>크로스 플랫폼 가격 비교:</strong> 네이버 최저가 vs 쿠팡 로켓배송 vs SSG 등 자동 비교</div></div>
+        <div class="opp-detail"><div class="od-icon">🎫</div><div class="od-text"><strong>쿠폰 자동 수집·적용:</strong> 카드사 할인, 플랫폼 쿠폰, 적립금을 조합하여 실질 최저가 계산</div></div>
+        <div class="opp-detail"><div class="od-icon">🚚</div><div class="od-text"><strong>배송 최적화:</strong> 로켓배송/익일배송/당일배송 조건을 고려한 최적 구매처 결정</div></div>
+        <div class="market-box">
+          <strong>한국 이커머스 시장:</strong> 2025년 약 210조원 규모. 이 중 10%만 에이전트 경유해도 21조원.
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 7: 물류/풀필먼트 에이전트 -->
+    <div class="opp" style="border-color:rgba(249,115,22,.3)">
+      <div class="opp-head">
+        <div class="opp-num">07</div>
+        <div class="tag" style="background:rgba(249,115,22,.12);color:#fb923c">물류 · B2B</div>
+        <h3 style="color:#fb923c">물류·풀필먼트 에이전트 시스템<small>주문→배송→반품 자동화</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>에이전트 커머스로 주문이 폭증할 때 <strong>물류·풀필먼트를 자동으로 처리</strong>하는 B2B 에이전트 시스템.</p>
+        <div class="opp-detail"><div class="od-icon">📦</div><div class="od-text"><strong>A2A 기반 물류 에이전트:</strong> 주문 에이전트 ↔ 물류 에이전트 간 자동 협업 (재고·배송 일정)</div></div>
+        <div class="opp-detail"><div class="od-icon">🔄</div><div class="od-text"><strong>반품·교환 자율 처리:</strong> 고객 에이전트 → CS 에이전트 → 물류 에이전트 체인</div></div>
+        <div class="opp-detail"><div class="od-icon">🇰🇷</div><div class="od-text"><strong>한국 물류 인프라 연동:</strong> CJ대한통운, 한진, 롯데택배 API + 편의점 픽업 등</div></div>
+        <div class="market-box">
+          <strong>Gartner 전망:</strong> 2029년 고객 서비스 이슈 80%를 에이전트가 자율 해결 → 물류 자동화 필수
+        </div>
+      </div>
+    </div>
+
+    <!-- 기회 8: 글로벌 프로토콜 기여 -->
+    <div class="opp" style="border-color:rgba(0,114,255,.3)">
+      <div class="opp-head">
+        <div class="opp-num">08</div>
+        <div class="tag" style="background:rgba(0,114,255,.12);color:#0072ff">오픈소스 · 표준 참여</div>
+        <h3 style="color:#0072ff">글로벌 프로토콜 표준화 참여<small>Linux Foundation, W3C, AAIF</small></h3>
+      </div>
+      <div class="opp-body">
+        <p>MCP(AAIF), A2A(Linux Foundation) 등 글로벌 표준 거버넌스에 <strong>한국 기업·개발자가 직접 참여</strong>하여 아시아/한국 시장의 요구사항을 반영.</p>
+        <div class="opp-detail"><div class="od-icon">🏛️</div><div class="od-text"><strong>A2A 프로젝트 (Linux Foundation):</strong> AWS, MS, Google 등과 나란히 한국 기업 참여 — 아시아 결제/물류 특수성 반영</div></div>
+        <div class="opp-detail"><div class="od-icon">🔐</div><div class="od-text"><strong>AP2 한국 확장:</strong> 한국 고유 결제 인증(본인확인, 공동인증서 등)을 AP2 Mandate에 포함시키는 스펙 제안</div></div>
+        <div class="opp-detail"><div class="od-icon">🌏</div><div class="od-text"><strong>UCP 아시아 로케일:</strong> 한국어·일본어·중국어 상품 데이터 스키마, 아시아 물류 특성 반영</div></div>
+        <div class="market-box">
+          <strong>전략적 가치:</strong> 표준에 참여하면 <strong>"규칙을 만드는 자"</strong>가 됨. 한국 시장 진입 장벽 + 기술 영향력 확보.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ 3. 우선순위 매트릭스 ═══ -->
+<div class="section">
+  <div class="st">우선순위 매트릭스</div>
+  <div class="ss">시장 영향력(Impact)과 실행 난이도(Barrier)로 본 8대 기회</div>
+
+  <div class="matrix">
+    <div class="matrix-cell m-high-high">
+      <h4 style="color:#00c853">🏆 최우선 (높은 임팩트 + 낮은 진입장벽)</h4>
+      <p><strong style="color:#06b6d4">① 한국 커머스 MCP 서버</strong><br><strong style="color:#fbbf24">⑤ AEO 최적화 SaaS</strong><br><strong style="color:#60a5fa">③ UCP 한국 어댑터</strong></p>
+      <p style="margin-top:8px">기존 API 래핑 + SaaS 모델<br>즉시 시작 가능, 시장 선점 효과 큼</p>
+    </div>
+    <div class="matrix-cell m-high-low">
+      <h4 style="color:#fbbf24">📈 전략적 투자 (높은 임팩트 + 높은 진입장벽)</h4>
+      <p><strong style="color:#34d399">② 한국 PG/결제 AP2 연동</strong><br><strong style="color:#0072ff">⑧ 글로벌 표준 참여</strong></p>
+      <p style="margin-top:8px">PG사 협력·표준 참여 필요<br>한국 에이전트 커머스의 핵심 인프라</p>
+    </div>
+    <div class="matrix-cell m-low-high">
+      <h4 style="color:#a78bfa">🚀 빠른 실행 (중간 임팩트 + 낮은 진입장벽)</h4>
+      <p><strong style="color:#a78bfa">④ 에이전트 빌더 플랫폼</strong><br><strong style="color:#f472b6">⑥ 한국 특화 쇼핑 에이전트</strong></p>
+      <p style="margin-top:8px">카카오 PlayMCP 생태계 활용 가능<br>소규모 팀·스타트업 적합</p>
+    </div>
+    <div class="matrix-cell m-low-low">
+      <h4 style="color:#6a7a9a">🏗️ 장기 구축 (중간 임팩트 + 높은 진입장벽)</h4>
+      <p><strong style="color:#fb923c">⑦ 물류·풀필먼트 에이전트</strong></p>
+      <p style="margin-top:8px">물류사 파트너십 필수<br>에이전트 주문 규모가 커진 후 본격화</p>
+    </div>
+  </div>
+  <div class="matrix-label-x">← 낮은 진입장벽 ─────── 진입 난이도 ─────── 높은 진입장벽 →</div>
+</div>
+
+<!-- ═══ 4. 국내 선행 사례 ═══ -->
+<div class="section">
+  <div class="st">참고: 국내 이미 시작된 사례</div>
+
+  <div class="case-grid">
+    <div class="case-card">
+      <div class="case-tag" style="background:rgba(0,200,83,.12);color:#00c853">MCP</div>
+      <h4 style="color:#00c853">카카오 PlayMCP</h4>
+      <p>국내 최초 MCP 개방 플랫폼. 카카오 계정만 있으면 누구나 MCP 서버를 등록하고 테스트 가능. 1개월 만에 2,000+ 개발자, 30+ 서버, 5,000+ 호출. 'MCP Player 10' 공모전(총 2,100만원 지원)으로 생태계 확장 중.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag" style="background:rgba(59,130,246,.12);color:#60a5fa">에이전트</div>
+      <h4 style="color:#60a5fa">올거나이즈 DART 에이전트</h4>
+      <p>공개 DART MCP 서버 + 웹 검색 + 문서 생성 도구를 결합한 금융 데이터 에이전트. MCP 기반 한국 특화 에이전트의 첫 상용 사례.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag" style="background:rgba(251,191,36,.12);color:#fbbf24">커머스</div>
+      <h4 style="color:#fbbf24">네이버 쇼핑 AI 에이전트</h4>
+      <p>네이버플러스 스토어에 상품 비교, 리뷰 요약, 이력 기반 추천 AI 에이전트 베타 출시. 2026 2분기 통합검색 AI 탭 확장 예정. MCP 외부 연결 지원 계획.</p>
+    </div>
+    <div class="case-card">
+      <div class="case-tag" style="background:rgba(234,67,53,.12);color:#ea4335">결제</div>
+      <h4 style="color:#ea4335">신한카드 AI 에이전트 페이</h4>
+      <p>마스터카드와 협력, 국내 카드사 최초 AI 에이전트 자율 결제 실거래 성공 (2026.3). 과기정통부 에이전틱 AI 얼라이언스 유일 민간 금융사.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5. 실행 로드맵 ═══ -->
+<div class="section">
+  <div class="st">제안 실행 로드맵</div>
+
+  <div class="roadmap">
+    <div class="rm-phase rm1">
+      <h3>Phase 1: 즉시 시작</h3>
+      <div class="rm-period">2026 Q2 ~ Q3 (3~6개월)</div>
+      <ul>
+        <li><span>🔌</span> 한국 주요 커머스 API를 MCP 서버로 래핑하여 PlayMCP + 글로벌 마켓에 등록</li>
+        <li><span>📊</span> AI Citation Share 모니터링 MVP 개발 (Google AI Mode + ChatGPT 대상)</li>
+        <li><span>🛒</span> 카페24/고도몰 → UCP 스키마 변환 PoC(개념증명) 진행</li>
+        <li><span>📚</span> 팀 내 MCP/A2A/UCP/AP2 교육 프로그램 실시</li>
+      </ul>
+    </div>
+    <div class="rm-phase rm2">
+      <h3>Phase 2: 확장</h3>
+      <div class="rm-period">2026 Q4 ~ 2027 Q1 (3~6개월)</div>
+      <ul>
+        <li><span>💳</span> 토스페이먼츠/NHN KCP MCP 서버 + AP2 브릿지 개발 (PG사 협업)</li>
+        <li><span>🤖</span> 한국형 에이전트 빌더 MVP 출시 (카카오 에이전트 빌더 연동)</li>
+        <li><span>🌐</span> Linux Foundation A2A 프로젝트 참여 신청</li>
+        <li><span>📈</span> AEO SaaS 베타 출시, 국내 이커머스 고객 10사 확보</li>
+      </ul>
+    </div>
+    <div class="rm-phase rm3">
+      <h3>Phase 3: 성숙</h3>
+      <div class="rm-period">2027 Q2 ~ (장기)</div>
+      <ul>
+        <li><span>🏪</span> 한국 쇼핑 에이전트 앱 출시 (크로스 플랫폼 최저가 비교+자동 구매)</li>
+        <li><span>📦</span> 물류·풀필먼트 에이전트 시스템 파일럿 (CJ대한통운 등 협업)</li>
+        <li><span>🏛️</span> AP2 한국 확장 스펙 제안 → 글로벌 표준에 한국 결제 특수성 반영</li>
+        <li><span>🌏</span> 동남아·일본 확장 (아시아 커머스 에이전트 생태계 주도)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6. 핵심 제언 ═══ -->
+<div class="section">
+  <div class="bottom">
+    <h2>📌 국내 IT에 드리는 핵심 제언</h2>
+    <p>
+      에이전트 커머스의 가치사슬에서 한국이 놓치면 안 되는 것은 <strong>"연결 고리(Connector)"</strong>입니다.<br><br>
+      글로벌 프로토콜(UCP, AP2, A2A, MCP)과 한국 인프라(네이버, 쿠팡, 카카오, PG사, 물류사) 사이에는 <strong>현재 아무도 서 있지 않습니다</strong>.<br>
+      이 <strong>"한국 ↔ 글로벌" 브릿지를 먼저 만드는 기업</strong>이 에이전트 커머스 시대의 플랫폼 사업자가 됩니다.<br><br>
+      가장 빨리, 가장 쉽게 시작할 수 있는 것은 <strong>한국 커머스 MCP 서버</strong>입니다.<br>
+      네이버 스마트스토어·쿠팡·카카오 API를 MCP로 래핑하여 카카오 PlayMCP + 글로벌 마켓에 등록하면,<br>
+      <strong>내일부터 전 세계의 AI 에이전트가 한국 상품을 추천하고 판매</strong>할 수 있게 됩니다.
+    </p>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+  <ul class="src">
+    <strong style="color:#7a8baa">참고 자료:</strong>
+    <li>1. <a href="https://www.kakaocorp.com/page/detail/11674?lang=KOR" target="_blank">카카오 — PlayMCP 베타 오픈</a></li>
+    <li>2. <a href="https://www.ceoscoredaily.com/page/view/2025111016374961417" target="_blank">CEOSCOREDAILY — 네이버·카카오·쿠팡 AI 에이전트 전면전</a></li>
+    <li>3. <a href="https://www.seoul.co.kr/news/economy/industry/2026/02/26/20260226500178" target="_blank">서울신문 — 네이버 쇼핑 AI 에이전트 가동</a></li>
+    <li>4. <a href="https://www.newspim.com/news/view/20260330001063" target="_blank">뉴스핌 — 신한카드 AI 에이전트 페이</a></li>
+    <li>5. <a href="https://byline.network/2026/01/12-514/" target="_blank">바이라인네트워크 — 구글 UCP 발표</a></li>
+    <li>6. <a href="https://www.comworld.co.kr/news/articleView.html?idxno=51570" target="_blank">컴퓨터월드 — MCP와 A2A</a></li>
+    <li>7. <a href="https://www.working-ref.com/en/reference/mcp-server-revenue-model-ai-agents" target="_blank">Working Ref — MCP Server Revenue Model</a></li>
+    <li>8. <a href="https://mcpmarket.com/" target="_blank">MCP Market — MCP Server Marketplace</a></li>
+    <li>9. <a href="https://discuss.pytorch.kr/t/ai-mcp-a2a-ucp-ap2-a2ui-ag-ui-feat-google/9276" target="_blank">파이토치 한국 — AI 에이전트 프로토콜 가이드</a></li>
+    <li>10. <a href="https://developers.google.com/merchant/ucp" target="_blank">Google — UCP Developer Guide</a></li>
+  </ul>
+  <p>2026년 4월 기준 정리.</p>
+</div>
+
+</body>
+</html>

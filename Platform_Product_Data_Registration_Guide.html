@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>플랫폼별 상품 데이터 등록 & 품질 검증 가이드</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --surface2: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e0e0e8;
+            --text-dim: #8888a0;
+            --accent-google: #4285f4;
+            --accent-google-light: #5a9cf6;
+            --accent-openai: #10a37f;
+            --accent-openai-light: #1cc99a;
+            --accent-amazon: #ff9900;
+            --accent-meta: #0084ff;
+            --accent-shopify: #96bf48;
+            --accent-perplexity: #c084fc;
+            --accent-microsoft: #00bcf2;
+            --accent-ucp: #f59e0b;
+            --accent-acp: #ef4444;
+            --accent-mcp: #8b5cf6;
+            --accent-red: #ef4444;
+            --accent-green: #22c55e;
+            --accent-yellow: #eab308;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo','Segoe UI',sans-serif; line-height:1.7; }
+
+        .container { max-width:1200px; margin:0 auto; padding:40px 24px; }
+
+        /* Header */
+        .hero { text-align:center; padding:60px 20px; margin-bottom:48px; background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius:20px; border:1px solid var(--border); position:relative; overflow:hidden; }
+        .hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 50%, rgba(66,133,244,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(16,163,127,0.08) 0%, transparent 50%); }
+        .hero h1 { font-size:2.4em; font-weight:800; margin-bottom:16px; position:relative; background:linear-gradient(135deg, #4285f4, #10a37f, #c084fc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .hero .subtitle { font-size:1.15em; color:var(--text-dim); position:relative; max-width:700px; margin:0 auto; }
+        .hero .date-badge { display:inline-block; margin-top:16px; padding:6px 16px; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:20px; font-size:0.85em; color:var(--text-dim); position:relative; }
+
+        /* Section titles */
+        .section-header { margin:56px 0 32px; }
+        .section-header h2 { font-size:1.7em; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:12px; }
+        .section-header h2 .num { display:inline-flex; width:36px; height:36px; align-items:center; justify-content:center; background:rgba(66,133,244,0.15); color:var(--accent-google); border-radius:10px; font-size:0.7em; font-weight:800; }
+        .section-header p { color:var(--text-dim); font-size:1em; margin-left:48px; }
+
+        /* Thesis box */
+        .thesis-box { background:linear-gradient(135deg, rgba(66,133,244,0.08), rgba(16,163,127,0.08)); border:1px solid rgba(66,133,244,0.25); border-radius:16px; padding:28px 32px; margin-bottom:40px; }
+        .thesis-box h3 { color:var(--accent-google-light); font-size:1.15em; margin-bottom:12px; }
+        .thesis-box p { color:var(--text); line-height:1.8; }
+        .thesis-box .highlight { color:var(--accent-openai-light); font-weight:600; }
+
+        /* Platform cards */
+        .platform-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:0; margin-bottom:32px; overflow:hidden; }
+        .platform-card-header { padding:24px 28px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:16px; }
+        .platform-logo { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4em; font-weight:800; color:#fff; flex-shrink:0; }
+        .logo-google { background:linear-gradient(135deg, #4285f4, #34a853); }
+        .logo-openai { background:linear-gradient(135deg, #10a37f, #0d8a6a); }
+        .logo-amazon { background:linear-gradient(135deg, #ff9900, #e68a00); }
+        .logo-meta { background:linear-gradient(135deg, #0084ff, #0066cc); }
+        .logo-shopify { background:linear-gradient(135deg, #96bf48, #7aa838); }
+        .logo-perplexity { background:linear-gradient(135deg, #c084fc, #a855f7); }
+        .logo-microsoft { background:linear-gradient(135deg, #00bcf2, #0099cc); }
+        .platform-card-header .info h3 { font-size:1.2em; font-weight:700; }
+        .platform-card-header .info .tag { display:inline-block; padding:2px 10px; border-radius:10px; font-size:0.75em; margin-left:8px; }
+        .platform-card-header .info p { color:var(--text-dim); font-size:0.9em; margin-top:2px; }
+        .platform-card-body { padding:24px 28px; }
+
+        /* Sub sections within cards */
+        .sub-section { margin-bottom:24px; }
+        .sub-section:last-child { margin-bottom:0; }
+        .sub-section h4 { font-size:1em; font-weight:700; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+        .sub-section h4 .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+        /* Tables */
+        .data-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:0.9em; }
+        .data-table th { background:var(--surface2); padding:10px 14px; text-align:left; font-weight:600; border:1px solid var(--border); color:var(--text-dim); font-size:0.85em; text-transform:uppercase; letter-spacing:0.5px; }
+        .data-table td { padding:10px 14px; border:1px solid var(--border); vertical-align:top; }
+        .data-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+        /* Tags */
+        .tag-required { background:rgba(239,68,68,0.15); color:#f87171; }
+        .tag-optional { background:rgba(34,197,94,0.15); color:#4ade80; }
+        .tag-push { background:rgba(239,68,68,0.15); color:#f87171; }
+        .tag-pull { background:rgba(66,133,244,0.15); color:var(--accent-google-light); }
+        .tag-both { background:rgba(168,85,247,0.15); color:#c084fc; }
+        .tag-protocol { padding:3px 10px; border-radius:8px; font-size:0.8em; font-weight:600; display:inline-block; }
+        .tag-acp { background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3); }
+        .tag-ucp { background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.3); }
+        .tag-mcp { background:rgba(139,92,246,0.15); color:#c084fc; border:1px solid rgba(139,92,246,0.3); }
+        .tag-proprietary { background:rgba(100,100,120,0.15); color:#9999b0; border:1px solid rgba(100,100,120,0.3); }
+
+        /* Flow diagrams */
+        .flow-diagram { display:flex; align-items:center; gap:0; margin:16px 0; flex-wrap:wrap; justify-content:center; }
+        .flow-step { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px 18px; text-align:center; min-width:140px; max-width:180px; flex:1; }
+        .flow-step .step-num { font-size:0.75em; color:var(--text-dim); margin-bottom:4px; }
+        .flow-step .step-title { font-weight:700; font-size:0.9em; margin-bottom:4px; }
+        .flow-step .step-desc { font-size:0.8em; color:var(--text-dim); }
+        .flow-arrow { font-size:1.4em; color:var(--text-dim); padding:0 4px; flex-shrink:0; }
+
+        /* Comparison table */
+        .mega-table { width:100%; border-collapse:collapse; font-size:0.85em; margin:20px 0; }
+        .mega-table th { background:var(--surface2); padding:12px 10px; text-align:center; font-weight:700; border:1px solid var(--border); position:sticky; top:0; }
+        .mega-table td { padding:10px; border:1px solid var(--border); text-align:center; vertical-align:middle; }
+        .mega-table td:first-child { text-align:left; font-weight:600; background:rgba(255,255,255,0.02); min-width:140px; }
+        .mega-table .google-col { background:rgba(66,133,244,0.04); }
+        .mega-table .openai-col { background:rgba(16,163,127,0.04); }
+        .mega-table .amazon-col { background:rgba(255,153,0,0.04); }
+        .mega-table .meta-col { background:rgba(0,132,255,0.04); }
+        .mega-table .shopify-col { background:rgba(150,191,72,0.04); }
+        .mega-table .perplexity-col { background:rgba(192,132,252,0.04); }
+        .mega-table .microsoft-col { background:rgba(0,188,242,0.04); }
+
+        /* Validation cards */
+        .validation-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px; margin:20px 0; }
+        .validation-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 24px; }
+        .validation-card h4 { font-size:1em; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .validation-card .check-list { list-style:none; padding:0; }
+        .validation-card .check-list li { padding:6px 0; display:flex; align-items:flex-start; gap:8px; font-size:0.9em; }
+        .validation-card .check-list li::before { content:'✓'; color:var(--accent-green); font-weight:700; flex-shrink:0; margin-top:1px; }
+        .validation-card .reject-list { list-style:none; padding:0; }
+        .validation-card .reject-list li { padding:6px 0; display:flex; align-items:flex-start; gap:8px; font-size:0.9em; }
+        .validation-card .reject-list li::before { content:'✗'; color:var(--accent-red); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+        /* Protocol relationship diagram */
+        .protocol-map { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:32px; margin:24px 0; }
+        .protocol-layer { display:flex; align-items:stretch; gap:16px; margin-bottom:20px; flex-wrap:wrap; }
+        .protocol-layer:last-child { margin-bottom:0; }
+        .protocol-box { flex:1; min-width:200px; border-radius:12px; padding:20px; text-align:center; }
+        .protocol-box h4 { font-size:1em; margin-bottom:6px; }
+        .protocol-box p { font-size:0.85em; opacity:0.8; }
+        .protocol-box.acp { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; }
+        .protocol-box.ucp { background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color:#fde68a; }
+        .protocol-box.mcp { background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.3); color:#ddd6fe; }
+        .protocol-box.neutral { background:rgba(100,100,120,0.1); border:1px solid rgba(100,100,120,0.3); color:var(--text-dim); }
+        .layer-label { writing-mode:vertical-rl; text-orientation:mixed; font-size:0.8em; font-weight:700; color:var(--text-dim); display:flex; align-items:center; justify-content:center; min-width:30px; letter-spacing:2px; }
+        .layer-content { flex:1; display:flex; gap:12px; flex-wrap:wrap; }
+        .layer-row { display:flex; align-items:stretch; gap:12px; margin-bottom:16px; }
+        .layer-row:last-child { margin-bottom:0; }
+
+        /* Code blocks */
+        .code-block { background:#0d1117; border:1px solid #30363d; border-radius:10px; padding:16px 20px; margin:12px 0; overflow-x:auto; font-family:'JetBrains Mono','Fira Code',monospace; font-size:0.82em; line-height:1.6; color:#c9d1d9; }
+        .code-block .comment { color:#8b949e; }
+        .code-block .key { color:#79c0ff; }
+        .code-block .string { color:#a5d6ff; }
+        .code-block .value { color:#7ee787; }
+        .code-block .url { color:#d2a8ff; }
+
+        /* Insight boxes */
+        .insight-box { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:12px; padding:20px 24px; margin:20px 0; }
+        .insight-box h4 { color:#fbbf24; font-size:0.95em; margin-bottom:8px; }
+        .insight-box p { font-size:0.9em; color:var(--text); line-height:1.7; }
+
+        .warning-box { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:12px; padding:20px 24px; margin:20px 0; }
+        .warning-box h4 { color:#f87171; font-size:0.95em; margin-bottom:8px; }
+        .warning-box p { font-size:0.9em; line-height:1.7; }
+
+        .success-box { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.25); border-radius:12px; padding:20px 24px; margin:20px 0; }
+        .success-box h4 { color:#4ade80; font-size:0.95em; margin-bottom:8px; }
+        .success-box p { font-size:0.9em; line-height:1.7; }
+
+        /* Korea section */
+        .korea-box { background:linear-gradient(135deg, rgba(239,68,68,0.06), rgba(66,133,244,0.06)); border:1px solid rgba(239,68,68,0.2); border-radius:16px; padding:28px 32px; margin:24px 0; }
+        .korea-box h3 { color:#f87171; margin-bottom:16px; font-size:1.1em; }
+
+        /* Gap indicators */
+        .gap-meter { display:flex; align-items:center; gap:8px; margin:4px 0; }
+        .gap-bar { height:8px; border-radius:4px; background:var(--surface2); flex:1; max-width:120px; overflow:hidden; }
+        .gap-fill { height:100%; border-radius:4px; }
+        .gap-fill.low { background:var(--accent-red); width:20%; }
+        .gap-fill.medium { background:var(--accent-yellow); width:50%; }
+        .gap-fill.high { background:var(--accent-green); width:80%; }
+        .gap-fill.full { background:var(--accent-green); width:100%; }
+        .gap-label { font-size:0.8em; color:var(--text-dim); min-width:60px; }
+
+        /* Responsive */
+        @media (max-width:768px) {
+            .hero h1 { font-size:1.6em; }
+            .platform-card-body { padding:16px; }
+            .flow-diagram { flex-direction:column; align-items:center; }
+            .flow-arrow { transform:rotate(90deg); }
+            .mega-table { font-size:0.75em; }
+            .protocol-layer { flex-direction:column; }
+        }
+
+        /* Summary stat strip */
+        .stat-strip { display:flex; gap:16px; margin:24px 0; flex-wrap:wrap; }
+        .stat-item { flex:1; min-width:150px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+        .stat-item .num { font-size:1.6em; font-weight:800; }
+        .stat-item .label { font-size:0.8em; color:var(--text-dim); margin-top:4px; }
+        .stat-google .num { color:var(--accent-google); }
+        .stat-openai .num { color:var(--accent-openai); }
+        .stat-total .num { color:var(--accent-perplexity); }
+
+        /* Timeline */
+        .timeline { position:relative; margin:24px 0; padding-left:30px; }
+        .timeline::before { content:''; position:absolute; left:10px; top:0; bottom:0; width:2px; background:var(--border); }
+        .timeline-item { position:relative; margin-bottom:20px; }
+        .timeline-item::before { content:''; position:absolute; left:-24px; top:6px; width:12px; height:12px; border-radius:50%; border:2px solid var(--accent-google); background:var(--bg); }
+        .timeline-item .time-label { font-size:0.8em; color:var(--accent-google-light); font-weight:600; }
+        .timeline-item .time-content { font-size:0.9em; color:var(--text); margin-top:4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>플랫폼별 상품 데이터 등록 & 품질 검증 가이드</h1>
+        <p class="subtitle">Google · OpenAI · Amazon · Meta · Shopify · Perplexity · Microsoft — 7대 플랫폼의 상품 데이터 등록 방법, 품질 검증 체계, 그리고 ACP/UCP/MCP 프로토콜과의 관계를 한눈에 정리합니다</p>
+        <span class="date-badge">2026년 4월 기준 · Agentic Commerce Knowledge Base #9</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-strip">
+        <div class="stat-item stat-google"><div class="num">7</div><div class="label">주요 플랫폼</div></div>
+        <div class="stat-item stat-openai"><div class="num">3</div><div class="label">오픈 프로토콜</div></div>
+        <div class="stat-item stat-total"><div class="num">15분</div><div class="label">최소 갱신 주기 (OpenAI)</div></div>
+        <div class="stat-item" style="border-color:rgba(239,68,68,0.3)"><div class="num" style="color:#f87171">693%</div><div class="label">AI 커머스 트래픽 YoY 증가</div></div>
+    </div>
+
+    <!-- Thesis -->
+    <div class="thesis-box">
+        <h3>핵심 테제</h3>
+        <p>AI 에이전트가 상품을 "발견 → 비교 → 추천 → 결제"하는 에이전틱 커머스 시대에, <span class="highlight">상품 데이터를 어디에, 어떤 형식으로, 어떤 품질로 등록하느냐</span>가 곧 매출을 결정합니다. 각 플랫폼은 서로 다른 프로토콜(ACP, UCP, 독자 규격)로 데이터를 수집하며, <span class="highlight">데이터 품질 검증 기준도 플랫폼마다 다릅니다</span>. 이 리포트는 판매자가 "한 번 정리한 상품 데이터로 모든 AI 플랫폼에 동시 노출"하기 위해 알아야 할 모든 것을 다룹니다.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: OVERVIEW — 핵심 구조 이해 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">1</span> 핵심 구조 이해: Push vs Pull vs Discovery</h2>
+        <p>플랫폼마다 상품 데이터를 수집하는 방식이 근본적으로 다릅니다</p>
+    </div>
+
+    <div class="insight-box">
+        <h4>3가지 데이터 수집 패러다임</h4>
+        <p><strong>① Push 모델</strong> — 판매자가 직접 데이터 파일을 플랫폼 서버에 "밀어 넣는" 방식 (예: OpenAI SFTP, Google Feed 업로드)<br>
+        <strong>② Pull 모델</strong> — 플랫폼이 판매자 사이트에서 데이터를 "가져가는" 방식 (예: Google 크롤링, Perplexity 웹 수집)<br>
+        <strong>③ Discovery 모델</strong> — AI 에이전트가 표준 엔드포인트를 자동 탐색하는 방식 (예: UCP의 <code>.well-known/ucp</code>)</p>
+    </div>
+
+    <table class="mega-table">
+        <thead>
+            <tr>
+                <th>비교 항목</th>
+                <th class="google-col">🟦 Google</th>
+                <th class="openai-col">🟩 OpenAI</th>
+                <th class="amazon-col">🟧 Amazon</th>
+                <th class="meta-col">🔵 Meta</th>
+                <th class="shopify-col">🟢 Shopify</th>
+                <th class="perplexity-col">🟣 Perplexity</th>
+                <th class="microsoft-col">🔷 Microsoft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>수집 방식</td>
+                <td class="google-col">Push + Pull</td>
+                <td class="openai-col">Push Only</td>
+                <td class="amazon-col">Push (API)</td>
+                <td class="meta-col">Push + Pull</td>
+                <td class="shopify-col">자동 신디케이션</td>
+                <td class="perplexity-col">Pull + 파트너</td>
+                <td class="microsoft-col">파트너 연동</td>
+            </tr>
+            <tr>
+                <td>관련 프로토콜</td>
+                <td class="google-col"><span class="tag-protocol tag-ucp">UCP</span></td>
+                <td class="openai-col"><span class="tag-protocol tag-acp">ACP</span></td>
+                <td class="amazon-col"><span class="tag-protocol tag-proprietary">SP-API</span></td>
+                <td class="meta-col"><span class="tag-protocol tag-proprietary">독자규격</span></td>
+                <td class="shopify-col"><span class="tag-protocol tag-ucp">UCP</span> <span class="tag-protocol tag-acp">ACP</span></td>
+                <td class="perplexity-col"><span class="tag-protocol tag-proprietary">독자규격</span></td>
+                <td class="microsoft-col"><span class="tag-protocol tag-proprietary">독자규격</span></td>
+            </tr>
+            <tr>
+                <td>파일 형식</td>
+                <td class="google-col">TSV, XML, CSV (4GB)</td>
+                <td class="openai-col">JSONL.gz, CSV.gz, Parquet</td>
+                <td class="amazon-col">JSON (SP-API)</td>
+                <td class="meta-col">CSV, TSV, XML (RSS)</td>
+                <td class="shopify-col">자동 (Shopify Catalog)</td>
+                <td class="perplexity-col">Shopify 연동 or API</td>
+                <td class="microsoft-col">PayPal Store Sync</td>
+            </tr>
+            <tr>
+                <td>갱신 주기</td>
+                <td class="google-col">일 1회 (최소 30일)</td>
+                <td class="openai-col">15분 단위 가능</td>
+                <td class="amazon-col">실시간 API</td>
+                <td class="meta-col">일 1회 권장</td>
+                <td class="shopify-col">실시간 자동</td>
+                <td class="perplexity-col">파트너 연동 시 실시간</td>
+                <td class="microsoft-col">PayPal 연동 실시간</td>
+            </tr>
+            <tr>
+                <td>전송 방식</td>
+                <td class="google-col">SFTP, API, URL 크롤</td>
+                <td class="openai-col">HTTPS 암호화 전송</td>
+                <td class="amazon-col">REST API</td>
+                <td class="meta-col">피드 URL, API</td>
+                <td class="shopify-col">내부 파이프라인</td>
+                <td class="perplexity-col">Merchant Program API</td>
+                <td class="microsoft-col">Copilot Studio + PayPal</td>
+            </tr>
+            <tr>
+                <td>AI 쇼핑 기능</td>
+                <td class="google-col">AI Mode, Gemini</td>
+                <td class="openai-col">ChatGPT Shopping</td>
+                <td class="amazon-col">Rufus AI</td>
+                <td class="meta-col">AI 광고 추천</td>
+                <td class="shopify-col">Agentic Storefronts</td>
+                <td class="perplexity-col">Instant Buy</td>
+                <td class="microsoft-col">Copilot Checkout</td>
+            </tr>
+            <tr>
+                <td>결제 방식</td>
+                <td class="google-col">Native Checkout (UCP)</td>
+                <td class="openai-col">Stripe SPT (ACP)</td>
+                <td class="amazon-col">Amazon Pay</td>
+                <td class="meta-col">Meta Checkout</td>
+                <td class="shopify-col">Shop Pay</td>
+                <td class="perplexity-col">PayPal / Venmo</td>
+                <td class="microsoft-col">PayPal</td>
+            </tr>
+            <tr>
+                <td>미국 외 가용</td>
+                <td class="google-col">✅ 글로벌</td>
+                <td class="openai-col">🇺🇸 미국만</td>
+                <td class="amazon-col">✅ 글로벌</td>
+                <td class="meta-col">✅ 글로벌</td>
+                <td class="shopify-col">✅ 글로벌</td>
+                <td class="perplexity-col">🇺🇸 미국 중심</td>
+                <td class="microsoft-col">🇺🇸 미국 (확장 예정)</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: Google 에코시스템 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">2</span> Google 에코시스템 상품 등록</h2>
+        <p>Merchant Center + UCP — 가장 넓은 노출 범위를 가진 커머스 인프라</p>
+    </div>
+
+    <div class="platform-card" style="border-color:rgba(66,133,244,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-google">G</div>
+            <div class="info">
+                <h3>Google Merchant Center + UCP <span class="tag tag-ucp" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">UCP 프로토콜</span></h3>
+                <p>Google Shopping, AI Mode, Gemini, YouTube, Maps — 모든 Google 표면에 상품 노출</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+
+            <!-- 2A: Merchant Center 등록 -->
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-google)"></span> 방법 A: Google Merchant Center (기존 방식)</h4>
+
+                <div class="flow-diagram">
+                    <div class="flow-step" style="border-color:rgba(66,133,244,0.4)">
+                        <div class="step-num">STEP 1</div>
+                        <div class="step-title">GMC 계정 생성</div>
+                        <div class="step-desc">merchants.google.com 에서 비즈니스 정보 등록</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(66,133,244,0.4)">
+                        <div class="step-num">STEP 2</div>
+                        <div class="step-title">피드 파일 생성</div>
+                        <div class="step-desc">TSV/XML/CSV 형식 상품 데이터 파일 작성</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(66,133,244,0.4)">
+                        <div class="step-num">STEP 3</div>
+                        <div class="step-title">피드 업로드</div>
+                        <div class="step-desc">SFTP, API, 또는 URL 크롤링 중 선택</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(66,133,244,0.4)">
+                        <div class="step-num">STEP 4</div>
+                        <div class="step-title">검증 & 노출</div>
+                        <div class="step-desc">Diagnostics 탭에서 오류 확인, 승인 후 노출</div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>필드명</th><th>필수 여부</th><th>타입</th><th>설명 & 규칙</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td><span class="tag tag-required">필수</span></td><td>String (50자)</td><td>고유 상품 ID, SKU 사용 권장</td></tr>
+                        <tr><td><code>title</code></td><td><span class="tag tag-required">필수</span></td><td>String (150자)</td><td>브랜드 + 상품명 + 핵심 속성 포함</td></tr>
+                        <tr><td><code>description</code></td><td><span class="tag tag-required">필수</span></td><td>String (5000자)</td><td>사실적 설명, 마케팅 문구 지양</td></tr>
+                        <tr><td><code>link</code></td><td><span class="tag tag-required">필수</span></td><td>URL</td><td>상품 랜딩 페이지, HTTPS 필수</td></tr>
+                        <tr><td><code>image_link</code></td><td><span class="tag tag-required">필수</span></td><td>URL</td><td>최소 800×800px 권장, 워터마크 금지</td></tr>
+                        <tr><td><code>price</code></td><td><span class="tag tag-required">필수</span></td><td>Number + 통화</td><td>"49900.00 KRW" 형식, 웹사이트와 일치 필수</td></tr>
+                        <tr><td><code>availability</code></td><td><span class="tag tag-required">필수</span></td><td>Enum</td><td>in_stock / out_of_stock / preorder</td></tr>
+                        <tr><td><code>brand</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>정확한 브랜드명 (비표준 약어 금지)</td></tr>
+                        <tr><td><code>gtin</code></td><td><span class="tag tag-required">필수*</span></td><td>String</td><td>EAN/UPC/ISBN, GTIN 없으면 MPN+brand 조합</td></tr>
+                        <tr><td><code>condition</code></td><td><span class="tag tag-required">필수</span></td><td>Enum</td><td>new / refurbished / used</td></tr>
+                        <tr><td><code>product_type</code></td><td><span class="tag tag-optional">선택</span></td><td>String</td><td>판매자 정의 카테고리 경로</td></tr>
+                        <tr><td><code>google_product_category</code></td><td><span class="tag tag-optional">권장</span></td><td>String</td><td>Google 표준 분류 체계 ID</td></tr>
+                        <tr><td><code>shipping</code></td><td><span class="tag tag-optional">권장</span></td><td>Object</td><td>배송비, 배송 지역, 예상 배송일</td></tr>
+                        <tr><td><code>loyalty_program</code></td><td><span class="tag tag-optional">2025 신규</span></td><td>Object</td><td>회원가 제출용 (sale_price 대체)</td></tr>
+                        <tr><td><code>certification</code></td><td><span class="tag tag-optional">EU 필수</span></td><td>Object</td><td>에너지 효율 등급 (2025 변경)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2B: UCP 등록 -->
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-ucp)"></span> 방법 B: UCP (Universal Commerce Protocol) — AI 에이전트 시대의 새 표준</h4>
+
+                <div class="insight-box">
+                    <h4>UCP란?</h4>
+                    <p>Google과 Shopify가 2026년 1월 NRF에서 공동 발표한 <strong>오픈소스 커머스 프로토콜</strong>입니다. 판매자가 자신의 도메인에 <code>/.well-known/ucp</code> 매니페스트를 배포하면, AI 에이전트가 자동으로 "이 사이트에서 뭘 살 수 있는지" 발견합니다. 크롤링이나 피드 제출 없이, 에이전트가 스스로 찾아오는 <strong>Discovery 모델</strong>입니다.</p>
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="flow-step" style="border-color:rgba(245,158,11,0.4)">
+                        <div class="step-num">STEP 1</div>
+                        <div class="step-title">.well-known/ucp 배포</div>
+                        <div class="step-desc">JSON 매니페스트를 도메인 루트에 배치</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(245,158,11,0.4)">
+                        <div class="step-num">STEP 2</div>
+                        <div class="step-title">서비스 & 결제 선언</div>
+                        <div class="step-desc">쇼핑, 체크아웃, 배송 등 지원 기능 명시</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(245,158,11,0.4)">
+                        <div class="step-num">STEP 3</div>
+                        <div class="step-title">AI 에이전트 자동 발견</div>
+                        <div class="step-desc">Gemini, Copilot 등이 매니페스트를 읽고 쿼리</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(245,158,11,0.4)">
+                        <div class="step-num">STEP 4</div>
+                        <div class="step-title">Native Commerce 실행</div>
+                        <div class="step-desc">검색→비교→장바구니→결제를 에이전트 내에서 완료</div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// 예시: https://myshop.co.kr/.well-known/ucp</span>
+{
+  <span class="key">"version"</span>: <span class="string">"1.0"</span>,
+  <span class="key">"merchant"</span>: {
+    <span class="key">"name"</span>: <span class="string">"MyShop Korea"</span>,
+    <span class="key">"domain"</span>: <span class="string">"myshop.co.kr"</span>,
+    <span class="key">"country"</span>: <span class="string">"KR"</span>
+  },
+  <span class="key">"services"</span>: [
+    {
+      <span class="key">"type"</span>: <span class="string">"shopping"</span>,
+      <span class="key">"capabilities"</span>: [<span class="string">"product_search"</span>, <span class="string">"checkout"</span>, <span class="string">"native_commerce"</span>],
+      <span class="key">"catalog_endpoint"</span>: <span class="url">"/api/ucp/catalog"</span>,
+      <span class="key">"checkout_endpoint"</span>: <span class="url">"/api/ucp/checkout"</span>
+    }
+  ],
+  <span class="key">"payment_handlers"</span>: [<span class="string">"google_pay"</span>, <span class="string">"shop_pay"</span>, <span class="string">"card"</span>],
+  <span class="key">"extensions"</span>: {
+    <span class="key">"fulfillment"</span>: { <span class="key">"methods"</span>: [<span class="string">"delivery"</span>, <span class="string">"pickup"</span>] },
+    <span class="key">"discounts"</span>: { <span class="key">"enabled"</span>: <span class="value">true</span> }
+  }
+}
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>UCP 매니페스트 핵심 필드</th><th>설명</th><th>AI 에이전트 활용</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>services[]</code></td><td>지원하는 서비스 목록 (shopping, booking 등)</td><td>에이전트가 가능한 액션을 파악</td></tr>
+                        <tr><td><code>capabilities[]</code></td><td>각 서비스의 세부 기능 (checkout, search 등)</td><td>체크아웃 가능 여부 즉시 판단</td></tr>
+                        <tr><td><code>payment_handlers[]</code></td><td>지원 결제 수단 목록</td><td>사용자 결제 수단과 매칭</td></tr>
+                        <tr><td><code>catalog_endpoint</code></td><td>상품 카탈로그 API 주소</td><td>실시간 상품 검색 & 조회</td></tr>
+                        <tr><td><code>extensions{}</code></td><td>배송, 할인, 반품 등 확장 기능</td><td>조건부 추천 로직에 활용</td></tr>
+                        <tr><td><code>native_commerce</code></td><td>AI 내 직접 결제 허용 플래그</td><td>Google AI Mode에서 즉시 구매 활성화</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2C: 2025 변경사항 -->
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-green)"></span> 2025~2026 주요 변경사항</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time-label">2025년 4월</div>
+                        <div class="time-content">할부 가격 정책 변경 — <code>installment</code> 속성의 <code>down_payment</code> 하위 속성 필수화, <code>price</code> 필드에 할부가 아닌 일시불 가격 기재</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-label">2025년 7월</div>
+                        <div class="time-content">회원가 정책 변경 — <code>sale_price</code>에 회원가 기재 금지, <code>loyalty_program</code> 속성으로 이전. US 세금 정보 제출 의무 폐지</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-label">2026년 1월 (NRF)</div>
+                        <div class="time-content">UCP 공식 발표 — Google + Shopify 공동 개발, 오픈소스 표준. <code>native_commerce</code> 속성 도입으로 AI Mode 내 직접 결제 지원</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-label">2026년 진행중</div>
+                        <div class="time-content">AI 전용 속성 확대 — FAQ, 호환 액세서리, 대체 상품, 대화형 속성(conversational attributes) 등 수십 개 신규 필드 추가</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: OpenAI 에코시스템 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">3</span> OpenAI 에코시스템 상품 등록</h2>
+        <p>ACP (Agentic Commerce Protocol) + ChatGPT Merchant Portal — AI 네이티브 커머스</p>
+    </div>
+
+    <div class="platform-card" style="border-color:rgba(16,163,127,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-openai">O</div>
+            <div class="info">
+                <h3>OpenAI ChatGPT Shopping <span class="tag tag-acp" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">ACP 프로토콜</span></h3>
+                <p>ChatGPT 내 상품 발견 → 비교 → 결제 (Stripe SPT) — 현재 미국 판매자만 온보딩 가능</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+
+            <div class="warning-box">
+                <h4>⚠ 핵심 차이: "ChatGPT는 웹을 크롤링하지 않습니다"</h4>
+                <p>Google Shopping이 Merchant Center에서 피드를 가져가거나 웹사이트를 크롤링하는 것과 달리, ChatGPT는 <strong>판매자가 직접 구조화된 파일을 OpenAI 서버에 전송(Push)</strong>하는 모델입니다. 즉, 피드를 보내지 않으면 ChatGPT에 당신의 상품은 존재하지 않습니다.</p>
+            </div>
+
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-openai)"></span> 온보딩 5단계 프로세스</h4>
+
+                <div class="flow-diagram">
+                    <div class="flow-step" style="border-color:rgba(16,163,127,0.4)">
+                        <div class="step-num">STEP 1</div>
+                        <div class="step-title">Merchant 포털 등록</div>
+                        <div class="step-desc">chatgpt.com/merchant에서 비즈니스 인증 (미국만)</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(16,163,127,0.4)">
+                        <div class="step-num">STEP 2</div>
+                        <div class="step-title">SFTP 엔드포인트 수신</div>
+                        <div class="step-desc">OpenAI가 고유한 보안 SFTP 엔드포인트 + 인증 자격증명 제공</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(16,163,127,0.4)">
+                        <div class="step-num">STEP 3</div>
+                        <div class="step-title">샘플 피드 제출</div>
+                        <div class="step-desc">대표 상품 100개로 파싱 + 스키마 검사 테스트</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(16,163,127,0.4)">
+                        <div class="step-num">STEP 4</div>
+                        <div class="step-title">거부 사유 수정</div>
+                        <div class="step-desc">필드 누락, 타입 오류, 가격 불일치 등 수정</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(16,163,127,0.4)">
+                        <div class="step-num">STEP 5</div>
+                        <div class="step-title">전체 피드 배포</div>
+                        <div class="step-desc">전체 카탈로그 전송 + 15분 주기 갱신 시작</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-openai)"></span> ACP 상품 피드 스펙 (Draft — 2026.04.07까지 피드백 수집 중)</h4>
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>필드명</th><th>필수 여부</th><th>타입</th><th>설명 & 검증 규칙</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background:rgba(239,68,68,0.03);"><td colspan="4" style="font-weight:700; color:#f87171; font-size:0.85em;">▸ 헤더 파일 (피드 메타데이터)</td></tr>
+                        <tr><td><code>feed_id</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>피드 고유 식별자</td></tr>
+                        <tr><td><code>account_id</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>OpenAI 머천트 계정 ID</td></tr>
+                        <tr><td><code>target_merchant</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>판매자 도메인 or 상호명</td></tr>
+                        <tr><td><code>target_country</code></td><td><span class="tag tag-required">필수</span></td><td>ISO 3166-1 α2</td><td>"US", "KR" 등 2자리 국가 코드</td></tr>
+
+                        <tr style="background:rgba(16,163,127,0.03);"><td colspan="4" style="font-weight:700; color:#1cc99a; font-size:0.85em;">▸ 상품 레코드 (라인당 1개 상품 객체)</td></tr>
+                        <tr><td><code>product_id</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>비고유 product_id → 전체 SKU 거부</td></tr>
+                        <tr><td><code>variant_id</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>색상/사이즈별 변형 식별자</td></tr>
+                        <tr><td><code>variant_title</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>변형명 (예: "블랙 / XL")</td></tr>
+                        <tr><td><code>title</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>상품명 — 사실적 기술만 허용</td></tr>
+                        <tr><td><code>description</code></td><td><span class="tag tag-required">필수</span></td><td>String</td><td>"최고의!", "대박 할인" 등 마케팅 문구 사용 시 거부</td></tr>
+                        <tr><td><code>price</code></td><td><span class="tag tag-required">필수</span></td><td>Number</td><td>웹사이트 실제 가격과 불일치 시 즉시 거부</td></tr>
+                        <tr><td><code>currency</code></td><td><span class="tag tag-required">필수</span></td><td>ISO 4217</td><td>"USD", "KRW" 등 3자리 통화 코드</td></tr>
+                        <tr><td><code>availability</code></td><td><span class="tag tag-required">필수</span></td><td>Enum</td><td>in_stock / out_of_stock / preorder</td></tr>
+                        <tr><td><code>link</code></td><td><span class="tag tag-required">필수</span></td><td>URL</td><td>상품 페이지 — 유효하지 않은 URL → 거부</td></tr>
+                        <tr><td><code>image_link</code></td><td><span class="tag tag-required">필수</span></td><td>URL</td><td>접근 가능한 이미지 URL</td></tr>
+                        <tr><td><code>gtin / upc / mpn</code></td><td><span class="tag tag-optional">권장</span></td><td>String</td><td>카탈로그 매칭 정확도 향상</td></tr>
+
+                        <tr style="background:rgba(139,92,246,0.03);"><td colspan="4" style="font-weight:700; color:#c084fc; font-size:0.85em;">▸ 추천 필드 (검색 순위 향상)</td></tr>
+                        <tr><td><code>faq</code></td><td><span class="tag tag-optional">추천</span></td><td>Array</td><td>자주 묻는 질문 + 답변 배열</td></tr>
+                        <tr><td><code>review_summary</code></td><td><span class="tag tag-optional">추천</span></td><td>String</td><td>리뷰 요약 — AI 추천 맥락에 활용</td></tr>
+                        <tr><td><code>compatibility</code></td><td><span class="tag tag-optional">추천</span></td><td>Array</td><td>호환 상품/액세서리 목록</td></tr>
+                        <tr><td><code>best_for</code></td><td><span class="tag tag-optional">추천</span></td><td>Array</td><td>대화형 속성 — ["출장", "학생", "가벼운 업무"]</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block">
+<span class="comment">// OpenAI ACP 피드 예시 (JSONL 형식 — 한 줄에 한 상품)</span>
+{<span class="key">"product_id"</span>:<span class="string">"LG-GRAM17-2026"</span>,<span class="key">"variant_id"</span>:<span class="string">"LG-GRAM17-BLK-16G"</span>,<span class="key">"variant_title"</span>:<span class="string">"블랙 / RAM 16GB"</span>,<span class="key">"title"</span>:<span class="string">"LG 그램 17 (2026) 17인치 노트북"</span>,<span class="key">"description"</span>:<span class="string">"17인치 WQXGA IPS 디스플레이, Intel Core Ultra 7, 16GB RAM, 512GB SSD, 80Wh 배터리, 1.35kg"</span>,<span class="key">"price"</span>:<span class="value">1890000</span>,<span class="key">"currency"</span>:<span class="string">"KRW"</span>,<span class="key">"availability"</span>:<span class="string">"in_stock"</span>,<span class="key">"link"</span>:<span class="url">"https://myshop.co.kr/products/lg-gram-17-2026"</span>,<span class="key">"image_link"</span>:<span class="url">"https://cdn.myshop.co.kr/images/lg-gram-17-black.jpg"</span>,<span class="key">"gtin"</span>:<span class="string">"8801234567890"</span>,<span class="key">"brand"</span>:<span class="string">"LG"</span>,<span class="key">"best_for"</span>:[<span class="string">"출장"</span>,<span class="string">"대학생"</span>,<span class="string">"경량 업무"</span>],<span class="key">"faq"</span>:[{<span class="key">"q"</span>:<span class="string">"무게가 얼마인가요?"</span>,<span class="key">"a"</span>:<span class="string">"1.35kg입니다"</span>}]}
+                </div>
+            </div>
+
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-red)"></span> Syndigo의 역할 — "상품 데이터 번역기 + 배달부 + 품질관리사"</h4>
+                <p style="font-size:0.9em; color:var(--text); margin-bottom:12px;">Syndigo OpenAI Connect는 브랜드의 기존 상품 DB(PIM, ERP 등)를 ACP 규격에 맞춰 자동 변환하고, 15분마다 갱신하며, 거부 사유를 사전에 제거하는 미들웨어입니다.</p>
+                <div class="flow-diagram">
+                    <div class="flow-step" style="border-color:rgba(239,68,68,0.3)">
+                        <div class="step-title">1단계: 수집</div>
+                        <div class="step-desc">브랜드 PIM/ERP에서 원본 데이터 가져오기</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(239,68,68,0.3)">
+                        <div class="step-title">2단계: 변환</div>
+                        <div class="step-desc">ACP 스펙 맞춤 필드 채우기 + 마케팅 문구 정제</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(239,68,68,0.3)">
+                        <div class="step-title">3단계: 강화</div>
+                        <div class="step-desc">FAQ, 리뷰, 인증 등 추천 필드 추가</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(239,68,68,0.3)">
+                        <div class="step-title">4단계: 전송</div>
+                        <div class="step-desc">SFTP 엔드포인트로 15분 주기 자동 배포</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step" style="border-color:rgba(239,68,68,0.3)">
+                        <div class="step-title">5단계: 모니터링</div>
+                        <div class="step-desc">거부 SKU 감지 + 원인 분석 + 수정 가이드</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: 기타 플랫폼 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">4</span> 그 외 주요 플랫폼 상품 등록</h2>
+        <p>Amazon · Meta · Shopify · Perplexity · Microsoft Copilot</p>
+    </div>
+
+    <!-- Amazon -->
+    <div class="platform-card" style="border-color:rgba(255,153,0,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-amazon">A</div>
+            <div class="info">
+                <h3>Amazon (Selling Partner API) <span class="tag tag-proprietary" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">독자 규격</span></h3>
+                <p>SP-API + Rufus AI 쇼핑 어시스턴트 — 세계 최대 마켓플레이스</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-amazon)"></span> 등록 방식</h4>
+                <table class="data-table">
+                    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>API</strong></td><td>Selling Partner API (SP-API) — Listings Items API로 SKU 단위 CRUD</td></tr>
+                        <tr><td><strong>피드 형식</strong></td><td>JSON_LISTINGS_FEED (2025년 7월 이후 레거시 XML/Flat File 지원 중단)</td></tr>
+                        <tr><td><strong>스키마 조회</strong></td><td>Product Type Definitions API로 카테고리별 필수/선택 속성 스키마 동적 조회</td></tr>
+                        <tr><td><strong>갱신 방식</strong></td><td>REST API로 실시간 업데이트 (PUT/PATCH/DELETE)</td></tr>
+                        <tr><td><strong>주요 변경 (2025)</strong></td><td>단위 전체명 필수 ("lb"→"pounds"), 변형 테마 언더스코어 형식 ("SizeName"→"Size_Name")</td></tr>
+                        <tr><td><strong>AI 쇼핑</strong></td><td>Rufus AI — 상품 Q&A, 비교, 추천을 대화형으로 제공 (아마존 앱 내)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meta -->
+    <div class="platform-card" style="border-color:rgba(0,132,255,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-meta">M</div>
+            <div class="info">
+                <h3>Meta Commerce (Facebook/Instagram) <span class="tag tag-proprietary" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">독자 규격</span></h3>
+                <p>Commerce Manager + 카탈로그 — Facebook/Instagram 쇼핑 & AI 광고 추천</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-meta)"></span> 등록 방식</h4>
+                <table class="data-table">
+                    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>포털</strong></td><td>Meta Commerce Manager에서 카탈로그 생성</td></tr>
+                        <tr><td><strong>피드 형식</strong></td><td>CSV, TSV, XML (RSS/ATOM)</td></tr>
+                        <tr><td><strong>업로드 방식</strong></td><td>① 파일 직접 업로드 ② 피드 URL 주기적 가져오기 ③ Catalog API</td></tr>
+                        <tr><td><strong>필수 필드</strong></td><td>id, title, description, availability, condition, price, link, image_link, brand</td></tr>
+                        <tr><td><strong>체크아웃 추가 필드</strong></td><td>checkout 활성화 시: quantity(정수), fb_product_category 등 추가 필수</td></tr>
+                        <tr><td><strong>재고 관리</strong></td><td>quantity=0이면 품절 표시, 56일 이상 품절 시 숍에서 자동 숨김</td></tr>
+                        <tr><td><strong>AI 활용</strong></td><td>Advantage+ 쇼핑 캠페인 — AI가 카탈로그 데이터로 최적 광고 자동 생성</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopify -->
+    <div class="platform-card" style="border-color:rgba(150,191,72,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-shopify">S</div>
+            <div class="info">
+                <h3>Shopify Agentic Storefronts <span class="tag tag-ucp" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">UCP</span> <span class="tag tag-acp" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">ACP</span></h3>
+                <p>Shopify Catalog — 한 번 설정하면 ChatGPT, Perplexity, Copilot 등에 자동 배포</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-shopify)"></span> 핵심 구조</h4>
+                <table class="data-table">
+                    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>등록 방식</strong></td><td>별도 피드 작성 불필요 — Shopify admin에 상품 등록하면 Shopify Catalog가 자동 신디케이션</td></tr>
+                        <tr><td><strong>AI 데이터 변환</strong></td><td>수백만 머천트 데이터로 학습한 AI가 카테고리 추론, 속성 추출, 변형 통합, 동일 상품 클러스터링 자동 수행</td></tr>
+                        <tr><td><strong>배포 대상</strong></td><td>ChatGPT (ACP), Google (UCP), Perplexity, Microsoft Copilot, 기타 AI 에이전트</td></tr>
+                        <tr><td><strong>가격/재고 동기화</strong></td><td>실시간 자동 — 에이전트 간 가격·재고 일관성 보장</td></tr>
+                        <tr><td><strong>성과 추적</strong></td><td>AI 기반 주문을 원래 채널로 어트리뷰션 (Shopify Admin에서 확인)</td></tr>
+                        <tr><td><strong>활성화 시점</strong></td><td>2026년 3월 말부터 모든 Shopify 스토어에 기본 활성화</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="success-box">
+                    <h4>💡 Shopify가 중요한 이유</h4>
+                    <p>Shopify는 ACP(OpenAI)와 UCP(Google) 양쪽 프로토콜을 <strong>모두 지원하는 유일한 플랫폼</strong>입니다. 즉 Shopify에 상품을 등록하면 별도 피드 작업 없이 ChatGPT와 Google AI Mode 양쪽에 동시 노출됩니다. AI 기반 주문은 전년 대비 <strong>15배(2025년 초 대비)</strong> 증가했습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Perplexity -->
+    <div class="platform-card" style="border-color:rgba(192,132,252,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-perplexity">P</div>
+            <div class="info">
+                <h3>Perplexity Shopping <span class="tag tag-proprietary" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">Merchant Program</span></h3>
+                <p>Instant Buy + PayPal/Venmo — AI 검색 내 직접 구매</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-perplexity)"></span> 등록 방식</h4>
+                <table class="data-table">
+                    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Merchant Program</strong></td><td>무료 가입 — Perplexity가 머천트에게 직접 API 액세스 제공</td></tr>
+                        <tr><td><strong>Shopify 연동</strong></td><td>Shopify 스토어의 상품 데이터가 Shopify 인프라를 통해 자동 연동</td></tr>
+                        <tr><td><strong>대형 소매업체</strong></td><td>Amazon, BigCommerce 등 3P 마켓플레이스와도 통합</td></tr>
+                        <tr><td><strong>결제</strong></td><td>Instant Buy — PayPal 또는 Venmo로 Perplexity 대화 내에서 결제 완료</td></tr>
+                        <tr><td><strong>MOR(Merchant of Record)</strong></td><td>판매자가 MOR 유지 — 엔지니어링 리소스 불필요</td></tr>
+                        <tr><td><strong>부가 혜택</strong></td><td>검색 트렌드 대시보드, 맞춤형 Perplexity 검색 API 무료 제공</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microsoft -->
+    <div class="platform-card" style="border-color:rgba(0,188,242,0.3);">
+        <div class="platform-card-header">
+            <div class="platform-logo logo-microsoft">C</div>
+            <div class="info">
+                <h3>Microsoft Copilot Checkout <span class="tag tag-proprietary" style="font-size:0.7em; padding:2px 8px; border-radius:6px;">독자 규격</span></h3>
+                <p>Copilot 대화 내 상품 추천 + PayPal 결제 — 2026년 1월 미국 출시</p>
+            </div>
+        </div>
+        <div class="platform-card-body">
+            <div class="sub-section">
+                <h4><span class="dot" style="background:var(--accent-microsoft)"></span> 등록 방식</h4>
+                <table class="data-table">
+                    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Copilot Checkout</strong></td><td>Copilot.com 검색 결과에서 파트너 소매업체 상품을 대화 내 구매 가능</td></tr>
+                        <tr><td><strong>데이터 연동</strong></td><td>PayPal Store Sync를 통해 머천트 카탈로그 자동 동기화</td></tr>
+                        <tr><td><strong>Brand Agents</strong></td><td>Shopify 머천트 전용 — 브랜드 카탈로그 기반 AI 에이전트 자동 생성</td></tr>
+                        <tr><td><strong>Catalog Enrichment</strong></td><td>Copilot Studio의 카탈로그 강화 에이전트 — 이미지에서 속성 추출, 소셜 인사이트 통합</td></tr>
+                        <tr><td><strong>결제</strong></td><td>PayPal 단독 결제 처리</td></tr>
+                        <tr><td><strong>성과 데이터</strong></td><td>2025 연말 AI 커머스 트래픽 전년 대비 <strong>693%</strong> 증가</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: 데이터 품질 검증 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">5</span> 플랫폼별 데이터 품질(정확성) 검증 방법</h2>
+        <p>각 플랫폼이 상품 데이터의 품질을 검증하고 거부하는 기준과 방법</p>
+    </div>
+
+    <div class="insight-box">
+        <h4>핵심 원칙: "AI 에이전트는 부정확한 데이터를 증폭시킵니다"</h4>
+        <p>전통 쇼핑에서 부정확한 가격은 고객이 장바구니에서 발견하지만, AI 에이전트가 잘못된 가격을 "추천"하면 브랜드 신뢰가 대규모로 손상됩니다. 이 때문에 모든 플랫폼이 데이터 품질 검증을 크게 강화하고 있습니다.</p>
+    </div>
+
+    <div class="validation-grid">
+        <!-- Google -->
+        <div class="validation-card" style="border-color:rgba(66,133,244,0.3);">
+            <h4><span style="color:var(--accent-google);">●</span> Google Merchant Center</h4>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-bottom:10px;">3단계 심각도: Error → Warning → Suggestion</p>
+            <ul class="reject-list">
+                <li><strong>가격 불일치</strong> — 피드 가격과 랜딩 페이지 실제 가격이 다른 경우 (가장 빈번)</li>
+                <li><strong>GTIN 오류</strong> — 잘못되거나 누락된 GTIN → 즉시 비승인</li>
+                <li><strong>이미지 품질</strong> — 100×100px 미만, 워터마크, 프로모션 텍스트 포함 이미지</li>
+                <li><strong>필수 필드 누락</strong> — id, title, price, availability 중 하나라도 누락 시 전체 SKU 거부</li>
+                <li><strong>배송 정확성</strong> — 배송비, 예상 배송일이 실제와 불일치 (2025 강화)</li>
+                <li><strong>반복 비승인</strong> — 경고(Warning)를 장기간 방치하면 계정 정지로 격상</li>
+            </ul>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-top:12px;"><strong>모니터링:</strong> Diagnostics 탭 (실시간), Merchant Center API (자동화)</p>
+        </div>
+
+        <!-- OpenAI -->
+        <div class="validation-card" style="border-color:rgba(16,163,127,0.3);">
+            <h4><span style="color:var(--accent-openai);">●</span> OpenAI ChatGPT</h4>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-bottom:10px;">샘플 검증 → 전체 배포의 게이트키핑 모델</p>
+            <ul class="reject-list">
+                <li><strong>필수 필드 누락</strong> — product_id, title, price, availability 중 하나라도 없으면 전체 SKU 거부</li>
+                <li><strong>데이터 타입 오류</strong> — 가격이 소수자 아닌 문자열, 통화 코드가 ISO 4217 미준수</li>
+                <li><strong>잘못된 URL</strong> — image_link, link 필드의 URI가 유효하지 않거나 접근 불가</li>
+                <li><strong>비고유 상품 ID</strong> — 같은 product_id가 여러 행에 중복 사용</li>
+                <li><strong>마케팅 문구 사용</strong> — "최고의!", "필수 아이템!", "대박 할인!" 등 사실이 아닌 설명</li>
+                <li><strong>가격 불일치</strong> — 피드와 웹사이트 실제 가격이 다르면 AI가 교차 검증 후 즉시 거부</li>
+            </ul>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-top:12px;"><strong>검증 단계:</strong> ① 파싱 검증 → ② 스키마 컴플라이언스 → ③ 크로스 사이트 가격 확인</p>
+        </div>
+
+        <!-- Amazon -->
+        <div class="validation-card" style="border-color:rgba(255,153,0,0.3);">
+            <h4><span style="color:var(--accent-amazon);">●</span> Amazon SP-API</h4>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-bottom:10px;">Product Type Definitions 기반 동적 스키마 검증</p>
+            <ul class="reject-list">
+                <li><strong>카테고리별 필수 속성 누락</strong> — Product Type마다 다른 필수 필드 (동적 스키마)</li>
+                <li><strong>ASIN 매칭 실패</strong> — 기존 카탈로그 ASIN과 일치하지 않는 상품 데이터</li>
+                <li><strong>브랜드 레지스트리</strong> — Brand Registry 미등록 브랜드의 자체 브랜드 주장 시 거부</li>
+                <li><strong>이미지 규격</strong> — 메인 이미지: 순백 배경(RGB 255,255,255), 최소 1000×1000px</li>
+                <li><strong>금지어 사용</strong> — 제목에 "최저가", "무료배송", HTML 태그 등 포함 시 거부</li>
+                <li><strong>단위 형식 (2025 변경)</strong> — 약어("lb") 대신 전체명("pounds") 사용 필수</li>
+            </ul>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-top:12px;"><strong>검증:</strong> SP-API getFeed 응답의 processingStatus + 개별 오류 코드</p>
+        </div>
+
+        <!-- Meta -->
+        <div class="validation-card" style="border-color:rgba(0,132,255,0.3);">
+            <h4><span style="color:var(--accent-meta);">●</span> Meta Commerce</h4>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-bottom:10px;">Commerce Manager Diagnostics 기반</p>
+            <ul class="reject-list">
+                <li><strong>필수 필드 누락</strong> — id, title, description, availability, image_link 중 하나 누락 시 거부</li>
+                <li><strong>재고 정확성</strong> — quantity 필드가 정수가 아닌 경우, 0 상태 56일 이상 시 자동 숨김</li>
+                <li><strong>이미지 정책</strong> — 텍스트 오버레이, 행동유도문구 포함 이미지 거부</li>
+                <li><strong>카테고리 불일치</strong> — fb_product_category와 실제 상품이 불일치</li>
+                <li><strong>가격/통화 오류</strong> — 가격 형식 오류 또는 지원되지 않는 통화</li>
+                <li><strong>체크아웃 추가 요건</strong> — Checkout 활성화 시 quantity, checkout URL 등 추가 필드 미제출</li>
+            </ul>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-top:12px;"><strong>모니터링:</strong> Commerce Manager 진단 탭 + Catalog Batch API</p>
+        </div>
+
+        <!-- Shopify -->
+        <div class="validation-card" style="border-color:rgba(150,191,72,0.3);">
+            <h4><span style="color:var(--accent-shopify);">●</span> Shopify Catalog</h4>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-bottom:10px;">AI 자동 정제 + 프로토콜 준수 자동화</p>
+            <ul class="check-list">
+                <li><strong>AI 카테고리 자동 추론</strong> — 상품 정보에서 카테고리를 자동 분류 (수동 매핑 불필요)</li>
+                <li><strong>속성 자동 추출</strong> — 제목/설명에서 색상, 사이즈, 소재 등 구조화 속성 추출</li>
+                <li><strong>변형 자동 통합</strong> — 같은 상품의 색상/사이즈 변형을 하나의 product group으로 클러스터링</li>
+                <li><strong>가격/재고 실시간 동기화</strong> — Shopify Admin과 모든 AI 채널 간 자동 일관성 유지</li>
+                <li><strong>프로토콜 자동 변환</strong> — ACP(OpenAI), UCP(Google) 각 규격에 맞춰 자동 변환 후 배포</li>
+            </ul>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-top:12px;"><strong>장점:</strong> 판매자가 데이터 품질을 직접 관리할 필요 없이 Shopify AI가 대부분 처리</p>
+        </div>
+
+        <!-- Perplexity -->
+        <div class="validation-card" style="border-color:rgba(192,132,252,0.3);">
+            <h4><span style="color:var(--accent-perplexity);">●</span> Perplexity</h4>
+            <p style="font-size:0.85em; color:var(--text-dim); margin-bottom:10px;">웹 수집 + 파트너 데이터 교차 검증</p>
+            <ul class="check-list">
+                <li><strong>웹 크롤링 검증</strong> — 웹 검색 결과와 파트너 데이터를 교차 대조</li>
+                <li><strong>Shopify 연동 품질</strong> — Shopify 인프라를 통해 연동된 데이터는 이미 정제된 상태</li>
+                <li><strong>Merchant Program</strong> — 직접 가입 머천트에게 더 완전한 데이터 접근권을 부여하여 정확성 향상</li>
+                <li><strong>실시간 가격 확인</strong> — Instant Buy 결제 전 실제 가격 실시간 확인</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Cross-platform comparison -->
+    <div class="sub-section" style="margin-top:32px;">
+        <h4 style="font-size:1.1em; margin-bottom:16px;">📊 플랫폼별 검증 강도 비교</h4>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>검증 항목</th>
+                    <th style="color:var(--accent-google);">Google</th>
+                    <th style="color:var(--accent-openai);">OpenAI</th>
+                    <th style="color:var(--accent-amazon);">Amazon</th>
+                    <th style="color:var(--accent-meta);">Meta</th>
+                    <th style="color:var(--accent-shopify);">Shopify</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>가격 불일치 체크</td>
+                    <td>🔴 매우 엄격</td>
+                    <td>🔴 매우 엄격</td>
+                    <td>🟡 엄격</td>
+                    <td>🟡 엄격</td>
+                    <td>🟢 자동 동기화</td>
+                </tr>
+                <tr>
+                    <td>이미지 품질 심사</td>
+                    <td>🔴 매우 엄격</td>
+                    <td>🟡 보통</td>
+                    <td>🔴 매우 엄격</td>
+                    <td>🟡 엄격</td>
+                    <td>🟢 자동 최적화</td>
+                </tr>
+                <tr>
+                    <td>마케팅 문구 필터</td>
+                    <td>🟡 경고</td>
+                    <td>🔴 즉시 거부</td>
+                    <td>🔴 즉시 거부</td>
+                    <td>🟡 경고</td>
+                    <td>🟢 AI 정제</td>
+                </tr>
+                <tr>
+                    <td>GTIN/UPC 검증</td>
+                    <td>🔴 필수</td>
+                    <td>🟡 권장</td>
+                    <td>🔴 필수</td>
+                    <td>🟡 권장</td>
+                    <td>🟢 자동 매칭</td>
+                </tr>
+                <tr>
+                    <td>실시간 모니터링</td>
+                    <td>Diagnostics 탭</td>
+                    <td>피드 처리 결과</td>
+                    <td>getFeed API</td>
+                    <td>CM 진단</td>
+                    <td>Admin 대시보드</td>
+                </tr>
+                <tr>
+                    <td>계정 정지 위험</td>
+                    <td>🔴 높음</td>
+                    <td>🟡 보통</td>
+                    <td>🔴 매우 높음</td>
+                    <td>🟡 보통</td>
+                    <td>🟢 낮음</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: 프로토콜과의 관계 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">6</span> 프로토콜과의 관계: ACP · UCP · MCP</h2>
+        <p>3대 오픈 프로토콜이 플랫폼 상품 등록과 어떻게 연결되는가</p>
+    </div>
+
+    <div class="protocol-map">
+        <h3 style="text-align:center; margin-bottom:24px; font-size:1.2em;">에이전틱 커머스 프로토콜 ↔ 플랫폼 매핑</h3>
+
+        <!-- Layer 1: Protocols -->
+        <div style="display:flex; gap:16px; margin-bottom:24px; flex-wrap:wrap;">
+            <div class="protocol-box acp" style="flex:1; min-width:280px;">
+                <h4>🔴 ACP (Agentic Commerce Protocol)</h4>
+                <p style="margin-top:8px;"><strong>주도:</strong> OpenAI + Stripe</p>
+                <p><strong>방식:</strong> Push — 판매자가 구조화된 피드를 직접 전송</p>
+                <p><strong>결제:</strong> Stripe SPT (Shared Payment Token)</p>
+                <p><strong>적용:</strong> ChatGPT Shopping, Shopify Agentic Storefronts</p>
+                <p style="margin-top:8px; font-size:0.85em; border-top:1px solid rgba(239,68,68,0.2); padding-top:8px;">판매자 → SFTP/HTTPS → OpenAI 서버 → ChatGPT가 상품 검색·추천</p>
+            </div>
+            <div class="protocol-box ucp" style="flex:1; min-width:280px;">
+                <h4>🟡 UCP (Universal Commerce Protocol)</h4>
+                <p style="margin-top:8px;"><strong>주도:</strong> Google + Shopify</p>
+                <p><strong>방식:</strong> Discovery — .well-known/ucp 매니페스트 자동 탐색</p>
+                <p><strong>결제:</strong> Google Pay, Shop Pay 등 다중 지원</p>
+                <p><strong>적용:</strong> Google AI Mode, Gemini, Shopify, 기타 UCP 호환 에이전트</p>
+                <p style="margin-top:8px; font-size:0.85em; border-top:1px solid rgba(245,158,11,0.2); padding-top:8px;">판매자 도메인에 매니페스트 배포 → AI 에이전트가 자동 발견 → 실시간 API 호출</p>
+            </div>
+            <div class="protocol-box mcp" style="flex:1; min-width:280px;">
+                <h4>🟣 MCP (Model Context Protocol)</h4>
+                <p style="margin-top:8px;"><strong>주도:</strong> Anthropic</p>
+                <p><strong>방식:</strong> Pull — AI 모델이 직접 데이터 소스에 쿼리</p>
+                <p><strong>결제:</strong> 직접 결제 기능 없음 (Stripe 파트너십으로 보완)</p>
+                <p><strong>적용:</strong> Akeneo MCP Server, 토스페이먼츠 MCP Server, 카카오 PlayMCP</p>
+                <p style="margin-top:8px; font-size:0.85em; border-top:1px solid rgba(139,92,246,0.2); padding-top:8px;">AI 모델 → MCP 서버 → 데이터 소스 직접 쿼리 (브랜드 가이드라인 준수 보장)</p>
+            </div>
+        </div>
+
+        <!-- Relationship table -->
+        <table class="data-table" style="margin-top:20px;">
+            <thead>
+                <tr>
+                    <th>비교 항목</th>
+                    <th style="color:#f87171;">ACP</th>
+                    <th style="color:#fbbf24;">UCP</th>
+                    <th style="color:#c084fc;">MCP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>데이터 흐름 방향</strong></td>
+                    <td>판매자 → 플랫폼 (Push)</td>
+                    <td>에이전트 → 판매자 도메인 (Discovery)</td>
+                    <td>AI 모델 → 데이터 소스 (Pull)</td>
+                </tr>
+                <tr>
+                    <td><strong>상품 데이터 형식</strong></td>
+                    <td>JSONL/CSV/Parquet 피드 파일</td>
+                    <td>JSON 매니페스트 + REST API 엔드포인트</td>
+                    <td>MCP 서버가 정의한 스키마 (자유 형식)</td>
+                </tr>
+                <tr>
+                    <td><strong>데이터 신선도</strong></td>
+                    <td>15분 주기 배치 업데이트</td>
+                    <td>실시간 API 호출</td>
+                    <td>실시간 쿼리</td>
+                </tr>
+                <tr>
+                    <td><strong>판매자 부담</strong></td>
+                    <td>피드 파일 생성 + 주기적 전송</td>
+                    <td>.well-known/ucp 배포 + API 구현</td>
+                    <td>MCP 서버 구축 or 연동</td>
+                </tr>
+                <tr>
+                    <td><strong>데이터 품질 관리</strong></td>
+                    <td>플랫폼이 피드 검증 후 거부/승인</td>
+                    <td>에이전트가 API 호출 시 실시간 검증</td>
+                    <td>MCP 서버 내 거버넌스 레이어</td>
+                </tr>
+                <tr>
+                    <td><strong>결제 통합</strong></td>
+                    <td>Stripe SPT 내장</td>
+                    <td>payment_handlers로 선언</td>
+                    <td>별도 (Stripe 파트너십 등)</td>
+                </tr>
+                <tr>
+                    <td><strong>오픈소스</strong></td>
+                    <td>✅ GitHub 공개</td>
+                    <td>✅ 오픈소스</td>
+                    <td>✅ 오픈소스</td>
+                </tr>
+                <tr>
+                    <td><strong>한국 준비도</strong></td>
+                    <td>🔴 낮음 (미국만 온보딩 가능)</td>
+                    <td>🟡 보통 (글로벌, 구현 필요)</td>
+                    <td>🟢 높음 (토스·카카오 이미 도입)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Protocol relationship to registration -->
+    <div class="sub-section" style="margin-top:32px;">
+        <h4 style="font-size:1.1em; margin-bottom:16px;">프로토콜이 상품 등록에 미치는 구체적 영향</h4>
+
+        <div class="insight-box">
+            <h4>핵심 이해: "프로토콜 = 상품 데이터의 교통 규칙"</h4>
+            <p>프로토콜은 "어떤 데이터를, 어떤 형식으로, 어떤 방식으로 전달할 것인가"를 정의하는 규칙입니다. 같은 상품 데이터라도 ACP로 보내면 ChatGPT에, UCP로 배포하면 Google AI Mode에, MCP로 연결하면 Anthropic Claude에 노출됩니다.</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>상황</th><th>필요한 프로토콜</th><th>구체적 행동</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>"ChatGPT에서 우리 상품이 추천되게 하고 싶다"</td>
+                    <td><span class="tag-protocol tag-acp">ACP</span></td>
+                    <td>JSONL 피드 파일을 ACP 스펙에 맞춰 작성 → OpenAI Merchant Portal에서 SFTP 전송</td>
+                </tr>
+                <tr>
+                    <td>"Google AI Mode에서 우리 상품을 직접 결제까지 되게 하고 싶다"</td>
+                    <td><span class="tag-protocol tag-ucp">UCP</span></td>
+                    <td>도메인에 .well-known/ucp 매니페스트 배포 + native_commerce=true + checkout API 구현</td>
+                </tr>
+                <tr>
+                    <td>"모든 AI에 동시에 노출하고 싶다"</td>
+                    <td><span class="tag-protocol tag-acp">ACP</span> + <span class="tag-protocol tag-ucp">UCP</span></td>
+                    <td>Shopify에 상품 등록 → Shopify Catalog가 양쪽 프로토콜로 자동 배포</td>
+                </tr>
+                <tr>
+                    <td>"AI가 우리 브랜드 가이드라인을 지키면서 상품을 설명하게 하고 싶다"</td>
+                    <td><span class="tag-protocol tag-mcp">MCP</span></td>
+                    <td>Akeneo 같은 PIM에 MCP 서버 구축 → 브랜드 룰 + 법적 면책 조항 거버넌스 레이어 추가</td>
+                </tr>
+                <tr>
+                    <td>"Shopify 없이 한국에서 직접 AI 커머스 파이프라인을 만들고 싶다"</td>
+                    <td><span class="tag-protocol tag-acp">ACP</span> + <span class="tag-protocol tag-ucp">UCP</span> + <span class="tag-protocol tag-mcp">MCP</span></td>
+                    <td>한국형 Feed Transformer SaaS 구축 — 상품 DB → ACP/UCP/MCP 3중 출력</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Protocol-driven data quality -->
+    <div class="sub-section" style="margin-top:24px;">
+        <h4 style="font-size:1.1em; margin-bottom:16px;">프로토콜별 데이터 품질 관리 철학</h4>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-top:16px;">
+            <div style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:14px; padding:20px;">
+                <h4 style="color:#f87171; margin-bottom:8px;">ACP: "게이트키퍼 모델"</h4>
+                <p style="font-size:0.9em;">플랫폼(OpenAI)이 피드를 수신 후 검증하고, 기준 미달 시 <strong>거부(reject)</strong>합니다. 판매자는 거부 사유를 받고 수정 후 재전송합니다. 마치 출판사가 원고를 검수하는 것과 같습니다.</p>
+                <p style="font-size:0.85em; color:var(--text-dim); margin-top:8px;">→ 데이터 품질 책임: <strong>판매자 + 플랫폼 공동</strong></p>
+            </div>
+            <div style="background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.2); border-radius:14px; padding:20px;">
+                <h4 style="color:#fbbf24; margin-bottom:8px;">UCP: "자기 선언 모델"</h4>
+                <p style="font-size:0.9em;">판매자가 자기 도메인에 매니페스트를 직접 배포하고, AI 에이전트가 이를 <strong>신뢰하고 사용</strong>합니다. 잘못된 정보를 배포하면 에이전트가 해당 판매자를 신뢰도 저하로 분류합니다.</p>
+                <p style="font-size:0.85em; color:var(--text-dim); margin-top:8px;">→ 데이터 품질 책임: <strong>판매자 전적 책임</strong></p>
+            </div>
+            <div style="background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.2); border-radius:14px; padding:20px;">
+                <h4 style="color:#c084fc; margin-bottom:8px;">MCP: "거버넌스 모델"</h4>
+                <p style="font-size:0.9em;">MCP 서버 내에 <strong>거버넌스 레이어</strong>를 두어, AI 모델이 쿼리할 때 브랜드 가이드라인, 법적 요건, 가격 정책 등을 강제 적용합니다. Akeneo가 대표적 구현체입니다.</p>
+                <p style="font-size:0.85em; color:var(--text-dim); margin-top:8px;">→ 데이터 품질 책임: <strong>MCP 서버 (거버넌스 자동화)</strong></p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: 한국 판매자를 위한 실전 가이드 -->
+    <!-- ============================================ -->
+    <div class="section-header">
+        <h2><span class="num">7</span> 한국 판매자를 위한 실전 가이드</h2>
+        <p>지금 할 수 있는 것과 할 수 없는 것, 그리고 준비해야 할 것</p>
+    </div>
+
+    <div class="korea-box">
+        <h3>🇰🇷 한국 판매자의 현재 상황 (2026년 4월)</h3>
+
+        <table class="data-table" style="margin:16px 0;">
+            <thead>
+                <tr><th>플랫폼</th><th>한국 판매자 등록 가능?</th><th>현재 상태</th><th>준비 사항</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Google Merchant Center</strong></td>
+                    <td style="color:var(--accent-green);">✅ 가능</td>
+                    <td>글로벌 지원, 한국어 피드 제출 가능</td>
+                    <td>UCP .well-known 매니페스트 준비 시작</td>
+                </tr>
+                <tr>
+                    <td><strong>OpenAI ChatGPT</strong></td>
+                    <td style="color:var(--accent-red);">❌ 불가 (미국만)</td>
+                    <td>미국 판매자만 Merchant Portal 접근 가능</td>
+                    <td>ACP 스펙 기준으로 피드 데이터 <strong>사전 정비</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Amazon</strong></td>
+                    <td style="color:var(--accent-green);">✅ 가능</td>
+                    <td>Amazon Global Selling으로 글로벌 판매 가능</td>
+                    <td>JSON_LISTINGS_FEED로 마이그레이션 (XML 중단)</td>
+                </tr>
+                <tr>
+                    <td><strong>Meta Commerce</strong></td>
+                    <td style="color:var(--accent-green);">✅ 가능</td>
+                    <td>Facebook/Instagram 쇼핑 한국 지원</td>
+                    <td>Advantage+ 캠페인용 카탈로그 품질 향상</td>
+                </tr>
+                <tr>
+                    <td><strong>Shopify</strong></td>
+                    <td style="color:var(--accent-green);">✅ 가능 (간접)</td>
+                    <td>Shopify 스토어 운영 중이면 Agentic Storefronts 자동 활성화</td>
+                    <td>Shopify에 없다면 Shopify 전환 or 독자 피드 파이프라인 구축</td>
+                </tr>
+                <tr>
+                    <td><strong>Perplexity</strong></td>
+                    <td style="color:var(--accent-yellow);">🟡 제한적</td>
+                    <td>Merchant Program은 미국 중심, Shopify 연동은 글로벌</td>
+                    <td>Shopify 연동 or Merchant Program 직접 문의</td>
+                </tr>
+                <tr>
+                    <td><strong>Microsoft Copilot</strong></td>
+                    <td style="color:var(--accent-red);">❌ 불가 (미국만)</td>
+                    <td>Copilot Checkout은 미국만, 확장 예정</td>
+                    <td>PayPal Store Sync 준비, Brand Agents는 Shopify 필요</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="sub-section" style="margin-top:24px;">
+        <h4 style="font-size:1.1em; margin-bottom:16px;">한국 판매자 ACP 피드 매핑 가이드</h4>
+        <p style="font-size:0.9em; color:var(--text-dim); margin-bottom:16px;">ACP 피드 규격은 "좋은 상품 데이터의 표준"이라고 봐도 됩니다. 이 기준으로 데이터를 정비하면, ChatGPT뿐 아니라 Google UCP, 네이버 AI 쇼핑 모든 곳에서 이점을 얻습니다.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>현재 한국 상태</th><th>ACP 요구사항</th><th>격차</th><th>해결 방법</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>상품명에 마케팅 문구 포함<br><code>"[1위] LG 그램 특가!!!"</code></td>
+                    <td>사실적 기술만 허용</td>
+                    <td><div class="gap-meter"><div class="gap-bar"><div class="gap-fill low"></div></div><span class="gap-label">격차 큼</span></div></td>
+                    <td>NLP 필터로 마케팅 문구 자동 제거, 순수 상품명만 추출</td>
+                </tr>
+                <tr>
+                    <td>가격이 "할인가" 중심<br>표시가, 할인가, 쿠폰가 혼재</td>
+                    <td>웹사이트 실제 판매 가격과 일치</td>
+                    <td><div class="gap-meter"><div class="gap-bar"><div class="gap-fill low"></div></div><span class="gap-label">격차 큼</span></div></td>
+                    <td>실시간 가격 크롤링으로 피드↔웹사이트 가격 일관성 검증</td>
+                </tr>
+                <tr>
+                    <td>GTIN/UPC 미보유 다수</td>
+                    <td>GTIN 권장 (매칭 정확도 향상)</td>
+                    <td><div class="gap-meter"><div class="gap-bar"><div class="gap-fill medium"></div></div><span class="gap-label">보통</span></div></td>
+                    <td>MPN + brand 조합으로 대체, 자체 바코드 발급 권고</td>
+                </tr>
+                <tr>
+                    <td>대화형 속성 미존재</td>
+                    <td>best_for, faq, compatibility 등 권장</td>
+                    <td><div class="gap-meter"><div class="gap-bar"><div class="gap-fill low"></div></div><span class="gap-label">격차 큼</span></div></td>
+                    <td>리뷰 데이터 + LLM으로 대화형 속성 자동 생성</td>
+                </tr>
+                <tr>
+                    <td>이미지가 배너/프로모션형</td>
+                    <td>순수 상품 이미지, 텍스트 오버레이 금지</td>
+                    <td><div class="gap-meter"><div class="gap-bar"><div class="gap-fill medium"></div></div><span class="gap-label">보통</span></div></td>
+                    <td>이미지 분석 AI로 프로모션 요소 감지 & 원본 추출</td>
+                </tr>
+                <tr>
+                    <td>통화/국가 코드 비표준</td>
+                    <td>ISO 4217(KRW), ISO 3166-1(KR)</td>
+                    <td><div class="gap-meter"><div class="gap-bar"><div class="gap-fill high"></div></div><span class="gap-label">쉬움</span></div></td>
+                    <td>피드 생성 시 표준 코드 자동 매핑</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="success-box" style="margin-top:24px;">
+        <h4>💡 핵심 메시지: "ACP 피드 품질 = 모든 AI 커머스의 기본"</h4>
+        <p>ACP 피드 규격은 현재 가장 엄격한 상품 데이터 표준입니다. <strong>이 기준에 맞춰 상품 데이터를 정비하면</strong>:<br>
+        ① Google Merchant Center 피드 품질도 자동으로 향상 (필수 필드가 대부분 겹침)<br>
+        ② UCP 매니페스트의 카탈로그 API에도 동일한 정제 데이터 활용 가능<br>
+        ③ MCP 서버 구축 시에도 같은 데이터 모델을 재사용<br>
+        ④ 네이버 쇼핑 인텔리전스, 카카오 PlayMCP 등 국내 플랫폼에도 바로 적용 가능<br><br>
+        즉, <strong>"ACP 품질로 상품 데이터를 한 번 정비하면, 모든 플랫폼에 파생 배포"</strong>가 가능합니다. 이것이 바로 한국형 Feed Transformer SaaS의 핵심 사업 가치입니다.</p>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align:center; margin-top:60px; padding:32px 0; border-top:1px solid var(--border);">
+        <p style="color:var(--text-dim); font-size:0.85em;">Agentic Commerce Knowledge Base · Report #9</p>
+        <p style="color:var(--text-dim); font-size:0.8em; margin-top:8px;">Last Updated: 2026년 4월 | 이 리포트는 공개된 문서, API 스펙, 업계 보도를 기반으로 작성되었습니다</p>
+    </div>
+
+</div>
+
+</body>
+</html>
