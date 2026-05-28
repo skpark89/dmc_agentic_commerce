@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Google AP2 프로토콜 - 쉽게 이해하기</title>
+<title>에이전트 커머스 프로토콜 - AP2 · ACP · UCP 완전 해설</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
 
@@ -609,15 +609,15 @@
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <div class="hero">
-  <div class="hero-badge">GOOGLE CLOUD &middot; 2025</div>
-  <h1><span class="gradient-text">AP2 프로토콜</span><br>AI 에이전트 결제의 미래</h1>
-  <p class="hero-sub">AI 에이전트가 안전하고 신뢰할 수 있게 결제를 수행할 수 있도록 설계된 <strong>오픈 프로토콜</strong></p>
+  <div class="hero-badge">PROTOCOL GUIDE &middot; 2026.05 현행화</div>
+  <h1><span class="gradient-text">AP2 · ACP · UCP</span><br>에이전트 커머스 프로토콜 해설</h1>
+  <p class="hero-sub">Google AP2, OpenAI ACP, Google+Shopify UCP — AI 에이전트가 안전하게 쇼핑·결제를 수행하기 위한 <strong>3대 오픈 프로토콜</strong> 완전 해설</p>
   <div class="hero-icons">
     <div class="hero-icon-item"><div class="icon-circle">🤖</div>AI 에이전트</div>
     <div class="hero-icon-item"><div class="icon-circle">🔐</div>암호화 보안</div>
     <div class="hero-icon-item"><div class="icon-circle">💳</div>결제 처리</div>
-    <div class="hero-icon-item"><div class="icon-circle">🌐</div>오픈 표준</div>
-    <div class="hero-icon-item"><div class="icon-circle">🤝</div>60+ 파트너</div>
+    <div class="hero-icon-item"><div class="icon-circle">🌐</div>오픈 표준 ×3</div>
+    <div class="hero-icon-item"><div class="icon-circle">🤝</div>100+ 파트너</div>
   </div>
 </div>
 
@@ -887,38 +887,181 @@
   </div>
 </div>
 
+<!-- ═══════════════════ ACP 프로토콜 ═══════════════════ -->
+<div class="section">
+  <div class="section-title" style="color: #00c853;">🟢 ACP — Agentic Commerce Protocol</div>
+  <div class="section-subtitle">OpenAI + Stripe가 주도하는 AI 쇼핑 프로토콜 (2025.09 ~ )</div>
+
+  <div class="mandate-section" style="background: linear-gradient(135deg, #0d1a2e, #0a2a1a); border-color: #1a5a3a;">
+    <h3 style="color: #69f0ae;">ACP란?</h3>
+    <p style="color: #b0bdd0; font-size: 15px; margin-bottom: 20px;">
+      ACP는 <strong>ChatGPT 내에서 쇼핑·결제를 가능하게 하는 OpenAI의 오픈 표준</strong>입니다. 머천트가 상품 피드를 Push 방식으로 제공하면 ChatGPT가 상품을 검색·추천·결제까지 수행합니다. Stripe가 결제 인프라를 담당합니다.
+    </p>
+    <div class="mandate-types">
+      <div class="mandate-type" style="border-color: rgba(105,240,174,0.3); background: rgba(105,240,174,0.06);">
+        <h4 style="color: #69f0ae;">📦 상품 피드 (SFTP/HTTPS)</h4>
+        <p>머천트가 구조화된 상품 카탈로그를 SFTP 또는 HTTPS를 통해 15분 간격으로 Push 전송. 가격·재고·속성 데이터 포함.</p>
+      </div>
+      <div class="mandate-type" style="border-color: rgba(105,240,174,0.3); background: rgba(105,240,174,0.06);">
+        <h4 style="color: #69f0ae;">💳 Stripe 결제 통합</h4>
+        <p>Stripe Checkout Session을 통한 안전한 결제 처리. Instant Checkout은 2026.3 중단 후 <strong>머천트 자체 체크아웃</strong>으로 전환.</p>
+      </div>
+      <div class="mandate-type" style="border-color: rgba(105,240,174,0.3); background: rgba(105,240,174,0.06);">
+        <h4 style="color: #69f0ae;">🔄 버전 이력 (5회 릴리즈)</h4>
+        <p>v1(2025.9) → 풀필먼트 강화(2025.12) → 능력 협상(2026.1) → 할인·결제핸들러(2026.1) → <strong>Cart·Feed·주문·인증·MCP(2026.4)</strong></p>
+      </div>
+    </div>
+    <p style="color: #8899b5; font-size: 13px; margin-top: 16px;">
+      <strong>수수료:</strong> 거래당 4% (Instant Checkout 기준) &nbsp;|&nbsp; <strong>파트너:</strong> Target, Sephora, Nordstrom, Lowe's, Best Buy, The Home Depot, Wayfair, Shopify, Etsy 등 &nbsp;|&nbsp; <strong>현재 상태:</strong> Beta (Instant Checkout 중단, Product Discovery로 초점 이동)
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════ UCP 프로토콜 ═══════════════════ -->
+<div class="section">
+  <div class="section-title" style="color: #00c6ff;">🔵 UCP — Universal Commerce Protocol</div>
+  <div class="section-subtitle">Google + Shopify가 주도하는 범용 커머스 프로토콜 (2026.01 ~ )</div>
+
+  <div class="mandate-section" style="background: linear-gradient(135deg, #0d1a2e, #0d2137); border-color: #1a3a6a;">
+    <h3 style="color: #69b4ff;">UCP란?</h3>
+    <p style="color: #b0bdd0; font-size: 15px; margin-bottom: 20px;">
+      UCP는 <strong>머천트 웹사이트의 /.well-known/ucp 매니페스트를 통해 AI 에이전트가 상품 정보·결제·주문을 수행</strong>할 수 있게 하는 오픈소스 프로토콜입니다. Google Merchant Center를 통한 간소화된 온보딩을 제공하며, Shopify가 공동 설계에 참여했습니다.
+    </p>
+    <div class="mandate-types">
+      <div class="mandate-type" style="border-color: rgba(105,180,255,0.3); background: rgba(105,180,255,0.06);">
+        <h4 style="color: #69b4ff;">🛒 Checkout + Cart (2026.3 추가)</h4>
+        <p>초기에는 단건 결제만 지원. 2026.3 업데이트로 <strong>다중 상품 장바구니</strong> 기능 추가. 에이전트가 한 매장에서 여러 상품을 한 번에 구매 가능.</p>
+      </div>
+      <div class="mandate-type" style="border-color: rgba(105,180,255,0.3); background: rgba(105,180,255,0.06);">
+        <h4 style="color: #69b4ff;">📚 Catalog (실시간 카탈로그, 2026.3)</h4>
+        <p>정적 피드가 아닌 <strong>실시간 API 쿼리</strong>로 가격·재고·변형 정보를 조회. 기존 피드의 주기적 스냅샷 한계를 극복.</p>
+      </div>
+      <div class="mandate-type" style="border-color: rgba(105,180,255,0.3); background: rgba(105,180,255,0.06);">
+        <h4 style="color: #69b4ff;">🎯 Identity Linking (로열티, 2026.3)</h4>
+        <p>UCP 통합 플랫폼에서도 쇼핑객이 리테일러의 로열티·멤버 혜택을 동일하게 받을 수 있는 <strong>신원 연동</strong> 기능.</p>
+      </div>
+    </div>
+    <p style="color: #8899b5; font-size: 13px; margin-top: 16px;">
+      <strong>수수료:</strong> 0% (Google은 수수료 없음) &nbsp;|&nbsp; <strong>아키텍처:</strong> Shopping Service → Capabilities(Checkout, Orders, Catalog) → Extensions &nbsp;|&nbsp; <strong>온보딩:</strong> Google Merchant Center 간소화 경로 + /.well-known/ucp 직접 구현
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════ 3대 프로토콜 비교 ═══════════════════ -->
+<div class="section">
+  <div class="section-title">AP2 vs ACP vs UCP 비교</div>
+  <div class="section-subtitle">2026년 5월 기준 3대 에이전트 커머스 프로토콜 비교</div>
+
+  <table class="compare-table">
+    <tr>
+      <th style="width:18%;">구분</th>
+      <th style="width:27%;">🔵 AP2 (Google)</th>
+      <th style="width:27%;">🟢 ACP (OpenAI+Stripe)</th>
+      <th style="width:28%;">🔷 UCP (Google+Shopify)</th>
+    </tr>
+    <tr>
+      <td><strong>주요 목적</strong></td>
+      <td>AI 에이전트 결제 보안</td>
+      <td>ChatGPT 내 쇼핑·결제</td>
+      <td>범용 AI 커머스 표준</td>
+    </tr>
+    <tr>
+      <td><strong>핵심 메커니즘</strong></td>
+      <td>Mandate(위임장) 암호화 서명</td>
+      <td>상품 피드 Push + Stripe 결제</td>
+      <td>/.well-known/ucp 매니페스트</td>
+    </tr>
+    <tr>
+      <td><strong>데이터 방향</strong></td>
+      <td>에이전트 ↔ 판매자 양방향</td>
+      <td>머천트 → ChatGPT (Push)</td>
+      <td>에이전트 → 머천트 (Pull)</td>
+    </tr>
+    <tr>
+      <td><strong>수수료</strong></td>
+      <td>없음 (결제 프로토콜)</td>
+      <td class="highlight-cell" style="color:#ff8a80;">4% (거래당)</td>
+      <td class="highlight-cell">0%</td>
+    </tr>
+    <tr>
+      <td><strong>결제 처리</strong></td>
+      <td>Mastercard, Amex, PayPal 등</td>
+      <td>Stripe</td>
+      <td>PSP 자유 선택</td>
+    </tr>
+    <tr>
+      <td><strong>오픈소스</strong></td>
+      <td>Yes (GitHub)</td>
+      <td>Yes (GitHub)</td>
+      <td>Yes (GitHub)</td>
+    </tr>
+    <tr>
+      <td><strong>최신 버전</strong></td>
+      <td>2025 공개</td>
+      <td>v5 (2026.04.17)</td>
+      <td>2026.03 업데이트</td>
+    </tr>
+    <tr>
+      <td><strong>주요 파트너</strong></td>
+      <td>60+ (Mastercard, Visa 등)</td>
+      <td>Target, Sephora, Best Buy 등</td>
+      <td>Shopify, Salesforce 등</td>
+    </tr>
+    <tr>
+      <td><strong>장바구니</strong></td>
+      <td>Cart Mandate로 지원</td>
+      <td>v5에서 Cart 추가</td>
+      <td>2026.3 Cart 추가</td>
+    </tr>
+    <tr>
+      <td><strong>관계</strong></td>
+      <td>UCP의 결제 레이어 역할</td>
+      <td>독립 프로토콜</td>
+      <td>AP2를 결제에 활용 가능</td>
+    </tr>
+  </table>
+
+  <div style="text-align: center; margin-top: 32px; padding: 28px; background: rgba(0,114,255,0.06); border: 1px solid rgba(0,114,255,0.15); border-radius: 14px;">
+    <p style="color: #c0cbe0; font-size: 15px; line-height: 1.9;">
+      <strong style="color: #69b4ff;">핵심 요약:</strong> AP2는 <strong>결제 보안의 프로토콜</strong>이고, ACP는 <strong>OpenAI 생태계의 쇼핑 프로토콜</strong>이며, UCP는 <strong>범용 커머스 표준</strong>입니다.<br>
+      AP2와 UCP는 상호 보완 관계(UCP가 커머스 흐름, AP2가 결제 보안)이고, ACP는 OpenAI 독자 노선입니다.<br>
+      <strong style="color: #ff9800;">셀러 입장에서는 ACP(ChatGPT)와 UCP(Google 등) 모두에 대응해야 합니다.</strong>
+    </p>
+  </div>
+</div>
+
 <!-- ═══════════════════ 미래 전망 타임라인 ═══════════════════ -->
 <div class="section">
   <div class="section-title">미래 전망</div>
-  <div class="section-subtitle">AP2가 그리는 에이전트 커머스의 로드맵</div>
+  <div class="section-subtitle">에이전트 커머스 프로토콜의 진화 로드맵</div>
 
   <div class="timeline">
     <div class="timeline-item">
       <div class="timeline-box">
-        <div class="tl-label">현재 ~ 단기</div>
-        <h4>프로토콜 표준화 & 도입</h4>
-        <p>주요 결제사·커머스 플랫폼이 AP2를 채택하고, 개발자 도구와 SDK가 확산됩니다. A2A 프로토콜과의 통합이 강화됩니다.</p>
+        <div class="tl-label">현재 (2026 상반기)</div>
+        <h4>3대 프로토콜 병존 & 시행착오</h4>
+        <p>ACP Instant Checkout 중단 → 머천트 앱 전환. UCP 장바구니·카탈로그 업데이트. 셀러는 플랫폼별 개별 대응 필요. 표준 통합 논의 시작.</p>
       </div>
     </div>
     <div class="timeline-item">
       <div class="timeline-box">
-        <div class="tl-label">중기 (1~2년)</div>
-        <h4>에이전트 커머스 대중화</h4>
-        <p>일반 소비자도 AI 에이전트를 통해 쇼핑하는 것이 보편화됩니다. 에이전트 간 자동 협상, 가격 비교, 번들 구매가 일상이 됩니다.</p>
+        <div class="tl-label">2026 하반기 ~ 2027</div>
+        <h4>표준 수렴 & 생태계 확대</h4>
+        <p>ACP와 UCP의 MCP(Model Context Protocol) 통합으로 상호운용성 개선 가능. 네이버·카카오 등 아시아 플랫폼의 자체 프로토콜 등장 여부 주목.</p>
       </div>
     </div>
     <div class="timeline-item">
       <div class="timeline-box">
-        <div class="tl-label">중장기 (2~3년)</div>
-        <h4>자율 경제 생태계</h4>
-        <p>에이전트가 다른 에이전트와 직접 거래하는 B2B-Agent 경제가 형성됩니다. 공급망 전체에서 에이전트 기반 자동 조달이 이루어집니다.</p>
+        <div class="tl-label">2027 ~ 2028</div>
+        <h4>에이전트 간 자율 협상 표준화</h4>
+        <p>A2A(Agent-to-Agent) 프로토콜과 결합하여 구매 에이전트↔판매 에이전트 간 실시간 가격 협상·번들 거래가 표준화됩니다.</p>
       </div>
     </div>
     <div class="timeline-item">
       <div class="timeline-box">
-        <div class="tl-label">장기 비전</div>
+        <div class="tl-label">2029+</div>
         <h4>완전 자율 AI 경제</h4>
-        <p>개인별 AI 에이전트가 재정 관리, 투자, 보험 등 금융 전반을 관리합니다. AP2는 이 생태계의 결제 인프라로 자리 잡습니다.</p>
+        <p>개인별 AI 에이전트가 재정 관리·투자·보험까지 자율 수행. 에이전트 커머스 프로토콜이 금융 인프라의 핵심 레이어로 자리잡습니다.</p>
       </div>
     </div>
   </div>
@@ -929,23 +1072,32 @@
   <div class="solution-banner" style="background: linear-gradient(135deg, #1a1530, #0d2137); border-color: #3a4a6a;">
     <h2 style="color: #4285f4;">📌 핵심 요약</h2>
     <p style="font-size: 17px; max-width: 750px; line-height: 2;">
-      AP2는 <strong>Google이 60개 이상의 글로벌 파트너</strong>와 함께 만든 <strong>AI 에이전트 결제 오픈 프로토콜</strong>입니다.
-      암호화 서명 기반의 <strong>Mandate(위임장) 시스템</strong>으로 권한 부여·진위 확인·책임 소재 문제를 해결하며,
-      신용카드부터 암호화폐까지 다양한 결제 수단을 지원합니다.
-      이는 곧 도래할 <strong>에이전트 경제 시대의 핵심 인프라</strong>가 될 것입니다.
+      2026년 에이전트 커머스는 <strong>3대 프로토콜</strong>이 주도합니다:
+      <strong>AP2</strong>(Google, 결제 보안), <strong>ACP</strong>(OpenAI+Stripe, ChatGPT 쇼핑), <strong>UCP</strong>(Google+Shopify, 범용 커머스).
+      AP2의 Mandate 시스템은 결제 신뢰를, UCP는 커머스 표준을, ACP는 AI 쇼핑 경험을 각각 담당합니다.
+      아직 통합 표준은 없으며, <strong>셀러는 ACP+UCP 이중 대응이 현실적 전략</strong>입니다.
     </p>
   </div>
 </div>
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <div class="footer">
-  <p>
-    원문: <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank">Google Cloud Blog - Announcing AP2 Protocol</a>
-    &nbsp;&middot;&nbsp;
-    공식 문서: <a href="https://ap2-protocol.org/" target="_blank">ap2-protocol.org</a>
-    &nbsp;&middot;&nbsp;
-    GitHub: <a href="https://github.com/google-agentic-commerce/AP2" target="_blank">google-agentic-commerce/AP2</a>
-  </p>
+  <div style="max-width: 900px; margin: 0 auto 20px; text-align: left;">
+    <strong style="color: #8899b5;">참고 자료 (Sources):</strong>
+    <ul style="list-style: none; padding: 0; margin-top: 8px;">
+      <li>1. <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" target="_blank">Google Cloud Blog — Announcing AP2 Protocol</a></li>
+      <li>2. <a href="https://ap2-protocol.org/" target="_blank">AP2 공식 문서 — ap2-protocol.org</a></li>
+      <li>3. <a href="https://developers.openai.com/commerce" target="_blank">OpenAI Developers — Agentic Commerce Protocol (ACP)</a></li>
+      <li>4. <a href="https://github.com/agentic-commerce-protocol/agentic-commerce-protocol" target="_blank">GitHub — ACP Specification (OpenAI + Stripe)</a></li>
+      <li>5. <a href="https://stripe.com/blog/developing-an-open-standard-for-agentic-commerce" target="_blank">Stripe Blog — Developing an Open Standard for Agentic Commerce</a></li>
+      <li>6. <a href="https://ucp.dev/" target="_blank">UCP 공식 사이트 — Universal Commerce Protocol</a></li>
+      <li>7. <a href="https://developers.google.com/merchant/ucp" target="_blank">Google Developers — UCP Guide</a></li>
+      <li>8. <a href="https://shopify.engineering/ucp" target="_blank">Shopify Engineering — Building UCP (2026)</a></li>
+      <li>9. <a href="https://blog.google/products-and-platforms/products/shopping/ucp-updates/" target="_blank">Google Blog — UCP Updates: Carts, Catalogs, Loyalty (Mar 2026)</a></li>
+      <li>10. <a href="https://openai.com/index/powering-product-discovery-in-chatgpt/" target="_blank">OpenAI — Powering Product Discovery in ChatGPT</a></li>
+    </ul>
+  </div>
+  <p>최종 업데이트: 2026년 5월 15일</p>
 </div>
 
 </body>

@@ -159,7 +159,7 @@
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero">
-  <span class="badge">사업 기획서 — 2026.04</span>
+  <span class="badge">사업 기획서 — 2026.04 · 2026.05 현행화</span>
   <h1><span class="hl">AI-Ready 상품 데이터 피드 인프라</span><br>사업 기획 및 투자 제안서</h1>
   <p class="hero-sub">
     한국 이커머스 판매자의 상품 데이터를 AI 에이전트가 이해할 수 있는 형태로 변환하는<br>
@@ -172,13 +172,15 @@
   <div class="exec-box">
     <h2>📋 Executive Summary</h2>
     <p style="font-size:14px;color:#a0b0c8;line-height:1.8">
-      글로벌 PIM(Product Information Management) 시장은 2026년 약 <strong>$20B</strong> 규모로, AI 커머스 전환에 따라 연 13-15% 성장 중입니다.
-      Syndigo($3.5B 기업가치), Akeneo 등 글로벌 기업이 ACP/MCP 피드를 선점하고 있으나, <strong>한국어·한국 플랫폼(네이버·카페24·고도몰)을 지원하는 솔루션은 전무</strong>합니다.
-      한국 이커머스 판매자 약 <strong>60만+</strong>(네이버 스마트스토어만)가 AI 에이전트 시대에 대비해야 하는 상황에서,
+      글로벌 에이전틱 AI 시장은 2026년 약 <strong>$9.14B</strong> 규모로, Fortune Business Insights 기준 <strong>CAGR 40.5%</strong>로 2034년 <strong>$139.19B</strong>까지 성장 전망입니다(Mordor Intelligence: 리테일/이커머스 부문만 2031년 $218.37B).
+      2026년 3월 Google UCP가 Cart·Catalog·Identity Linking 기능을 추가하고, 4월 OpenAI ACP가 오픈소스화(Agentic AI Foundation 거버넌스)되면서 <strong>듀얼 프로토콜(UCP+ACP) 피드 관리</strong>가 필수가 되었습니다.
+      Syndigo는 Synapse(에이전틱 PXM)를, Akeneo는 Adaptive Product Cloud·PX Insights를 출시하며 시장을 선점 중이나, <strong>한국어·한국 플랫폼(네이버·카페24·고도몰)을 지원하는 솔루션은 전무</strong>합니다.
+      한국에서는 네이버 AI 쇼핑 에이전트 출시(2026.02), 카카오 카나나 커머스 연동, 과기정통부 에이전틱 AI 얼라이언스(250+개 기관) 출범 등으로 에이전틱 커머스 전환이 가속화되고 있습니다.
+      한국 이커머스 판매자 약 <strong>60만+</strong>가 AI 에이전트 시대에 대비해야 하는 상황에서,
       이 시장 공백을 메우는 피드 인프라 SaaS는 연 <strong>100억원+</strong> 매출 잠재력을 가진 사업 기회입니다.
     </p>
     <div class="exec-grid">
-      <div class="exec-item"><div class="ei-num">$20B</div><div class="ei-label">글로벌 PIM 시장 (2026)</div></div>
+      <div class="exec-item"><div class="ei-num">$9.14B</div><div class="ei-label">에이전틱 AI 시장 (2026)</div></div>
       <div class="exec-item"><div class="ei-num">60만+</div><div class="ei-label">한국 이커머스 판매자</div></div>
       <div class="exec-item"><div class="ei-num">0</div><div class="ei-label">한국 특화 경쟁 솔루션</div></div>
       <div class="exec-item"><div class="ei-num">24개월</div><div class="ei-label">예상 BEP 도달</div></div>
@@ -205,8 +207,8 @@
     </div>
     <div class="card c-purple">
       <span class="card-tag" style="background:rgba(139,92,246,.15);color:#a78bfa">CORE</span>
-      <h4>③ 프로토콜 피드 생성기</h4>
-      <p><strong>ACP 호환 JSON</strong> (OpenAI 규격), <strong>UCP .well-known/ucp</strong> 엔드포인트, <strong>Schema.org JSON-LD</strong> 마크업을 자동 생성. 하나의 원본 데이터에서 3종 프로토콜 피드를 동시에 발행. native_commerce 속성 자동 설정.</p>
+      <h4>③ 듀얼 프로토콜 피드 생성기</h4>
+      <p><strong>ACP 호환 JSON</strong> (OpenAI 오픈소스 규격, Agentic AI Foundation 거버넌스), <strong>UCP .well-known/ucp</strong> 엔드포인트 (2026.03 Cart·Catalog·Identity Linking 확장), <strong>Schema.org JSON-LD</strong> 마크업을 자동 생성. Instant Checkout 종료(2026.03) 이후 가맹점 자체 체크아웃이 필수가 되면서 <strong>듀얼 프로토콜(UCP+ACP) 피드의 별도 관리</strong>가 핵심 과제. 하나의 원본 데이터에서 각 플랫폼 규격에 맞는 피드를 동시 발행.</p>
     </div>
     <div class="card c-yellow">
       <span class="card-tag" style="background:rgba(251,191,36,.15);color:#fbbf24">ADVANCED</span>
@@ -364,36 +366,39 @@
 
   <div class="vs-grid">
     <div class="vs-col vs-global">
-      <h4>🌐 vs 글로벌 (Syndigo, Akeneo)</h4>
+      <h4>🌐 vs 글로벌 (Syndigo Synapse, Akeneo Adaptive Cloud)</h4>
       <ul>
-        <li>✅ <strong>한국어 NLP 특화</strong> — 한국어 상품 설명의 뉘앙스, 축약어, 비정형 텍스트 처리. 글로벌 솔루션의 영어 NLP로는 불가능</li>
-        <li>✅ <strong>한국 플랫폼 네이티브 커넥터</strong> — 네이버 EP/API, 카페24, 고도몰, 메이크샵, 쿠팡 Wing 직접 연동. 글로벌 솔루션은 Shopify·Amazon·WooCommerce만 지원</li>
-        <li>✅ <strong>한국 인증 메타데이터</strong> — KC, 식약처, 유기농 등 한국 필수 인증. 글로벌 스키마에 없는 한국 규제 데이터</li>
+        <li>✅ <strong>한국어 NLP 특화</strong> — 한국어 상품 설명의 뉘앙스, 축약어, 비정형 텍스트 처리. Syndigo Synapse(2026.03 출시)와 Akeneo PX Insights 모두 영어 NLP 중심으로 한국어 미지원</li>
+        <li>✅ <strong>한국 플랫폼 네이티브 커넥터</strong> — 네이버 EP/API, 카페24, 고도몰, 메이크샵, 쿠팡 Wing 직접 연동. Syndigo SynapseGo(2026.04)는 대화형 워크플로우 제공하나 한국 플랫폼 미지원</li>
+        <li>✅ <strong>한국 인증 메타데이터</strong> — KC, 식약처, 유기농 등 한국 필수 인증. Akeneo Adaptive Product Cloud의 Responsive Catalog에도 한국 규제 데이터 미포함</li>
         <li>✅ <strong>가격 경쟁력</strong> — Syndigo/Akeneo 엔터프라이즈 요금(연 $50K+) 대비 1/10 가격으로 한국 중소 판매자 접근 가능</li>
-        <li>✅ <strong>네이버 AI 에이전트 연동</strong> — 글로벌 솔루션이 접근할 수 없는 네이버 쇼핑 AI 에이전트 피드 최적화</li>
+        <li>✅ <strong>네이버 AI 쇼핑 에이전트 최적화</strong> — 네이버가 2026.02 출시한 AI 쇼핑 에이전트(상품 요약·비교·리뷰 분석)에 최적화된 피드 제공. 글로벌 솔루션은 접근 불가</li>
+        <li>✅ <strong>카카오 카나나 커머스 연동</strong> — 카카오톡 선물하기·무신사·올리브영 연동 에이전트 커머스 실험(2026.04~)에 대응 가능한 유일한 한국 피드 인프라</li>
       </ul>
     </div>
     <div class="vs-col vs-korea">
       <h4>🇰🇷 vs 국내 잠재 경쟁사</h4>
       <ul>
-        <li>✅ <strong>멀티 프로토콜 동시 지원</strong> — ACP + UCP + MCP + Schema.org를 하나의 원본에서 동시 생성. 국내에는 이 조합을 이해하는 팀 부재</li>
+        <li>✅ <strong>듀얼 프로토콜(UCP+ACP) 동시 관리</strong> — Microsoft가 UCP와 ACP 모두 필수 채택(2026.04)하면서 듀얼 프로토콜 피드 관리가 핵심. ACP + UCP + MCP + Schema.org를 하나의 원본에서 동시 생성. 국내에는 이 조합을 이해하는 팀 부재</li>
         <li>✅ <strong>AI 속성 추출 기술력</strong> — 단순 피드 변환이 아닌 LLM 기반 대화형 속성 자동 생성. SEO 도구와의 근본적 차이</li>
         <li>✅ <strong>MCP Server 자동 호스팅</strong> — 판매자별 MCP Server를 원클릭으로 배포. 카카오 PlayMCP 생태계와 즉시 호환</li>
-        <li>✅ <strong>글로벌 프로토콜 파트너십</strong> — OpenAI ACP, Google UCP 얼리 파트너로 최신 규격 변화에 즉시 대응 가능</li>
-        <li>✅ <strong>First Mover</strong> — 2026년 4월 현재 한국에 동일 포지션 경쟁자 없음. 12-18개월의 선점 기회</li>
+        <li>✅ <strong>에이전틱 AI 얼라이언스 연계</strong> — 과기정통부 주도 에이전틱 AI 얼라이언스(250+개 기관, 2026.04 출범)의 산업·기술·생태계 분과와 연계 가능. 표준화 논의에 조기 참여</li>
+        <li>✅ <strong>글로벌 프로토콜 파트너십</strong> — OpenAI ACP(Agentic AI Foundation 거버넌스), Google UCP 얼리 파트너로 최신 규격 변화에 즉시 대응 가능</li>
+        <li>✅ <strong>First Mover</strong> — 2026년 5월 현재 한국에 동일 포지션 경쟁자 없음. 12-18개월의 선점 기회</li>
       </ul>
     </div>
   </div>
 
   <!-- Competitive Positioning -->
   <table class="tbl" style="margin-top:24px">
-    <thead><tr><th>비교 항목</th><th>Syndigo</th><th>Akeneo</th><th>국내 SEO 도구</th><th>본 서비스 (KCFT)</th></tr></thead>
+    <thead><tr><th>비교 항목</th><th>Syndigo Synapse</th><th>Akeneo Adaptive Cloud</th><th>국내 SEO 도구</th><th>본 서비스 (KCFT)</th></tr></thead>
     <tbody>
       <tr><td class="bold">한국어 NLP</td><td>❌</td><td>❌</td><td>△ (기초)</td><td style="color:#4ade80;font-weight:700">✅ 네이티브</td></tr>
       <tr><td class="bold">네이버 연동</td><td>❌</td><td>❌</td><td>△ (SEO만)</td><td style="color:#4ade80;font-weight:700">✅ API 직접</td></tr>
-      <tr><td class="bold">ACP 피드</td><td>✅</td><td>△ (Stripe 경유)</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅</td></tr>
-      <tr><td class="bold">UCP 엔드포인트</td><td>△ (예정)</td><td>❌</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅</td></tr>
+      <tr><td class="bold">ACP 피드</td><td>✅ (Synapse 내장)</td><td>△ (Stripe 경유)</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅</td></tr>
+      <tr><td class="bold">UCP 엔드포인트</td><td>△ (예정)</td><td>❌</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅ (Cart/Catalog 포함)</td></tr>
       <tr><td class="bold">MCP Server</td><td>❌</td><td>✅</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅ 자동배포</td></tr>
+      <tr><td class="bold">에이전틱 PXM</td><td>✅ SynapseGo</td><td>✅ PX Insights</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅ 한국 특화</td></tr>
       <tr><td class="bold">한국 인증 데이터</td><td>❌</td><td>❌</td><td>❌</td><td style="color:#4ade80;font-weight:700">✅</td></tr>
       <tr><td class="bold">가격대</td><td>연 $50K+</td><td>연 $30K+</td><td>월 5-20만원</td><td style="color:#4ade80;font-weight:700">월 5-50만원</td></tr>
       <tr><td class="bold">대상 고객</td><td>대기업</td><td>중견-대기업</td><td>중소 판매자</td><td style="color:#4ade80;font-weight:700">전 규모</td></tr>
@@ -547,8 +552,10 @@
     </div>
     <p style="font-size:13px;color:#a0b0c8;margin-top:16px;line-height:1.7">
       <strong>기회비용 분석:</strong> 한국 에이전틱 커머스 피드 인프라 시장은 현재 <strong>무주공산(Blue Ocean)</strong>입니다.
-      2026년 하반기부터 카페24, 네이버 등 플랫폼 기업이 자체 피드 도구를 출시할 가능성이 있으나,
-      이들은 자사 플랫폼 한정 도구에 그칠 것이며 <strong>멀티 플랫폼 + 멀티 프로토콜 통합</strong>이라는 본 서비스의 핵심 가치와는 차별화됩니다.
+      글로벌 에이전틱 AI 시장이 CAGR 40.5%로 급성장(Fortune Business Insights: 2034년 $139.19B)하고,
+      Mordor Intelligence 기준 리테일/이커머스 부문만 2031년 $218.37B(CAGR 29.29%) 전망입니다.
+      네이버 AI 쇼핑 에이전트 출시, 카카오 카나나 커머스 연동 실험, 과기정통부 에이전틱 AI 얼라이언스(250+개 기관) 출범으로
+      한국 시장 가속화가 확인된 상황에서, 듀얼 프로토콜(UCP+ACP) 피드의 별도 관리가 필수가 되면서 <strong>멀티 플랫폼 + 멀티 프로토콜 통합 피드 인프라</strong>의 가치가 더욱 높아졌습니다.
       <strong>지금 시작하지 않으면 12-18개월 후 시장 진입 비용이 3-5배 증가</strong>할 것으로 예상됩니다.
     </p>
   </div>
@@ -604,8 +611,8 @@
     <table class="tbl">
       <thead><tr><th>대상</th><th>설득 포인트</th></tr></thead>
       <tbody>
-        <tr><td class="bold">CEO</td><td>"AI 에이전트 시대, 한국 60만 판매자의 <strong>데이터 게이트웨이</strong>를 선점합니다. 경쟁자 0인 시장에서 18개월 내 흑자 전환."</td></tr>
-        <tr><td class="bold">CTO</td><td>"한국어 NLP + 멀티 프로토콜(ACP/UCP/MCP) 기술력으로 글로벌 프로토콜의 <strong>공식 한국 레이어</strong>를 구축합니다."</td></tr>
+        <tr><td class="bold">CEO</td><td>"네이버 AI 쇼핑 에이전트 출시, 카카오 카나나 커머스 연동 — AI 에이전트 시대가 이미 시작되었습니다. 한국 60만 판매자의 <strong>데이터 게이트웨이</strong>를 선점합니다. 에이전틱 AI 시장 CAGR 40.5% 성장 속 경쟁자 0."</td></tr>
+        <tr><td class="bold">CTO</td><td>"한국어 NLP + 듀얼 프로토콜(UCP+ACP) + MCP 기술력으로 글로벌 프로토콜의 <strong>공식 한국 레이어</strong>를 구축합니다. Syndigo Synapse·Akeneo Adaptive Cloud의 한국 버전."</td></tr>
         <tr><td class="bold">CFO</td><td>"초기 투자 11억, Y2 흑자전환, Y3 매출 152억 / 영업이익 100억. <strong>SaaS 반복매출 구조로 높은 예측성</strong>."</td></tr>
         <tr><td class="bold">CSO (전략)</td><td>"Syndigo($3.5B)의 한국 버전. 한국에서 검증 후 일본·동남아 확장. <strong>글로벌 PXM 기업의 APAC 인수 타깃</strong>."</td></tr>
         <tr><td class="bold">CMO</td><td>"카페24 앱스토어 + 네이버 솔루션마켓이 유통 채널. <strong>PLG(Product-Led Growth)</strong> 모델로 영업비용 최소화."</td></tr>
@@ -623,7 +630,7 @@
     <thead><tr><th>리스크</th><th>확률</th><th>영향도</th><th>대응 전략</th></tr></thead>
     <tbody>
       <tr><td class="bold">플랫폼 기업 자체 피드 도구 출시</td><td>🔴 높음</td><td>🟡 중</td><td>멀티 플랫폼·멀티 프로토콜 통합이 핵심 가치. 단일 플랫폼 도구와 경쟁이 아닌 보완. 앱스토어 파트너 관계 선점.</td></tr>
-      <tr><td class="bold">프로토콜 규격 급변</td><td>🟡 중</td><td>🔴 높음</td><td>OpenAI·Google 얼리 파트너 프로그램 가입으로 사전 정보 확보. 어댑터 패턴 아키텍처로 규격 변경 즉시 대응 가능.</td></tr>
+      <tr><td class="bold">프로토콜 규격 급변 (UCP/ACP 듀얼 체제)</td><td>🟡 중</td><td>🔴 높음</td><td>UCP(2026.03 Cart·Catalog·Identity Linking 추가), ACP(오픈소스화·Agentic AI Foundation 거버넌스) 등 규격이 빠르게 진화 중. 어댑터 패턴 아키텍처로 즉시 대응 + 얼리 파트너 프로그램으로 사전 정보 확보.</td></tr>
       <tr><td class="bold">LLM API 비용 급등</td><td>🟢 낮음</td><td>🟡 중</td><td>GPT-4o-mini 등 경량 모델 활용, 자체 Fine-tuned 모델 대체 계획. 비용 절감 로드맵 보유.</td></tr>
       <tr><td class="bold">판매자 도입 저항</td><td>🟡 중</td><td>🟡 중</td><td>Freemium + PLG 전략. 무료 피드 진단 리포트로 가치 체험 후 전환. 카페24 앱스토어 원클릭 설치.</td></tr>
       <tr><td class="bold">에이전틱 커머스 시장 성장 둔화</td><td>🟢 낮음</td><td>🔴 높음</td><td>기본 피드 최적화(SEO/Schema.org)만으로도 가치 제공 가능. AI 에이전트 없이도 데이터 품질 향상 수요 존재.</td></tr>
@@ -701,15 +708,20 @@
 
 <!-- ═══════════════ FOOTER ═══════════════ -->
 <footer>
-  <p>AI-Ready 상품 데이터 피드 인프라 — 사업 기획서 | 2026년 4월 작성</p>
+  <p>AI-Ready 상품 데이터 피드 인프라 — 사업 기획서 | 2026년 4월 작성 · 2026년 5월 15일 현행화</p>
   <p style="margin-top:8px">
     References:
-    <a href="https://www.mordorintelligence.com/industry-reports/product-information-management-market" target="_blank">Mordor Intelligence PIM Market</a> ·
-    <a href="https://syndigo.com/news/syndigo-acquires-1worldsync/" target="_blank">Syndigo $3.5B</a> ·
-    <a href="https://syndigo.com/news/syndigo-openai-connect-ai-shopping-integration/" target="_blank">Syndigo OpenAI Connect</a> ·
-    <a href="https://www.akeneo.com/press-release/akeneo-accelerates-commerce-velocity-as-agentic-ai-transforms-digital-engagement/" target="_blank">Akeneo Stripe Partnership</a> ·
-    <a href="https://www.etnews.com/20221222000253" target="_blank">네이버 스마트스토어 55만개</a> ·
-    <a href="https://rye.com/blog/agentic-commerce-startups" target="_blank">Rye Agentic Commerce Landscape</a>
+    <a href="https://www.fortunebusinessinsights.com/agentic-ai-market-114233" target="_blank">Fortune Business Insights — Agentic AI Market $139.19B by 2034</a> ·
+    <a href="https://www.mordorintelligence.com/industry-reports/agentic-artificial-intelligence-in-retail-and-ecommerce-market" target="_blank">Mordor Intelligence — Agentic AI Retail $218.37B by 2031</a> ·
+    <a href="https://syndigo.com/news/syndigo-launches-synapse-agentic-pxm/" target="_blank">Syndigo Synapse Agentic PXM (2026.03)</a> ·
+    <a href="https://syndigo.com/news/syndigo-introduces-synapsego-agentic-workflows/" target="_blank">Syndigo SynapseGo (2026.04)</a> ·
+    <a href="https://www.akeneo.com/blog/2026-spring-release/" target="_blank">Akeneo Adaptive Product Cloud Spring 2026</a> ·
+    <a href="https://www.akeneo.com/px-insights/" target="_blank">Akeneo PX Insights</a> ·
+    <a href="https://almcorp.com/blog/google-ucp-cart-catalog-identity-linking-2026/" target="_blank">Google UCP Cart·Catalog·Identity Linking (2026.03)</a> ·
+    <a href="https://www.aitimes.com/news/articleView.html?idxno=207310" target="_blank">네이버 AI 쇼핑 에이전트 베타 출시</a> ·
+    <a href="https://www.newsis.com/view/NISX20260507_0003619589" target="_blank">카카오 카나나 2.5 에이전틱 AI</a> ·
+    <a href="https://www.korea.kr/briefing/pressReleaseView.do?newsId=156752328" target="_blank">과기정통부 에이전틱 AI 얼라이언스 출범 (250+개 기관)</a> ·
+    <a href="https://www.paz.ai/blog/microsoft-ucp-acp-dual-protocol-mandatory" target="_blank">Microsoft UCP+ACP 듀얼 프로토콜 필수화</a>
   </p>
 </footer>
 

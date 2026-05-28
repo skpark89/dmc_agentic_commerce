@@ -100,11 +100,12 @@
 
 <!-- ═══ HERO ═══ -->
 <div class="hero">
-  <div class="badge">판매자 실전 가이드 &middot; 2026</div>
+  <div class="badge">판매자 실전 가이드 &middot; 2026 &middot; 2026.05 현행화</div>
   <h1>판매자가 <span class="hl">진짜 준비해야 할 것</span><br>UCP & ACP 실전 가이드</h1>
-  <p class="hero-sub">복잡한 프로토콜 이론은 잊으세요. 판매자에게 필요한 것은 딱 두 가지 — <strong>Google UCP</strong>(AI Mode/Gemini)와 <strong>OpenAI ACP</strong>(ChatGPT)입니다.</p>
+  <p class="hero-sub">복잡한 프로토콜 이론은 잊으세요. 판매자에게 필요한 것은 딱 두 가지 — <strong>Google UCP</strong>(AI Mode/Gemini)와 <strong>OpenAI ACP</strong>(ChatGPT)입니다.<br>2026년 3~4월 양 프로토콜 모두 대규모 업데이트가 진행되었습니다.</p>
   <div class="hero-callout">
-    ⚡ <strong>핵심 진실:</strong> 에이전트 커머스의 미래는 어떤 플랫폼을 선택하느냐가 아니라, <strong>상품 데이터의 성숙도</strong>에 달려 있습니다.<br>UCP와 ACP 모두 동일한 전략적 진실로 수렴합니다.
+    ⚡ <strong>핵심 진실:</strong> 에이전트 커머스의 미래는 어떤 플랫폼을 선택하느냐가 아니라, <strong>상품 데이터의 성숙도</strong>에 달려 있습니다.<br>UCP와 ACP 모두 동일한 전략적 진실로 수렴합니다.<br><br>
+    🔄 <strong>2026년 5월 현재:</strong> OpenAI는 Instant Checkout을 폐지하고 <strong>판매자 자체 체크아웃</strong> 모델로 전환했습니다. UCP는 Cart, Catalog, Identity Linking 등 <strong>5대 Capability</strong>를 정식 출시했습니다. <strong>양쪽 프로토콜 동시 지원</strong>이 필수 전략입니다.
   </div>
 </div>
 
@@ -122,26 +123,26 @@
     <tr>
       <td>노출 채널</td>
       <td class="g">Google AI Mode, Gemini 앱, Business Agent</td>
-      <td class="o">ChatGPT (Instant Checkout)</td>
+      <td class="o">ChatGPT (상품 발견 → 판매자 체크아웃 리디렉트)</td>
     </tr>
     <tr>
       <td>데이터 소스</td>
-      <td class="g">Google Merchant Center 피드</td>
+      <td class="g">Google Merchant Center 피드 (간소화 온보딩)</td>
       <td class="o">전용 피드 엔드포인트 (JSONL/CSV/XML)</td>
     </tr>
     <tr>
       <td>결제 처리</td>
-      <td class="g">Google Pay + AP2 Mandate</td>
-      <td class="o">Stripe Shared Payment Token (SPT)</td>
+      <td class="g">Google Pay + AP2 Mandate (에이전트 자율결제)</td>
+      <td class="o">판매자 자체 결제 (Instant Checkout 폐지)</td>
     </tr>
     <tr>
       <td>수수료</td>
       <td class="g">현재 미공개 (파일럿)</td>
-      <td class="o">4% (OpenAI) + ~2.9%+$0.30 (Stripe)</td>
+      <td class="o">Instant Checkout 폐지로 수수료 구조 변경 중</td>
     </tr>
     <tr>
       <td>가입 방법</td>
-      <td class="g">Merchant Center → UCP 웨이트리스트</td>
+      <td class="g">Merchant Center → 간소화 온보딩 (2026.03~)</td>
       <td class="o">chatgpt.com/merchants 신청</td>
     </tr>
     <tr>
@@ -151,13 +152,18 @@
     </tr>
     <tr>
       <td>자체몰 연동</td>
-      <td class="g">API + .well-known/ucp 엔드포인트</td>
-      <td class="o">5개 REST API + 피드 엔드포인트 구현</td>
+      <td class="g">API / MCP / A2A + .well-known/ucp 매니페스트</td>
+      <td class="o">피드 엔드포인트 + ACP v5 API (Cart/Feed/Orders/Auth/MCP)</td>
     </tr>
     <tr>
       <td>현재 상태</td>
-      <td class="g">Etsy, Wayfair 라이브 / 확대 중</td>
-      <td class="o">미국 Shopify 판매자 100만+ 연동</td>
+      <td class="g">Shopify, Etsy, Wayfair, Target, Walmart 등 20+ 파트너 라이브</td>
+      <td class="o">Instant Checkout 폐지 (2026.03) → 상품 발견 + 판매자 체크아웃 모델로 전환</td>
+    </tr>
+    <tr>
+      <td>프로토콜 버전</td>
+      <td class="g">2026.04.08 스펙 (Shopping Service → Capabilities → Extensions)</td>
+      <td class="o">ACP v5 (2026.04.17): Cart, Feed, Orders, Authentication, MCP 통합</td>
     </tr>
     <tr>
       <td>성과 데이터</td>
@@ -277,18 +283,19 @@
 <!-- ═══ 3. UCP 준비 단계 ═══ -->
 <div class="section">
   <div class="st">① Google UCP 준비 단계</div>
-  <div class="ss">Google AI Mode와 Gemini에 내 상품이 노출·판매되기 위한 준비</div>
+  <div class="ss">Google AI Mode와 Gemini에 내 상품이 노출·판매되기 위한 준비<br><span style="color:#60a5fa">2026년 3월 업데이트: Merchant Center 간소화 온보딩 + 5대 Capability(Checkout, Cart, Catalog, Identity Linking, Order Management) 정식 출시</span></div>
 
   <div class="step-section">
     <div class="step-card">
       <div class="step-num" style="background:linear-gradient(135deg,#4285f4,#60a5fa)">1</div>
       <div class="step-box">
-        <h4>Merchant Center 계정 정비</h4>
-        <p>이미 Merchant Center를 사용 중이라면 기존 계정을 활용. 없다면 새로 생성.</p>
+        <h4>Merchant Center 계정 정비 (간소화 온보딩)</h4>
+        <p>2026년 3월부터 Merchant Center에서 UCP 온보딩이 간소화되었습니다. 기존 계정을 활용하거나 새로 생성하세요.</p>
         <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">상품 피드 <strong>오류 0건</strong> 상태 달성 (disapproval 모두 해결)</div></div>
         <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">배송(shipping) 및 반품(return) 정책 설정 완료</div></div>
         <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">신규 데이터 속성 (product_highlight, FAQ, 호환제품 등) 추가</div></div>
         <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text"><strong>native_commerce = true</strong> 설정 (체크아웃 대상 상품)</div></div>
+        <div class="info-row"><div class="ir-icon">🆕</div><div class="ir-text"><strong>Capability 선택:</strong> Merchant Center UI에서 Checkout, Cart, Catalog, Identity Linking, Order Management 중 원하는 기능 토글 활성화</div></div>
       </div>
     </div>
 
@@ -311,21 +318,35 @@
         <div class="info-row"><div class="ir-icon">🗂️</div><div class="ir-text">메타필드(Size, Color, Material 등) → UCP 표준 필드에 매핑</div></div>
 
         <p style="margin-top:16px"><strong>자체몰 (WooCommerce, Magento, 카페24 등):</strong></p>
-        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text"><strong>.well-known/ucp</strong> 엔드포인트 구현 (AI 에이전트가 가게를 발견하는 입구)</div></div>
-        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text">Checkout, Identity Linking, Order Management API 구현</div></div>
+        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text"><strong>.well-known/ucp</strong> 매니페스트 게시 — AI 에이전트가 가게를 발견하는 입구 (아키텍처: Shopping Service → Capabilities → Extensions)</div></div>
+        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text"><strong>5대 Capability 구현:</strong> Checkout, Cart, Catalog(상품 발견), Identity Linking(OAuth 2.0 로열티), Order Management</div></div>
+        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text"><strong>Extensions 구현:</strong> Fulfillment(배송), Discounts(할인), AP2 Mandates(자율결제 암호화 인증) 등</div></div>
+        <div class="info-row"><div class="ir-icon">🔌</div><div class="ir-text"><strong>통신 방식 선택:</strong> REST API / MCP / A2A 중 자사 환경에 맞는 방식 선택 가능</div></div>
         <div class="info-row"><div class="ir-icon">⚡</div><div class="ir-text">API 응답 속도 P99 <strong>&lt; 100ms</strong> 목표 (느리면 AI가 다른 판매자 선택)</div></div>
 
         <div class="code-block">
-<span class="key">// .well-known/ucp 매니페스트 예시</span>
+<span class="key">// .well-known/ucp 매니페스트 예시 (2026.04 스펙 기준)</span>
 {
-  "<span class="key">name</span>": "<span class="val">내 쇼핑몰</span>",
-  "<span class="key">capabilities</span>": ["<span class="val">checkout</span>", "<span class="val">catalog</span>", "<span class="val">orders</span>"],
-  "<span class="key">endpoints</span>": {
-    "<span class="key">checkout</span>": "<span class="val">https://mystore.com/api/ucp/checkout</span>",
-    "<span class="key">catalog</span>": "<span class="val">https://mystore.com/api/ucp/catalog</span>"
+  "<span class="key">version</span>": "<span class="val">2026-04-08</span>",
+  "<span class="key">services</span>": {
+    "<span class="key">shopping</span>": {
+      "<span class="key">name</span>": "<span class="val">내 쇼핑몰</span>",
+      "<span class="key">capabilities</span>": {
+        "<span class="key">checkout</span>": { "<span class="key">version</span>": "<span class="val">1.0</span>", "<span class="key">schema</span>": "<span class="val">/schemas/checkout.json</span>" },
+        "<span class="key">cart</span>": { "<span class="key">version</span>": "<span class="val">1.0</span>", "<span class="key">schema</span>": "<span class="val">/schemas/cart.json</span>" },
+        "<span class="key">catalog</span>": { "<span class="key">version</span>": "<span class="val">1.0</span>", "<span class="key">schema</span>": "<span class="val">/schemas/catalog.json</span>" },
+        "<span class="key">identity_linking</span>": { "<span class="key">version</span>": "<span class="val">1.0</span>" },
+        "<span class="key">orders</span>": { "<span class="key">version</span>": "<span class="val">1.0</span>" }
+      },
+      "<span class="key">extensions</span>": {
+        "<span class="key">fulfillment</span>": { "<span class="key">capability</span>": "<span class="val">checkout</span>" },
+        "<span class="key">discounts</span>": { "<span class="key">capability</span>": "<span class="val">checkout</span>" },
+        "<span class="key">ap2_mandates</span>": { "<span class="key">capability</span>": "<span class="val">checkout</span>" }
+      },
+      "<span class="key">transport</span>": ["<span class="val">rest</span>", "<span class="val">mcp</span>"]
+    }
   },
-  "<span class="key">payment_methods</span>": ["<span class="val">google_pay</span>"],
-  "<span class="key">identity_linking</span>": <span class="bool">true</span>
+  "<span class="key">payment_methods</span>": ["<span class="val">google_pay</span>"]
 }
         </div>
       </div>
@@ -334,10 +355,11 @@
     <div class="step-card">
       <div class="step-num" style="background:linear-gradient(135deg,#4285f4,#60a5fa)">4</div>
       <div class="step-box">
-        <h4>웨이트리스트 신청 & 승인</h4>
-        <div class="info-row"><div class="ir-icon">📝</div><div class="ir-text"><a href="https://developers.google.com/merchant/ucp" style="color:#60a5fa" target="_blank">developers.google.com/merchant/ucp</a> → 웨이트리스트 등록</div></div>
-        <div class="info-row"><div class="ir-icon">🔍</div><div class="ir-text">Google이 통합 검토 후 승인 → AI Mode / Gemini에 라이브</div></div>
+        <h4>온보딩 신청 & 승인 (간소화)</h4>
+        <div class="info-row"><div class="ir-icon">📝</div><div class="ir-text"><a href="https://developers.google.com/merchant/ucp" style="color:#60a5fa" target="_blank">developers.google.com/merchant/ucp</a> → Merchant Center에서 직접 온보딩 (2026.03부터 간소화)</div></div>
+        <div class="info-row"><div class="ir-icon">🔍</div><div class="ir-text">Google이 통합 검토 후 승인 → AI Mode / Gemini에 라이브 (판매자가 Merchant of Record 유지)</div></div>
         <div class="info-row"><div class="ir-icon">📊</div><div class="ir-text">초기 도입자: 30일 내 AI Mode 트래픽 유입, 60일 차 매출 유의미 상승</div></div>
+        <div class="info-row"><div class="ir-icon">🏢</div><div class="ir-text"><strong>파트너 생태계:</strong> Shopify, Etsy, Wayfair, Target, Walmart 등 20+ 글로벌 파트너가 이미 참여 중</div></div>
       </div>
     </div>
   </div>
@@ -346,7 +368,12 @@
 <!-- ═══ 4. ACP 준비 단계 ═══ -->
 <div class="section">
   <div class="st">② OpenAI ACP 준비 단계</div>
-  <div class="ss">ChatGPT Instant Checkout에서 내 상품이 판매되기 위한 준비</div>
+  <div class="ss">ChatGPT에서 내 상품이 발견·추천되기 위한 준비<br><span style="color:#f472b6">2026년 3월 Instant Checkout 폐지 → 판매자 자체 체크아웃 모델로 전환 | ACP v5 (2026.04): Cart, Feed, Orders, Auth, MCP 통합</span></div>
+
+  <div class="warn" style="margin-bottom:24px">
+    <h4>⚠️ 중요 변경: Instant Checkout 폐지 (2026년 3월)</h4>
+    <p>OpenAI는 2026년 3월 Instant Checkout(채팅 내 직접 결제)을 공식 폐지했습니다. 주요 원인: 온보딩 판매자 약 30개에 불과, 재고·배송비 정보 부정확, 주(州)별 세금 징수 미해결. 현재 ACP는 <strong>상품 발견(Discovery) + 판매자 자체 체크아웃 리디렉트</strong> 모델로 전환되었습니다. 모바일에서는 인앱 브라우저, 데스크톱에서는 별도 탭으로 판매자 사이트 체크아웃 페이지로 이동합니다. <strong>판매자가 체크아웃 경험을 완전히 통제</strong>하게 된 것은 오히려 긍정적 변화입니다.</p>
+  </div>
 
   <div class="step-section">
     <div class="step-card">
@@ -362,26 +389,38 @@
     <div class="step-card">
       <div class="step-num" style="background:linear-gradient(135deg,#ec4899,#f472b6)">2</div>
       <div class="step-box">
-        <h4>상품 피드 구축 (3가지 구현 필요)</h4>
-        <p><strong>① 상품 피드 엔드포인트:</strong> OpenAI 제공 엔드포인트에 매일 업데이트</p>
+        <h4>ACP v5 통합 구현 (2026.04 기준)</h4>
+        <p><strong>① 상품 피드 (Feed):</strong> OpenAI 제공 엔드포인트에 매일 업데이트</p>
         <div class="info-row"><div class="ir-icon">📦</div><div class="ir-text">포맷: gzip 압축 (<strong>.jsonl.gz / .csv.gz / .xml.gz</strong>)</div></div>
-        <div class="info-row"><div class="ir-icon">📋</div><div class="ir-text">필수 필드: title(150자), description(5,000자), price+통화, availability, images, checkout 가능 여부 플래그</div></div>
+        <div class="info-row"><div class="ir-icon">📋</div><div class="ir-text">필수 필드: title(150자), description(5,000자), price+통화, availability, images</div></div>
 
-        <p style="margin-top:12px"><strong>② Checkout API (5개 REST 엔드포인트):</strong></p>
-        <div class="info-row"><div class="ir-icon">🔧</div><div class="ir-text">체크아웃 세션 생성/업데이트, 배송 옵션 조회, 세금 계산, 결제 처리</div></div>
+        <p style="margin-top:12px"><strong>② ACP v5 핵심 모듈 (5개):</strong></p>
+        <div class="info-row"><div class="ir-icon">🛒</div><div class="ir-text"><strong>Cart:</strong> 에이전트가 장바구니 생성·수정 (공유 상태 관리)</div></div>
+        <div class="info-row"><div class="ir-icon">📦</div><div class="ir-text"><strong>Feed:</strong> 상품 카탈로그 동기화 및 실시간 업데이트</div></div>
+        <div class="info-row"><div class="ir-icon">📋</div><div class="ir-text"><strong>Orders:</strong> 주문 생성·조회·관리</div></div>
+        <div class="info-row"><div class="ir-icon">🔐</div><div class="ir-text"><strong>Authentication:</strong> 사용자 인증 및 계정 연동</div></div>
+        <div class="info-row"><div class="ir-icon">🔌</div><div class="ir-text"><strong>MCP 통합:</strong> Model Context Protocol을 통한 에이전트 연동 지원</div></div>
 
-        <p style="margin-top:12px"><strong>③ Stripe 결제 연동:</strong></p>
-        <div class="info-row"><div class="ir-icon">💳</div><div class="ir-text"><strong>Shared Payment Token (SPT)</strong> — ChatGPT가 결제 정보 노출 없이 결제 가능한 토큰</div></div>
-        <div class="info-row"><div class="ir-icon">⚡</div><div class="ir-text">이미 Stripe 사용 중이면 <strong>코드 1줄 추가</strong>로 연동 가능</div></div>
+        <p style="margin-top:12px"><strong>③ 체크아웃 (변경됨):</strong></p>
+        <div class="info-row"><div class="ir-icon">🔄</div><div class="ir-text"><strong>Instant Checkout 폐지</strong> → 판매자 자체 체크아웃 페이지로 리디렉트 (모바일: 인앱 브라우저, 데스크톱: 새 탭)</div></div>
+        <div class="info-row"><div class="ir-icon">💳</div><div class="ir-text">결제는 <strong>판매자 기존 결제 시스템</strong> 그대로 사용 — Stripe SPT 의무 사항 아님</div></div>
+        <div class="info-row"><div class="ir-icon">✅</div><div class="ir-text">판매자가 체크아웃 UX를 완전히 통제하므로 전환율 최적화 가능</div></div>
 
         <div class="code-block">
-<span class="key">// Stripe SPT 활성화 (기존 Stripe 사용자)</span>
-stripe.paymentIntents.create({
-  <span class="key">amount</span>: <span class="val">49900</span>,
-  <span class="key">currency</span>: '<span class="val">usd</span>',
-  <span class="key">payment_method_types</span>: ['<span class="val">shared_payment_token</span>'],
-  <span class="key">metadata</span>: { <span class="key">source</span>: '<span class="val">chatgpt_acp</span>' }
-});
+<span class="key">// ACP v5 판매자 체크아웃 리디렉트 엔드포인트 예시</span>
+<span class="key">POST</span> /acp/checkout/redirect
+{
+  "<span class="key">cart_id</span>": "<span class="val">acp_cart_abc123</span>",
+  "<span class="key">items</span>": [
+    { "<span class="key">product_id</span>": "<span class="val">SKU-001</span>", "<span class="key">quantity</span>": <span class="val">1</span> }
+  ],
+  "<span class="key">redirect_url</span>": "<span class="val">https://mystore.com/checkout?cart=abc123</span>",
+  "<span class="key">authentication</span>": {
+    "<span class="key">method</span>": "<span class="val">oauth2</span>",
+    "<span class="key">token</span>": "<span class="val">user_token_xyz</span>"
+  }
+}
+<span class="key">// 응답: 판매자 체크아웃 페이지 URL 반환</span>
         </div>
       </div>
     </div>
@@ -390,8 +429,9 @@ stripe.paymentIntents.create({
       <div class="step-num" style="background:linear-gradient(135deg,#ec4899,#f472b6)">3</div>
       <div class="step-box">
         <h4>적합성 테스트 & 승인</h4>
-        <div class="info-row"><div class="ir-icon">🧪</div><div class="ir-text">OpenAI가 자동화된 적합성 테스트 진행: 피드 검증, 체크아웃 플로우, 결제 처리</div></div>
-        <div class="info-row"><div class="ir-icon">💰</div><div class="ir-text"><strong>수수료:</strong> 거래당 4% (OpenAI) + ~2.9%+$0.30 (Stripe) — 약 <strong>총 7%</strong></div></div>
+        <div class="info-row"><div class="ir-icon">🧪</div><div class="ir-text">OpenAI가 자동화된 적합성 테스트 진행: 피드 검증, 상품 발견 정확도, 리디렉트 플로우 확인</div></div>
+        <div class="info-row"><div class="ir-icon">💰</div><div class="ir-text"><strong>수수료:</strong> Instant Checkout 폐지로 기존 4%+Stripe 수수료 구조 변경 중 — 최신 조건은 chatgpt.com/merchants에서 확인</div></div>
+        <div class="info-row"><div class="ir-icon">📌</div><div class="ir-text"><strong>핵심 변화:</strong> 판매자가 Merchant of Record를 유지하며, 고객 관계·데이터·사후 관리 전권 보유</div></div>
       </div>
     </div>
   </div>
@@ -445,7 +485,7 @@ stripe.paymentIntents.create({
       </div>
       <div class="col-body">
         <div class="info-row"><div class="ir-icon">🛒</div><div class="ir-text"><strong>UCP:</strong> App Store → "Universal Commerce Agent" 설치 → Agent Policy 설정 → 끝</div></div>
-        <div class="info-row"><div class="ir-icon">🟣</div><div class="ir-text"><strong>ACP:</strong> Shopify Admin → ChatGPT Instant Checkout 활성화 → 끝</div></div>
+        <div class="info-row"><div class="ir-icon">🟣</div><div class="ir-text"><strong>ACP:</strong> Shopify Admin → ChatGPT 상품 노출 활성화 → 자체 체크아웃 유지</div></div>
         <div class="info-row"><div class="ir-icon">⏱️</div><div class="ir-text">소요 시간: 각 <strong>10분</strong> 이내</div></div>
         <div class="info-row"><div class="ir-icon">📋</div><div class="ir-text">남은 할 일: 상품 데이터 품질 향상 (신규 속성 추가), 메타필드 매핑</div></div>
       </div>
@@ -457,7 +497,7 @@ stripe.paymentIntents.create({
       </div>
       <div class="col-body">
         <div class="info-row"><div class="ir-icon">🛒</div><div class="ir-text"><strong>UCP:</strong> .well-known/ucp + Checkout/Catalog/Orders API 직접 구현</div></div>
-        <div class="info-row"><div class="ir-icon">🟣</div><div class="ir-text"><strong>ACP:</strong> 피드 엔드포인트 + 5개 REST API + Stripe 연동</div></div>
+        <div class="info-row"><div class="ir-icon">🟣</div><div class="ir-text"><strong>ACP v5:</strong> 피드 엔드포인트 + Cart/Feed/Orders/Auth/MCP 모듈 + 자체 체크아웃 리디렉트</div></div>
         <div class="info-row"><div class="ir-icon">⏱️</div><div class="ir-text">소요 시간: <strong>2~4주</strong> (개발자 1~2명 기준)</div></div>
         <div class="info-row"><div class="ir-icon">💡</div><div class="ir-text"><strong>팁:</strong> UCP/ACP 연동 SaaS 솔루션이 등장하면 활용 (현재 개발 중인 스타트업 있음)</div></div>
       </div>
@@ -510,8 +550,11 @@ stripe.paymentIntents.create({
       <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>Schema.org 마크업:</strong> Product, Offer, FAQ, Review JSON-LD 적용</div></div>
       <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>배송·반품 정책 구조화:</strong> ShippingDetails, MerchantReturnPolicy 설정</div></div>
       <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>native_commerce = true:</strong> 체크아웃 대상 상품 플래그 활성화</div></div>
-      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>UCP 웨이트리스트 신청:</strong> developers.google.com/merchant/ucp</div></div>
-      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>ACP 판매자 신청:</strong> chatgpt.com/merchants (미국 진출 시)</div></div>
+      <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>UCP Capability 활성화:</strong> Merchant Center에서 Checkout, Cart, Catalog, Identity Linking, Orders 토글</div></div>
+      <div class="cl-item cl-p2"><div class="cl-box">P2</div><div class="cl-text"><strong>.well-known/ucp 매니페스트:</strong> 자체몰은 Shopping Service → Capabilities → Extensions 구조 게시</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>UCP 온보딩 신청:</strong> Merchant Center 간소화 온보딩 (developers.google.com/merchant/ucp)</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>ACP v5 판매자 신청:</strong> chatgpt.com/merchants — 자체 체크아웃 모델 (Instant Checkout 폐지됨)</div></div>
+      <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>듀얼 프로토콜 전략:</strong> UCP + ACP 양쪽 동시 구현으로 에이전트 트래픽 극대화</div></div>
       <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>Business Agent 활성화:</strong> Merchant Center에서 설정 (미국 대상)</div></div>
       <div class="cl-item cl-p3"><div class="cl-box">P3</div><div class="cl-text"><strong>Direct Offers 파일럿 신청:</strong> Google Ads에서 오퍼 전략 설정</div></div>
     </div>
@@ -525,7 +568,9 @@ stripe.paymentIntents.create({
     <p>
       지금 당장 <strong>Merchant Center 상품 피드를 완벽하게 만드세요</strong>.<br>
       가격·재고 실시간 동기화, 이미지 4장 이상, 신규 속성(FAQ, 호환제품) 추가 — 이것만 해도 UCP와 ACP <strong>양쪽 모두</strong>에 대비됩니다.<br><br>
-      프로토콜 통합은 그 다음 문제입니다.<br>
+      2026년 5월 현재, <strong>UCP는 5대 Capability를 정식 출시</strong>했고 <strong>ACP는 Instant Checkout을 폐지하고 판매자 자체 체크아웃</strong>으로 전환했습니다.<br>
+      두 프로토콜 모두 <strong>판매자가 Merchant of Record를 유지</strong>하는 방향으로 수렴하고 있습니다.<br>
+      <strong>듀얼 프로토콜(UCP+ACP) 동시 지원</strong>이 에이전트 트래픽 극대화의 핵심 전략입니다.<br><br>
       <strong>데이터가 준비된 판매자만이 AI 에이전트에게 선택</strong>받습니다.
     </p>
   </div>
@@ -545,8 +590,13 @@ stripe.paymentIntents.create({
     <li>8. <a href="https://wearepresta.com/how-to-implement-universal-commerce-protocol-ucp-in-2026-complete-well-known-ucp-setup-guide/" target="_blank">WeArePresta — Complete .well-known/ucp Setup Guide</a></li>
     <li>9. <a href="https://www.searchenginejournal.com/agentic-commerce-optimization-a-technical-guide-to-prepare-for-googles-ucp/566969/" target="_blank">SEJ — Technical Guide to Prepare for UCP</a></li>
     <li>10. <a href="https://www.feedoptimise.com/blog/google-shopping-is-getting-more-agentic-feed-is-becoming-its-knowledge" target="_blank">Feedoptimise — Feed is Becoming AI's Knowledge Base</a></li>
+    <li>11. <a href="https://quicklizard.com/blog/openai-shelved-instant-checkout/" target="_blank">Quicklizard — OpenAI Shelved Instant Checkout: Strategic Gift to Retailers</a></li>
+    <li>12. <a href="https://www.checkout.com/blog/openai-agentic-commerce-shift" target="_blank">Checkout.com — OpenAI's Agentic Commerce Shift: What It Means for Merchants</a></li>
+    <li>13. <a href="https://github.com/agentic-commerce-protocol/agentic-commerce-protocol" target="_blank">GitHub — ACP Open Standard Specification (OpenAI/Stripe)</a></li>
+    <li>14. <a href="https://blog.google/products-and-platforms/products/shopping/ucp-updates/" target="_blank">Google Blog — UCP Updates Improve AI Shopping for Retailers</a></li>
+    <li>15. <a href="http://ucp.dev/2026-04-08/specification/overview/" target="_blank">UCP.dev — 2026-04-08 Specification Overview</a></li>
   </ul>
-  <p>2026년 4월 기준. Google/OpenAI 정책은 빠르게 변동됩니다.</p>
+  <p>2026년 5월 15일 기준. Google/OpenAI 정책은 빠르게 변동됩니다.</p>
 </div>
 
 </body>

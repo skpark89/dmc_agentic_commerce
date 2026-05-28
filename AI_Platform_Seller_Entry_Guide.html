@@ -116,6 +116,7 @@
         <div class="badges">
             <span class="badge">📄 Report #13</span>
             <span class="badge">🗓️ 2026년 5월 기준</span>
+            <span class="badge">🔄 2026.05 현행화</span>
             <span class="badge">🛒 7대 플랫폼 비교</span>
             <span class="badge">💰 수수료 시뮬레이션</span>
         </div>
@@ -132,8 +133,8 @@
 
     <!-- OpenAI -->
     <div class="platform-block" style="border-left:3px solid var(--openai);">
-        <h3><span style="color:var(--openai-l)">⬢</span> OpenAI ChatGPT — Instant Checkout</h3>
-        <div class="tagline">ACP(Agentic Commerce Protocol) 기반 · 4% 거래 수수료 · 미국 전용 (글로벌 확장 예정)</div>
+        <h3><span style="color:var(--openai-l)">⬢</span> OpenAI ChatGPT — Product Discovery & Merchant Apps</h3>
+        <div class="tagline">ACP v5(2026.4.17) 기반 · Instant Checkout 중단(2026.3) → Product Discovery + Merchant Apps 전환 · 4% 거래 수수료 · 미국 전용</div>
 
         <!-- 진입 자격 -->
         <div class="sub-section">
@@ -144,8 +145,9 @@
                 <tr><td><strong>판매 대상</strong></td><td>미국 소비자 대상 배송 가능한 물리적 상품</td></tr>
                 <tr><td><strong>결제 인프라</strong></td><td>Stripe 계정 필수 (Stripe Connect 통한 결제 처리)</td></tr>
                 <tr><td><strong>금지 품목</strong></td><td>성인용품, 주류/니코틴, 도박, 무기, 처방약, 불법 상품</td></tr>
-                <tr><td><strong>상품 데이터</strong></td><td>ACP 피드 스펙 준수 — JSONL.gz / CSV.gz / XML.gz 형식</td></tr>
+                <tr><td><strong>상품 데이터</strong></td><td>ACP v5 피드 스펙 준수 — Cart, Feed, Orders, Auth 엔드포인트 · RESTful HTTP 또는 MCP 서버 구현 가능</td></tr>
                 <tr><td><strong>Shopify/Etsy 셀러</strong></td><td>별도 신청 불필요 — 자동 통합 (Agentic Storefronts)</td></tr>
+                <tr><td><strong>⚠️ Instant Checkout</strong></td><td>2026년 3월 5일부 중단 — 전환율 부족 및 가맹점 온보딩 난항 (약 30개 Shopify 가맹점만 참여). Merchant Apps 및 Product Discovery로 전환</td></tr>
             </table>
         </div>
 
@@ -171,9 +173,10 @@
 
         <!-- 피드 스펙 -->
         <div class="sub-section">
-            <h4>📦 ACP 피드 필수 필드</h4>
+            <h4>📦 ACP v5 피드 구조 (2026.4.17)</h4>
             <div class="code-block">
-<span class="code-comment">// ACP Product Feed — JSONL 형식 예시</span>
+<span class="code-comment">// ACP v5 — RESTful HTTP 또는 MCP 서버로 구현 가능</span>
+<span class="code-comment">// Core Endpoints: Create Checkout, Update Checkout, Complete Checkout</span>
 {
   "feed_id": "feed_kr_electronics_20260515",
   "account_id": "acct_merchant_12345",
@@ -190,31 +193,49 @@
       "brand": "BrandName",
       "gtin": "0012345678905",
       "condition": "new",
-      "checkout_eligible": true              <span class="code-comment">// Instant Checkout 활성화</span>
+      "discovery_eligible": true             <span class="code-comment">// Product Discovery 활성화</span>
     }
   ]
 }
+<span class="code-comment">// v5 신규: Cart 관리, Orders 추적, MCP 통합, Auth 엔드포인트 추가</span>
+<span class="code-comment">// Apache 2.0 오픈소스 · OpenAI+Stripe 공동 거버넌스 · 날짜 기반 버전 관리(YYYY-MM-DD)</span>
             </div>
         </div>
 
         <!-- 구매 흐름 -->
         <div class="sub-section">
-            <h4>🛒 구매 과정 (Instant Checkout)</h4>
+            <h4>🛒 구매 과정 (Product Discovery + Merchant Apps)</h4>
+
+            <div class="highlight-box highlight-red" style="margin-bottom:16px;">
+                <strong>⚠️ 2026년 3월 — Instant Checkout 중단:</strong> OpenAI는 2026년 3월 5일 Instant Checkout을 공식 중단했습니다. 사용자가 ChatGPT에서 상품을 탐색하지만 <strong>채팅 내 결제 전환율이 저조</strong>했고, 가맹점 온보딩도 어려워 출시 5개월 만에 약 30개 Shopify 가맹점만 참여한 상태였습니다. Forrester 조사(2026.3)에 따르면, AI 검색 엔진 사용자들이 가장 적게 활용하는 기능이 "앱 내 결제 완료"였습니다.
+            </div>
+
+            <p style="font-size:0.9em;font-weight:700;margin-bottom:8px;color:var(--openai-l);">현재 모델 — Product Discovery (2026년 3월~)</p>
             <div class="flow">
                 <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">사용자 질문<br><small>"추천 이어폰?"</small></div>
                 <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">ChatGPT<br>비주얼 쇼핑<br><small>이미지 업로드 가능</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">상품 비교<br><small>가격·리뷰·기능</small></div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(234,179,8,0.1);color:#fde68a">판매자 사이트<br>리디렉트</div>
+                <div class="arrow">→</div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">외부에서<br>결제 완료</div>
+            </div>
+
+            <p style="font-size:0.9em;font-weight:700;margin:16px 0 8px;color:var(--openai-l);">향후 모델 — Merchant Apps (개발 중)</p>
+            <div class="flow">
+                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">사용자 질문</div>
+                <div class="arrow">→</div>
                 <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">ChatGPT<br>상품 추천</div>
                 <div class="arrow">→</div>
-                <div class="step" style="background:rgba(16,163,127,0.08);color:var(--openai-l)">Buy 버튼<br>클릭</div>
+                <div class="step" style="background:rgba(168,85,247,0.1);color:#c084fc">Merchant App<br><small>판매자 자체 체크아웃</small></div>
                 <div class="arrow">→</div>
-                <div class="step" style="background:rgba(168,85,247,0.1);color:#c084fc">Stripe<br>결제 처리<br><small>SPT 토큰</small></div>
-                <div class="arrow">→</div>
-                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">주문 확인<br><small>판매자에게 전달</small></div>
-                <div class="arrow">→</div>
-                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">판매자 배송<br><small>자체 이행</small></div>
+                <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">ChatGPT 내<br>결제 완료</div>
             </div>
+
             <p style="font-size:0.85em;color:var(--text-dim);margin-top:8px;">
-                <strong>결제 처리:</strong> Stripe의 Shared Payment Token(SPT)을 통해 ChatGPT 채팅 내에서 결제가 완료됩니다. 사용자는 외부 사이트로 리디렉트되지 않습니다. 판매자가 Merchant of Record(판매 책임 주체)입니다.
+                <strong>전략 전환:</strong> Instant Checkout의 획일적 체크아웃 대신, 판매자가 <strong>자체 체크아웃 경험을 ChatGPT 앱으로 구현</strong>하는 방식으로 전환했습니다. ACP v5는 이를 지원하는 Cart, Orders, MCP 엔드포인트를 추가했습니다. Product Discovery는 모든 ChatGPT 사용자(Free, Go, Plus, Pro)에게 제공됩니다.
             </p>
         </div>
 
@@ -245,7 +266,7 @@
             </div>
 
             <div class="highlight-box highlight-yellow">
-                <strong>⚠️ 비용 비교:</strong> OpenAI의 4%는 Amazon 리퍼럴 피(8~17%)보다 저렴하지만, Google AI Mode(0%)와 Microsoft Copilot(0%, 현재)보다 높습니다. 판매자 입장에서는 ChatGPT의 트래픽 규모(주간 활성 사용자 ~8억)가 이 비용을 정당화할 수 있는지가 핵심 판단 기준입니다.
+                <strong>⚠️ 비용 비교:</strong> OpenAI의 4%는 Amazon 리퍼럴 피(8~17%)보다 저렴하지만, Google AI Mode(0%)와 Microsoft Copilot(0%, 현재)보다 높습니다. 다만 Instant Checkout 중단 후 현재 Product Discovery 모델에서는 리디렉트 방식이므로, <strong>실제 4% 수수료가 적용되는 시점은 Merchant Apps 본격 출시 이후</strong>가 될 전망입니다. ChatGPT의 트래픽 규모(WAU ~8억)가 이 비용을 정당화할 수 있는지가 핵심 판단 기준입니다.
             </div>
         </div>
     </div>
@@ -255,18 +276,19 @@
     <!--  Perplexity                                        -->
     <!-- ═══════════════════════════════════════════════════ -->
     <div class="platform-block" style="border-left:3px solid var(--pplx);">
-        <h3><span style="color:var(--pplx-l)">◈</span> Perplexity — Buy with Pro</h3>
-        <div class="tagline">Merchant Program · 수수료 0% · PayPal 기반 결제 · 미국 전용</div>
+        <h3><span style="color:var(--pplx-l)">◈</span> Perplexity — Buy with Pro + Firmly.ai</h3>
+        <div class="tagline">Merchant Program · 수수료 0% · 광고 폐기→쇼핑 경험 집중(2026.2) · Firmly.ai 네이티브 체크아웃 · PayPal 기반 · 미국 전용</div>
 
         <div class="sub-section">
             <h4>📋 진입 자격 & 요구사항</h4>
             <table>
                 <tr><th style="width:180px">항목</th><th>요구사항</th></tr>
                 <tr><td><strong>사업 소재지</strong></td><td>미국 배송 가능한 사업체 (초기 대형 리테일러 중심 → PayPal/Firmly.ai로 중소상공인 확대)</td></tr>
-                <tr><td><strong>결제 인프라</strong></td><td>PayPal 또는 Venmo 판매자 계정</td></tr>
+                <tr><td><strong>결제 인프라</strong></td><td>PayPal 또는 Venmo 판매자 계정 · Firmly.ai 네이티브 체크아웃 통합</td></tr>
                 <tr><td><strong>상품 카테고리</strong></td><td>물리적 상품 (디지털 상품 지원 확대 중)</td></tr>
-                <tr><td><strong>가입비</strong></td><td>완전 무료 — 초기 비용, 지속 비용 모두 $0</td></tr>
+                <tr><td><strong>가입비</strong></td><td>완전 무료 — 초기 비용, 지속 비용 모두 $0 · 판매자가 수익 100% 수취</td></tr>
                 <tr><td><strong>제휴 파트너</strong></td><td>Shopify 셀러는 별도 가입 가능, 자동 통합은 아님</td></tr>
+                <tr><td><strong>⚠️ 광고 전략 전환</strong></td><td>2026년 2월 19일 — 광고 테스트 전면 중단. 클릭율은 증가했으나 사용자 만족도 하락 → 구독 중심 모델로 확정. 쇼핑 경험에 집중</td></tr>
             </table>
         </div>
 
@@ -305,7 +327,7 @@
                 <div class="step" style="background:rgba(34,197,94,0.08);color:#86efac">판매자 이행<br><small>PayPal 추적</small></div>
             </div>
             <p style="font-size:0.85em;color:var(--text-dim);margin-top:8px;">
-                <strong>핵심 차이점:</strong> Perplexity Pro 구독자($20/월)는 Buy with Pro로 <strong>무료 배송</strong> 혜택을 받습니다. Perplexity가 배송비를 보조하는 모델입니다. 검색 → 결제 → 브라우징을 <strong>같은 대화 스레드</strong>에서 계속할 수 있습니다.
+                <strong>핵심 차이점:</strong> Perplexity Pro 구독자($20/월)는 Buy with Pro로 <strong>무료 배송</strong> 혜택을 받습니다. Perplexity가 배송비를 보조하는 모델입니다. <strong>Firmly.ai</strong> 통합으로 판매자 엔지니어링 리소스 없이 네이티브 체크아웃이 가능하며, 판매자가 MoR(Merchant of Record)로 수익 100%를 수취합니다. 검색 → 결제 → 브라우징을 <strong>같은 대화 스레드</strong>에서 계속할 수 있습니다. Shopping Intent 쿼리가 Buy with Pro 도입 후 <strong>5배 증가</strong>했습니다.
             </p>
         </div>
 
@@ -335,7 +357,7 @@
             </div>
 
             <div class="highlight-box highlight-green">
-                <strong>🎯 수익 모델 차이:</strong> Perplexity는 Pro 구독료($20/월)로 수익을 내며, 커머스 자체에서는 수수료를 받지 않습니다. ChatGPT가 거래당 4%를 징수하는 것과 정반대의 전략입니다. 판매자 입장에서는 가장 비용 효율적인 AI 채널입니다.
+                <strong>🎯 수익 모델 차이:</strong> Perplexity는 2026년 2월 광고를 전면 폐기하고 Pro 구독료($20/월)만으로 수익을 냅니다. 커머스 자체에서는 수수료를 받지 않으며, 이는 "광고가 있으면 사용자가 답변의 공정성을 의심한다"는 판단에 따른 것입니다. ChatGPT가 거래당 4%를 징수하는 것과 정반대의 전략입니다. 판매자 입장에서는 <strong>가장 비용 효율적인 AI 채널</strong>입니다.
             </div>
         </div>
 
@@ -439,7 +461,7 @@
     <!-- ═══════════════════════════════════════════════════ -->
     <div class="platform-block" style="border-left:3px solid var(--shopify);">
         <h3><span style="color:var(--shopify-l)">◉</span> Shopify — Agentic Storefronts</h3>
-        <div class="tagline">ACP + UCP 동시 지원 · 멀티 AI 채널 허브 · 자동 연동</div>
+        <div class="tagline">ACP v5 + UCP(2026.3 업데이트) 동시 지원 · ChatGPT·Google·Copilot·Perplexity 멀티 AI 채널 허브 · 자동 연동 · 25+ ACP 파트너</div>
 
         <div class="sub-section">
             <h4>📋 진입 자격 & 요구사항</h4>
@@ -479,7 +501,7 @@
             </div>
 
             <div class="highlight-box highlight-green">
-                <strong>✅ Shopify의 핵심 가치:</strong> "한 번 등록하면 모든 AI에 노출" — 판매자는 Shopify Admin에서 상품 데이터를 관리하면 됩니다. Shopify가 ACP/UCP 프로토콜 변환을 알아서 처리합니다. <strong>유일하게 ACP와 UCP를 동시 지원</strong>하는 플랫폼입니다.
+                <strong>✅ Shopify의 핵심 가치:</strong> "한 번 등록하면 모든 AI에 노출" — 판매자는 Shopify Admin에서 상품 데이터를 관리하면 됩니다. Shopify가 ACP v5/UCP 프로토콜 변환을 알아서 처리합니다. <strong>유일하게 ACP와 UCP를 동시 지원</strong>하는 플랫폼입니다. ACP는 Salesforce, Squarespace, Adobe Commerce 등 <strong>25+ 파트너</strong>로 확대되었고, UCP 2026.3 업데이트에서 멀티 아이템 카트, 실시간 카탈로그 쿼리, 로열티 프로그램 통합이 추가되었습니다.
             </div>
         </div>
 
@@ -524,7 +546,7 @@
     <!-- ═══════════════════════════════════════════════════ -->
     <div class="platform-block" style="border-left:3px solid var(--ms);">
         <h3><span style="color:var(--ms-l)">⬡</span> Microsoft — Copilot Checkout & Brand Agents</h3>
-        <div class="tagline">ACP 채택 · 0% 거래 수수료 (현재) · Shopify/PayPal/Stripe 연동 · Bing+Edge+MSN 확장</div>
+        <div class="tagline">ACP 채택 · 0% 거래 수수료 (현재) · Shopify/PayPal/Stripe 연동 · Copilot.com + Bing·MSN·Edge 전 서피스 확장 중</div>
 
         <div class="sub-section">
             <h4>📋 진입 자격 & 요구사항</h4>
@@ -662,8 +684,8 @@
                     <td><strong>데이터 제출</strong></td>
                     <td>Merchant Center<br>피드 업로드</td>
                     <td>SP-API<br>LISTINGS_FEED</td>
-                    <td>ACP 피드<br>SFTP/HTTPS</td>
-                    <td>별도 피드 불필요<br>(웹 크롤링+카탈로그)</td>
+                    <td>ACP v5 피드<br>REST/MCP</td>
+                    <td>별도 피드 불필요<br>(웹 크롤링+카탈로그<br>+ Firmly.ai)</td>
                     <td>Commerce<br>Manager 카탈로그</td>
                     <td>Shopify Admin<br>자동 변환</td>
                     <td>MMC 피드 권장<br>(필수 아님)</td>
@@ -732,8 +754,8 @@
                     <td><strong>체크아웃 방식</strong></td>
                     <td>리디렉트<br>+ AI Mode<br>네이티브(예정)</td>
                     <td>Amazon 내<br>결제 완결</td>
-                    <td>채팅 내<br>Instant Checkout</td>
-                    <td>채팅 내<br>Buy with Pro</td>
+                    <td>리디렉트(현재)<br><small>Merchant Apps 예정</small></td>
+                    <td>채팅 내<br>Buy with Pro<br><small>+ Firmly.ai</small></td>
                     <td>외부 리디렉트</td>
                     <td>AI 채널별<br>상이</td>
                     <td>채팅 내<br>Copilot Checkout</td>
@@ -842,8 +864,8 @@
                     <td><strong>커머스 출시</strong></td>
                     <td>2024 AI Mode</td>
                     <td>2024 Rufus</td>
-                    <td>2026.1 Checkout</td>
-                    <td>2024.11 Shopping</td>
+                    <td>2026.1 Checkout<br><small>→ 3월 중단</small></td>
+                    <td>2024.11 Shopping<br><small>+ 2026.2 광고 폐기</small></td>
                     <td>2026.3 테스트</td>
                     <td>2026.1 Storefronts</td>
                     <td>2026.1 Checkout</td>
@@ -852,8 +874,8 @@
                     <td><strong>체크아웃<br>완결성</strong></td>
                     <td style="color:#fde68a;">🔶 부분<br><small>UCP 확장 중</small></td>
                     <td style="color:#86efac;">🟢 완전<br><small>자체 이행</small></td>
-                    <td style="color:#86efac;">🟢 완전<br><small>Instant Checkout</small></td>
-                    <td style="color:#86efac;">🟢 완전<br><small>Buy with Pro</small></td>
+                    <td style="color:#fde68a;">🔶 전환 중<br><small>Instant Checkout 중단<br>→ Merchant Apps 전환</small></td>
+                    <td style="color:#86efac;">🟢 완전<br><small>Buy with Pro<br>+ Firmly.ai</small></td>
                     <td style="color:#fca5a5;">🔴 없음<br><small>리디렉트만</small></td>
                     <td style="color:#86efac;">🟢 완전<br><small>채널 통해</small></td>
                     <td style="color:#86efac;">🟢 완전<br><small>Copilot Checkout</small></td>
@@ -1137,15 +1159,15 @@
             </tr>
             <tr>
                 <td style="color:var(--openai-l)"><strong>OpenAI</strong></td>
-                <td>거래 수수료 4%</td>
-                <td>수수료 유지 + ChatGPT Pro 구독 + 향후 광고 도입 가능</td>
-                <td style="color:#fde68a;">4% 유지 또는 소폭 인하<br><small>핵심 수익원</small></td>
+                <td>거래 수수료 4% (명목)<br><small>Instant Checkout 중단 후<br>Product Discovery는 리디렉트</small></td>
+                <td>Merchant Apps 출시 시 수수료 재적용 + ChatGPT Pro 구독 + 향후 광고 도입 가능</td>
+                <td style="color:#fde68a;">4% 유지 전망<br><small>Merchant Apps 출시 시점이 관건</small></td>
             </tr>
             <tr>
                 <td style="color:var(--pplx-l)"><strong>Perplexity</strong></td>
-                <td>Pro 구독 ($20/월)</td>
-                <td>구독 기반 유지 + 판매자 프리미엄 배치 광고 가능</td>
-                <td style="color:#86efac;">0% 유지 가능성 높음<br><small>차별화 전략</small></td>
+                <td>Pro 구독 ($20/월)<br><small>2026.2 광고 전면 폐기</small></td>
+                <td>구독 전용 모델 확정. 광고 폐기로 사용자 신뢰 극대화. Firmly.ai로 체크아웃 고도화</td>
+                <td style="color:#86efac;">0% 유지 확정적<br><small>광고 없는 구독 모델 선언</small></td>
             </tr>
             <tr>
                 <td style="color:var(--ms-l)"><strong>Microsoft</strong></td>
@@ -1183,12 +1205,15 @@
     <div class="platform-block">
         <table>
             <tr><th style="width:180px">용어</th><th>설명</th></tr>
-            <tr><td><strong>ACP</strong></td><td>Agentic Commerce Protocol — OpenAI+Stripe가 개발한 에이전틱 커머스 프로토콜. Push 방식으로 판매자가 AI에 피드를 전송.</td></tr>
+            <tr><td><strong>ACP</strong></td><td>Agentic Commerce Protocol — OpenAI+Stripe 공동 거버넌스. v5(2026.4.17)에서 Cart, Feed, Orders, Auth, MCP 통합 추가. Apache 2.0 오픈소스. 25+ 파트너(Salesforce, Squarespace, Adobe Commerce 등).</td></tr>
             <tr><td><strong>UCP</strong></td><td>Universal Commerce Protocol — Google+Shopify가 개발한 범용 커머스 프로토콜. .well-known/ucp 매니페스트 기반 Discovery 방식.</td></tr>
             <tr><td><strong>SPT</strong></td><td>Shared Payment Token — Stripe가 ACP에서 사용하는 보안 결제 토큰. AI 에이전트가 카드 정보를 직접 다루지 않도록 보호.</td></tr>
             <tr><td><strong>Merchant of Record</strong></td><td>거래의 법적 판매 책임 주체. Amazon은 Amazon이 MoR이지만, 대부분의 AI 플랫폼에서는 판매자가 MoR.</td></tr>
-            <tr><td><strong>Instant Checkout</strong></td><td>AI 채팅 인터페이스 내에서 외부 리디렉트 없이 결제가 완료되는 방식. ChatGPT, Copilot이 이 방식 채택.</td></tr>
-            <tr><td><strong>Buy with Pro</strong></td><td>Perplexity Pro 구독자 전용 인앱 구매 기능. PayPal 기반 원클릭 결제 + 무료 배송 포함.</td></tr>
+            <tr><td><strong>Instant Checkout</strong></td><td>AI 채팅 내에서 외부 리디렉트 없이 결제가 완료되는 방식. ChatGPT는 2026년 3월 중단하고 Merchant Apps로 전환. Copilot은 유지 중.</td></tr>
+            <tr><td><strong>Product Discovery</strong></td><td>OpenAI가 Instant Checkout 대신 집중하는 전략. 비주얼 쇼핑, 이미지 검색, 상품 비교 기능으로 사용자를 판매자 사이트로 연결.</td></tr>
+            <tr><td><strong>Merchant Apps</strong></td><td>판매자가 ChatGPT 내에서 자체 체크아웃 경험을 구현하는 앱. Instant Checkout의 획일적 방식 대신 판매자 맞춤형 네이티브 경험 제공.</td></tr>
+            <tr><td><strong>Firmly.ai</strong></td><td>시애틀 기반 에이전틱 커머스 스타트업. Perplexity와 통합하여 판매자 엔지니어링 리소스 없이 네이티브 체크아웃 지원. 판매자가 MoR.</td></tr>
+            <tr><td><strong>Buy with Pro</strong></td><td>Perplexity Pro 구독자 전용 인앱 구매 기능. PayPal 기반 원클릭 결제 + 무료 배송 + Firmly.ai 네이티브 체크아웃 포함.</td></tr>
             <tr><td><strong>Brand Agents</strong></td><td>Microsoft의 B2B 솔루션. 브랜드 자체 웹사이트에 AI 에이전트를 배치하여 고객 쇼핑 안내.</td></tr>
             <tr><td><strong>Agentic Storefronts</strong></td><td>Shopify의 멀티 AI 채널 허브. Shopify Admin의 상품 데이터를 ACP/UCP로 자동 변환하여 ChatGPT, Google, Copilot에 동시 배포.</td></tr>
             <tr><td><strong>Land Grab</strong></td><td>초기 시장 점유율 확보 경쟁. 현재 AI 커머스 플랫폼들이 0% 수수료로 판매자를 유치하는 전략을 설명하는 표현.</td></tr>
@@ -1200,7 +1225,7 @@
     <!-- Footer -->
     <div style="text-align:center;margin-top:56px;padding:28px 0;border-top:1px solid var(--border);">
         <p style="color:var(--text-dim);font-size:0.85em;">에이전틱 커머스 Knowledge Base — Report #13</p>
-        <p style="color:var(--text-dim);font-size:0.8em;margin-top:6px;">Curated by Sung-Gong · 2026년 5월 기준</p>
+        <p style="color:var(--text-dim);font-size:0.8em;margin-top:6px;">Curated by Sung-Gong · 2026년 5월 15일 현행화</p>
         <p style="color:var(--text-dim);font-size:0.75em;margin-top:4px;">OpenAI Developers, Perplexity Merchant Program, Microsoft Ads Blog, Shopify Engineering, Meta Business Help Center 등 공개 자료 기반</p>
     </div>
 
